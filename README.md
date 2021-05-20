@@ -35,20 +35,18 @@ O Puncto é uma aplicação de apontamento de horas voltada para profissionais a
 
   - [Figma](https://www.figma.com/)
 
-  - Analytics
+  - Analytics (A definir)
 
-  - Teste de interface
+  - Teste de interface (A definir)
 
 - **Back**
 
   - [NestJS](https://nestjs.com/)
 
-  - Banco
+  - [MongoDB](https://www.mongodb.com/1)
 
   - [SuperTest](https://github.com/visionmedia/supertest)
 
 - **Ops**
 
-  - CI
-
-  - Cloud
+  - [AWS](https://aws.amazon.com/pt/)
