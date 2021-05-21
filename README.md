@@ -3,17 +3,25 @@ Repositório para o trabalho de Prática em Desenvolvimento de Software.
 
 ## Equipe
 
-- Bruna Melo
+Pretendemos organizar o trabalho de forma que todos os membros participem pelo menos um pouco de todas as partes do desenvolvimento e consigam ter experiencia de trabalhar com tudo. Porém achamos que seria interessante definir responsáveis por cada área também, para facilitar a gestão.
 
-- Philipe Atela
+- Bruna Melo (Front-end)
 
-- Gabriel Chaves
+- Philipe Atela (Back-end/Devops)
 
-- Lívia Almeida
+- Gabriel Chaves (Back-end/Devops)
+
+- Lívia Almeida (UI/UX, Front-end, DBA)
 
 ## Projeto
 
-O Puncto é uma aplicação de apontamento de horas voltada para profissionais autônomos. Além de fazer o controle de horas, permite também geração de invoices.
+O **Puncto** é uma aplicação de apontamento de horas voltada para profissionais autônomos. Além de fazer o controle de horas, permite também geração de invoices.
+
+Features:
+- Autenticacao
+- Lancamento de horas
+- Geracao automatizada de invoices
+- Cadastro de clientes
 
 ## Stack
 
@@ -41,7 +49,7 @@ O Puncto é uma aplicação de apontamento de horas voltada para profissionais a
 
 - **Back**
 
-  - [NestJS](https://nestjs.com/)
+  - [Express](https://expressjs.com/)
 
   - [MongoDB](https://www.mongodb.com/1)
 
@@ -49,4 +57,5 @@ O Puncto é uma aplicação de apontamento de horas voltada para profissionais a
 
 - **Ops**
 
-  - [AWS](https://aws.amazon.com/pt/)
+  - Cloud Provider (A definir)
+  - [Github Actions](https://github.com/features/actions)
