@@ -59,3 +59,27 @@ Features:
 
   - Cloud Provider (A definir)
   - [Github Actions](https://github.com/features/actions)
+
+
+## SPRINT 1
+  - Fazer setup backend
+  - Fazer setup frontend
+  - Fazer diagrama da arquitetura do projeto
+  - Criar api de login
+  - Criar tela de login
+  - Criar api de cadastro de dados pessoais
+  - Criar tela de cadastro de dados pessoais
+
+## SPRINT 2
+  - Criar api de cadastro de clientes
+  - Criar tela de cadastro de clientes
+  - Criar api de gerenciamento de ponto
+  - Criar tela de gerenciamento de ponto
+
+## SPRINT 3
+  - Criar api de invoices
+  - Criar tela de invoices
+  - Criar tela de ajuda
+  - Criar tela de estatistica
+
+
