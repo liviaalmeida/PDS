@@ -1,7 +1,15 @@
 <template>
   <div id="app">
     <PtMenu />
-    <router-view class="view" />
+    <div class="view">
+      <div class="view-header">
+        <PtLogo />
+        <h1 class="view-header-title">
+          {{ title }}
+        </h1>
+      </div>
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -17,6 +25,11 @@ export default Vue.extend({
     return {
       menu: true,
     }
+  },
+  computed: {
+    title(): string | null | undefined {
+      return this.$route.name
+    },
   },
 })
 </script>
@@ -38,6 +51,20 @@ export default Vue.extend({
   .view {
     flex: 1;
     overflow: auto;
+    padding: 20px;
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+			margin-bottom: 30px;
+
+      &-title {
+        color: $pt-sapphire;
+        font-family: 'Ubuntu';
+        font-size: 28px;
+      }
+    }
   }
 }
 </style>
