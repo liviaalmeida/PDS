@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import PtButton from '@/components/input/PtButton.vue'
 import PtIcon from '@/components/PtIcon.vue'
 import PtInput from '@/components/input/PtInput.vue'
 import PtLogo from '@/components/PtLogo.vue'
@@ -12,6 +13,7 @@ import '@/assets/scss/fonts.scss'
 
 Vue.config.productionTip = false
 
+Vue.component('PtButton', PtButton)
 Vue.component('PtIcon', PtIcon)
 Vue.component('PtInput', PtInput)
 Vue.component('PtLogo', PtLogo)
