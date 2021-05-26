@@ -12,8 +12,13 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
+    'indent': ['error', 2],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'semi': ['error', 'never'],
+    'quotes': [2, 'single', { 'avoidEscape': true }],
+    'no-multiple-empty-lines': ['error', { 'max': 1 }],
+    'eol-last': ['error', 'always'],
   },
   overrides: [
     {
