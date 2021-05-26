@@ -13,25 +13,25 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'Gerenciamento de ponto',
     component: () => import('@/views/Home.vue'),
-		meta: {
-			auth: true,
-		},
+    meta: {
+      auth: true,
+    },
   },
   {
     path: '/cadastro',
     name: 'Cadastro',
     component: () => import('@/views/Registration.vue'),
-		meta: {
-			auth: true,
-		},
+    meta: {
+      auth: true,
+    },
   },
   {
     path: '/clientes',
     name: 'Clientes',
     component: () => import('@/views/Clients.vue'),
-		meta: {
-			auth: true,
-		},
+    meta: {
+      auth: true,
+    },
   },
 ]
 
