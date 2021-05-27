@@ -13,7 +13,8 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "start": "node out/index.js",
+    "mongodb": "docker compose up -d",
+    "start": "npm run build && npm run mongodb && node out/index.js",
     "dev": "nodemon --config nodemon.json src/index.ts",
     "dev:debug": "nodemon --config nodemon.json --inspect-brk src/index.ts"
   },
