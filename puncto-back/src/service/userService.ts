@@ -14,7 +14,7 @@ export class UserService {
     }
 
 
-    async createUser(user: UserDto) {
+    async createUser(user: UserDto): Promise<void> {
         await this._userRepositoy.createUser(user.firstName, user.lastName, user.age)
     }
 

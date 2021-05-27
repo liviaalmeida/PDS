@@ -11,7 +11,7 @@ export class UserRepository {
     return connection.getRepository(User);
   }
 
-  async createUser(firstName: string, lastName: string, age: number) {
+  async createUser(firstName: string, lastName: string, age: number): Promise<void> {
     const repository = this.getUserRepository();
     const user = new User();
     user.firstName = firstName;
