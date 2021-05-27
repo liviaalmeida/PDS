@@ -26,14 +26,8 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "husky": "^6.0.0",
     "mongodb": "^3.6.9",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.32"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint"
-    }
   }
 }

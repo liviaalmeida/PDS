@@ -8,8 +8,8 @@ const router = express.Router()
 
 router.post('/user', async (req: Request, res: Response) => {
     try {
-        let user = req.body as UserDto
-        let userService = container.get(UserService)
+        const user = req.body as UserDto
+        const userService = container.get(UserService)
         await userService.createUser(user)
         res.status(200).json("Fon")
     } catch (exception) {
