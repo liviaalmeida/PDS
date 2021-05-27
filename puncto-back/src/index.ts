@@ -1,4 +1,4 @@
-import userRouter from './routes/user'
+import userRouter from './api/user'
 const express = require('express')
 const app = express()
 const port = 3000
