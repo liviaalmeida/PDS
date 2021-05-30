@@ -1,12 +1,14 @@
 <template>
   <table class="calendar-pick">
-    <tr v-for="(row, index) in short" :key="index">
-      <td v-for="month in row" :key="month.index">
-        <button @click="$emit('month', month.index)">
-          {{ month.month }}
-        </button>
-      </td>
-    </tr>
+    <tbody>
+      <tr v-for="(row, index) in short" :key="index">
+        <td v-for="month in row" :key="month.index">
+          <button @click="$emit('month', month.index)">
+            {{ month.month }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
   </table>
 </template>
 
