@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import { directive } from 'v-visible'
 
 import PtButton from '@/components/input/PtButton.vue'
 import PtCalendar from '@/components/calendar/PtCalendar.vue'
@@ -13,6 +14,8 @@ import '@/assets/scss/reset.scss'
 import '@/assets/scss/fonts.scss'
 
 Vue.config.productionTip = false
+
+Vue.directive('visible', directive)
 
 Vue.component('PtButton', PtButton)
 Vue.component('PtCalendar', PtCalendar)
