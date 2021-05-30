@@ -1,12 +1,16 @@
 <template>
   <div class="calendar">
     <div class="calendar-header">
-      <button>{{ month }}</button>
+      <button @click="pickingMonth = !pickingMonth">
+        {{ month }}
+      </button>
       <button>{{ year }}</button>
     </div>
-    <PtMonth :date="date" v-model="value"
-    :fullfilled="[11, 12, 13]" :pending="[14]" />
-    <PtMonths :months="months" @month="pickMonth" />
+    <PtMonth :date="date" v-model="value" v-if="!pickingMonth"
+    :fullfilled="[new Date(2021, 4, 11), new Date(2021, 4, 12), new Date(2021, 4, 13)]"
+    :pending="[new Date(2021, 4, 14)]" />
+    <PtMonths :months="months" @month="pickMonth"
+    v-if="pickingMonth" />
     <PtYears :year="year" />
   </div>
 </template>
@@ -33,6 +37,8 @@ export default Vue.extend({
   data() {
     return {
       date: new Date(),
+      pickingMonth: false,
+      pickingYear: false,
       value: new Date(),
     }
   },
@@ -55,6 +61,7 @@ export default Vue.extend({
   methods: {
     pickMonth(month: number) {
       this.date = dayjs(this.date).month(month).toDate()
+      this.pickingMonth = false
     },
   },
 })
@@ -73,6 +80,10 @@ export default Vue.extend({
     font-weight: 700;
   }
 
+  table {
+    width: 100%;
+  }
+
   &-header {
     display: flex;
     justify-content: space-between;
@@ -88,6 +99,10 @@ export default Vue.extend({
 
     button {
       font-size: 20px;
+    }
+
+    tbody {
+      /* vertical-align: bottom; */
     }
   }
 }
