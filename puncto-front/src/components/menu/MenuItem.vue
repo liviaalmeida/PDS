@@ -38,6 +38,7 @@ export default Vue.extend({
   gap: 10px;
   font-family: 'Ubuntu';
   font-size: 24px;
+  font-weight: 700;
   height: 30px;
   text-decoration: none;
   opacity: .8;
