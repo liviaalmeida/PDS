@@ -44,11 +44,11 @@ export default Vue.extend({
     },
     fullfilled: {
       required: false,
-      type: Array as () => Array<number>,
+      type: Array as () => Array<Date>,
     },
     pending: {
       required: false,
-      type: Array as () => Array<number>,
+      type: Array as () => Array<Date>,
     },
     value: {
       required: false,
@@ -65,6 +65,10 @@ export default Vue.extend({
         (_, index) => this.week(start.add(index, 'week').toDate())
       )
     },
+    enabledDayIsSame(): (day: Date, arr: Array<Date>) => boolean {
+      return (day, arr) => !this.dayDisabled(day) &&
+        arr.some(date => dayjs(date).isSame(day, 'day'))
+    },
     weekdays(): string[] {
       return ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
     },
@@ -74,13 +78,13 @@ export default Vue.extend({
       return day.getMonth() !== new Date(this.date).getMonth()
     },
     dayFullfilled(day: Date) {
-      return !this.dayDisabled(day) && this.fullfilled?.includes(day.getDate())
+      return this.enabledDayIsSame(day, this.fullfilled)
     },
     dayKey(day: Date) {
       return `${day.getDate()}-${day.getMonth()}`
     },
     dayPending(day: Date) {
-      return !this.dayDisabled(day) && this.pending?.includes(day.getDate())
+      return this.enabledDayIsSame(day, this.pending)
     },
     daySelected(day: Date) {
       const selected = new Date(this.value)
@@ -145,6 +149,10 @@ export default Vue.extend({
     position: absolute;
     height: 6px;
     width: 6px;
+
+    &--pending {
+      background-color: $pt-ruby;
+    }
   }
 }
 </style>
