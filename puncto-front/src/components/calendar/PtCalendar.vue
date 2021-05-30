@@ -1,17 +1,32 @@
 <template>
   <div class="calendar">
     <div class="calendar-header">
-      <button @click="pickingMonth = !pickingMonth">
-        {{ month }}
+      <button @click="rollMonth(-1)"
+      v-visible="!picking"
+      :disabled="picking">
+        ◄
       </button>
-      <button>{{ year }}</button>
+      <div>
+        <button @click="onMonth">
+          {{ month }}
+        </button>
+        <button @click="onYear">
+          {{ year }}
+        </button>
+      </div>
+      <button @click="rollMonth(1)"
+      v-visible="!picking"
+      :disabled="picking">
+        ►
+      </button>
     </div>
-    <PtMonth :date="date" v-model="value" v-if="!pickingMonth"
+    <PtMonth :date="date" v-model="value" v-if="!picking"
     :fullfilled="[new Date(2021, 4, 11), new Date(2021, 4, 12), new Date(2021, 4, 13)]"
     :pending="[new Date(2021, 4, 14)]" />
     <PtMonths :months="months" @month="pickMonth"
     v-if="pickingMonth" />
-    <PtYears :year="year" />
+    <PtYears :year="year" @year="pickYear"
+    v-if="pickingYear" />
   </div>
 </template>
 
@@ -54,14 +69,32 @@ export default Vue.extend({
     month(): string {
       return this.months[this.date.getMonth()]
     },
+    picking(): boolean {
+      return this.pickingMonth || this.pickingYear
+    },
     year(): number {
       return this.date.getFullYear()
     },
   },
   methods: {
+    onMonth() {
+      this.pickingYear = false
+      this.pickingMonth = !this.pickingMonth
+    },
+    onYear() {
+      this.pickingMonth = false
+      this.pickingYear = !this.pickingYear
+    },
     pickMonth(month: number) {
       this.date = dayjs(this.date).month(month).toDate()
       this.pickingMonth = false
+    },
+    pickYear(year: number) {
+      this.date = dayjs(this.date).year(year).toDate()
+      this.pickingYear = false
+    },
+    rollMonth(offset: number) {
+      this.date = dayjs(this.date).add(offset, 'month').toDate()
     },
   },
 })
@@ -99,10 +132,6 @@ export default Vue.extend({
 
     button {
       font-size: 20px;
-    }
-
-    tbody {
-      /* vertical-align: bottom; */
     }
   }
 }
