@@ -1,0 +1,20 @@
+{
+    "type": "mongodb",
+    "host": "localhost",
+    "port": 27017,
+    "username": "root",
+    "password": "example",
+    "database": "admin",
+    "synchronize": true,
+    "logging": false,
+    "entities": [
+       "out/entity/**/*.js"
+    ],
+    "migrations": [
+       "out/migration/**/*.js"
+    ],
+    "cli": {
+       "entitiesDir": "dist/entity",
+       "migrationsDir": "dist/migration"
+    }
+ }
