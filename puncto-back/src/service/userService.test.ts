@@ -1,4 +1,4 @@
-import { UserDto } from "../dto/userDto";
+import { UserDto, IUserProps } from "../dto/userDto";
 import { UserRepository } from "../repository/userRepository";
 import { UserService } from "./userService";
 import { container } from '../inversify.config';
@@ -8,30 +8,50 @@ describe("User service", () => {
     let mockAllUsers: UserDto[]
     const mockUserRepository: UserRepository = container.get(UserRepository);
 
-    const getUser = (firstName: string, lastName: string, age: number): UserDto => {
-        return new UserDto(firstName, lastName, age)
+    const getUser = (props: IUserProps): UserDto => {
+        return new UserDto(props)
     }
 
     beforeAll(() => {
         userService = new UserService(mockUserRepository)
-        mockAllUsers = [getUser("Gabriel", "Chaves", 20), getUser("Nome", "Sobrenome", 25)]
+        mockAllUsers = [getUser({
+            firstName: "Gabriel",
+            lastName: "Chaves",
+            email: "gabrielchaves@gmail.com",
+            password: "123456",
+        }), getUser({
+            firstName: "Philipe",
+            lastName: "Atela",
+            email: "philipe@gmail.com",
+            password: "123456",
+        })]
     })
 
 
     it("createUser should call userRepository.createUser", () => {
-        let spyUserRepository = jest.spyOn(mockUserRepository, 'createUser');
-        userService.createUser(getUser("Gabriel", "Chaves", 20))
+        const spyUserRepository = jest.spyOn(mockUserRepository, 'createUser');
+        userService.createUser(getUser({
+            firstName: "Gabriel",
+            lastName: "Chaves",
+            email: "gabrielchaves@gmail.com",
+            password: "123456",
+        }))
         expect(spyUserRepository).toHaveBeenCalledTimes(1);
     });
 
     it("findAllUsers should call userRepository.findAllUsers", async () => {
-        let spyUserRepository = jest.spyOn(mockUserRepository, 'findAllUsers').mockImplementation((): Promise<Array<UserDto>> => {
+        const spyUserRepository = jest.spyOn(mockUserRepository, 'findAllUsers').mockImplementation((): Promise<Array<UserDto>> => {
             return Promise.resolve(mockAllUsers);
         });
 
-        let users = await userService.findAllUsers();
+        const users = await userService.findAllUsers();
         expect(spyUserRepository).toHaveBeenCalledTimes(1);
         expect(users).toHaveLength(2);
-        expect(users).toContainEqual(getUser("Gabriel", "Chaves", 20))
+        expect(users).toContainEqual(getUser({
+            firstName: "Gabriel",
+            lastName: "Chaves",
+            email: "gabrielchaves@gmail.com",
+            password: "123456",
+        }))
     });
 });

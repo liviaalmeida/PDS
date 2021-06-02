@@ -6,7 +6,7 @@ import { container } from '../inversify.config';
 
 const router = express.Router()
 
-router.post('/user', async (req: Request, res: Response) => {
+router.post('/signup', async (req: Request, res: Response) => {
     try {
         const user = req.body as UserDto
         const userService = container.get(UserService)
