@@ -28,6 +28,13 @@ export class UserRepository {
     console.log(allUsers)
     return allUsers
   }
+
+  async findByEmail(email: string): Promise<UserDto> {
+    const repository = this.getUserRepository();
+
+    const user = await repository.findOne({ where: { email } }) as UserDto;
+    return user
+  }
 }
 
 

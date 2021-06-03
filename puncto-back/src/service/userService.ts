@@ -18,6 +18,14 @@ export class UserService {
         await this._userRepositoy.createUser(user)
     }
 
+    async findByEmail(email: string): Promise<UserDto> {
+        const user = await this._userRepositoy.findByEmail(email);
+        if (!user) {
+            throw new Error('User not found'); 
+        }
+        return user;
+    }
+
     async findAllUsers(): Promise<Array<UserDto>> {
         const allUsers = await this._userRepositoy.findAllUsers();
         return allUsers;
