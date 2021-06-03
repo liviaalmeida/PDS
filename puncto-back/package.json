@@ -1,7 +1,9 @@
 {
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.12",
     "@types/jest": "^26.0.23",
+    "@types/jsonwebtoken": "^8.5.1",
     "@types/node": "^15.6.1",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
@@ -26,8 +28,10 @@
     "format": "eslint src/**/*.ts --fix"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "inversify": "^5.1.1",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.9",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.32"

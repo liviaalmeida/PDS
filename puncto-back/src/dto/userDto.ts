@@ -1,11 +1,20 @@
+export interface IUserProps {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+}
+
 export class UserDto {
     firstName: string;
     lastName: string;
-    age: number;
+    email: string;
+    password: string;
 
-    public constructor(firstName: string, lastName: string, age: number) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
+    public constructor(props: IUserProps) {
+        this.firstName = props.firstName;
+        this.lastName = props.lastName;
+        this.email = props.email;
+        this.password = props.password;
     }
 }
