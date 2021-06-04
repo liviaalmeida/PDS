@@ -2,12 +2,12 @@
   <div id="app">
     <PtMenu />
     <div class="view">
-      <div class="view-header">
+      <!--<div class="view-header">
         <PtLogo />
         <h1 class="view-header-title">
           {{ title }}
         </h1>
-      </div>
+      </div>-->
       <router-view />
     </div>
   </div>
@@ -16,10 +16,17 @@
 <script lang="ts">
 import Vue from 'vue'
 import PtMenu from './components/menu/PtMenu.vue'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
 
 export default Vue.extend({
   components: {
-    PtMenu,
+    //PtMenu,
   },
   data() {
     return {
@@ -51,6 +58,10 @@ export default Vue.extend({
     flex: 1;
     overflow: auto;
     padding: 20px;
+    position: absolute;
+    width: 1366px;
+    height: 768px;
+    background-image: url("background.png");
 
     &-header {
       display: flex;
