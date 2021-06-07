@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <PtMenu v-if="logged" />
-    <div class="view">
+    <div :class="[{
+      'view--login': !logged
+    }, 'view']">
       <div class="view-header" v-if="logged">
         <PtLogo />
         <h1 class="view-header-title">
@@ -74,6 +76,10 @@ export default Vue.extend({
         font-family: 'Ubuntu';
         font-size: 28px;
       }
+    }
+
+    &--login {
+      background-image: url('~@/assets/imgs/background.png');
     }
   }
 }
