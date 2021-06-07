@@ -1,8 +1,12 @@
 <template>
   <div class="pt-button">
-    <button @click="$('click', $event)"
+    <button @click="$emit('click', $event)"
     :type="type" :disabled="disabled">
-      <slot name="default"></slot>
+      <div class="pt-button-loading"
+      v-if="loading">
+      </div>
+      <slot name="default" v-else>
+      </slot>
     </button>
     <div class="pt-button-help"
     v-if="help">
@@ -23,6 +27,10 @@ export default Vue.extend({
     help: {
       required: false,
       type: String,
+    },
+    loading: {
+      required: false,
+      type: Boolean,
     },
     type: {
       default: 'submit',
