@@ -14,7 +14,7 @@
             <PtInput label="Senha" v-model="form.password"
             type="password" icon="lock" required
             placeholder="Digite sua senha" />
-            <PtButton :loading="loading">
+            <PtButton>
               Login
             </PtButton>
           </form>
@@ -45,14 +45,15 @@ export default Vue.extend({
   },
   methods: {
     async onSubmit() {
-      this.loading = true
+      this.$store.dispatch('loadStart')
       await login()
         .then(() => {
           this.$store.dispatch('login')
+          this.$store.dispatch('loadStop')
           this.$router.push(this.redirect)
         })
         .catch(() => {
-          this.loading = false
+          this.$store.dispatch('loadStop')
         })
     },
     onReset(): void {
