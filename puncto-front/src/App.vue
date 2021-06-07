@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    <PtMenu />
+    <PtMenu v-if="logged" />
     <div class="view">
-      <!--<div class="view-header">
+      <div class="view-header" v-if="logged">
         <PtLogo />
         <h1 class="view-header-title">
           {{ title }}
         </h1>
-      </div>-->
+      </div>
       <router-view />
     </div>
   </div>
@@ -20,13 +20,14 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { mapGetters } from 'vuex'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
 export default Vue.extend({
   components: {
-    //PtMenu,
+    PtMenu,
   },
   data() {
     return {
@@ -37,6 +38,9 @@ export default Vue.extend({
     title(): string | null | undefined {
       return this.$route.name
     },
+    ...mapGetters({
+      logged: 'logged',
+    }),
   },
 })
 </script>
@@ -58,10 +62,6 @@ export default Vue.extend({
     flex: 1;
     overflow: auto;
     padding: 20px;
-    position: absolute;
-    width: 1366px;
-    height: 768px;
-    background-image: url("background.png");
 
     &-header {
       display: flex;
