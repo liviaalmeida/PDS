@@ -42,7 +42,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      open: true,
+      open: false,
     }
   },
   computed: {
