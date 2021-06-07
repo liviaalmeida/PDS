@@ -1,16 +1,18 @@
 <template>
   <div class="container">
     <div class="row align-items-center h-100">
-      <div class=" col-4 mx-auto card">
+      <div class="col-4 align-items-center mx-auto">
         <PtLogo />
-        <div class="text">
-          <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
+        <div class="card">
+          <div class="text">
+            <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
+          </div>
+          <form @submit.prevent="onSubmit" @reset="onReset">
+            <PtInput label="Email" v-model="form.email" icon="email" required placeholder="Digite seu email para entrar" />
+            <PtInput label="Senha" v-model="form.password" type="password" icon="lock" required placeholder="Digite sua senha" />
+            <PtButton class="button"> Login </PtButton>
+          </form>
         </div>
-        <form @submit.prevent="onSubmit" @reset="onReset">
-          <PtInput label="Email" v-model="form.email" icon="email" required placeholder="Digite seu email para entrar" />
-          <PtInput label="Senha" v-model="form.password" type="password" icon="lock" required placeholder="Digite sua senha" />
-          <PtButton> Login </PtButton>
-        </form>
       </div>
     </div>
   </div>
@@ -46,18 +48,15 @@ export default Vue.extend({
   .view {
     background-image: url('~@/assets/imgs/background.png');
   }
-
+  .container {
+    height: 100%;
+  }
   .card {
-    /*width: 500px;
-    position: absolute;
-    left: 477px;
-    top: 247px;*/
     background: white;
     border-radius: 5px 5px 0px 0px;
-  }
-
-  .text {
     padding: 20px;
+  }
+  .text {
     align: center;
     font-family: Ubuntu;
     font-style: normal;
@@ -69,9 +68,4 @@ export default Vue.extend({
     text-align: center;
     color: #000000;
   }
-
-  .container {
-    height: 100%;
-  }
-
 </style>

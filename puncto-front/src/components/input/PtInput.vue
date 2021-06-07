@@ -83,6 +83,7 @@ export default Vue.extend({
   text-align: left;
   transition: border-color $time;
   min-height: 50px;
+  margin: 10px;
 
   input, textarea {
     border: none;
