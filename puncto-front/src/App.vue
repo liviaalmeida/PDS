@@ -57,11 +57,11 @@ export default Vue.extend({
   .view {
     flex: 1;
     overflow: auto;
-    padding: 20px;
+    //padding: 20px;
     position: absolute;
-    width: 1366px;
-    height: 768px;
-    background-image: url("background.png");
+    width: 100%;
+    height: 100%;
+    background: url("background.png");
 
     &-header {
       display: flex;
