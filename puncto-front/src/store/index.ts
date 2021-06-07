@@ -5,13 +5,27 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    cnpj: '82.652.456/0001-09',
-    fullname: 'Um grande nome de empresa que não cabe no menu Ltda',
+    cnpj: '',
+    fullname: '',
     logged: false,
   },
   mutations: {
+    setCNPJ(state) {
+      state.cnpj = '82.652.456/0001-09'
+    },
+    setLogin(state, payload: boolean) {
+      state.logged = payload
+    },
+    setName(state) {
+      state.fullname = 'Um grande nome de empresa que não cabe no menu Ltda'
+    },
   },
   actions: {
+    async login({ commit }) {
+      commit('setCNPJ')
+      commit('setLogin', true)
+      commit('setName')
+    },
   },
   getters: {
     cnpj: (state) => state.cnpj,
