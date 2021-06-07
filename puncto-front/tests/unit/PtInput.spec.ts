@@ -1,10 +1,11 @@
+import Vue from 'vue'
 import { shallowMount, Wrapper } from '@vue/test-utils'
 import PtIcon from '@/components/PtIcon.vue'
 import PtInput from '@/components/input/PtInput.vue'
 
 describe('PtInput', () => {
 	const label = 'Test Input'
-	let ptInput: Wrapper<PtInput>
+	let ptInput: Wrapper<Vue>
 
 	beforeEach(() => {
 		ptInput = shallowMount(PtInput, {

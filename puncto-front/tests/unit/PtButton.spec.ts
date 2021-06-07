@@ -1,10 +1,11 @@
+import Vue from 'vue'
 import { shallowMount, Wrapper } from '@vue/test-utils'
 import PtButton from '@/components/input/PtButton.vue'
 
 describe('PtButton', () => {
 	const help = 'Help text under button'
 	const label = 'Test Button'
-	let ptButton: Wrapper<PtButton>
+	let ptButton: Wrapper<Vue>
 	let loading = false
 
 	beforeEach(() => {
