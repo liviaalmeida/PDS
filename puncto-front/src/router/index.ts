@@ -35,6 +35,14 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/ajuda',
+    name: 'Ajuda',
+    component: () => import('@/views/Help.vue'),
+    meta: {
+      auth: true,
+    },
+  },
+  {
     path: '/logout',
     name: 'Logout',
     component: () => import('@/views/Logout.vue'),
