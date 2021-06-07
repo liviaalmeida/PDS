@@ -10,6 +10,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  justify-content: center;
 
   svg {
     height: 32px;

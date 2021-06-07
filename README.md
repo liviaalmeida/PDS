@@ -1,6 +1,17 @@
 # PDS
 Repositório para o trabalho de Prática em Desenvolvimento de Software.
 
+## Projeto
+
+O **Puncto** é uma aplicação de apontamento de horas voltada para profissionais autônomos. Além de fazer o controle de horas, permite também geração de invoices.
+
+Features:
+- Autenticacao
+- Cadastro de dados pesoais
+- Lancamento de horas
+- Cadastro de clientes
+- Geracao automatizada de invoices
+
 ## Equipe
 
 Pretendemos organizar o trabalho de forma que todos os membros participem pelo menos um pouco de todas as partes do desenvolvimento e consigam ter experiencia de trabalhar com tudo. Porém achamos que seria interessante definir responsáveis por cada área também, para facilitar a gestão.
@@ -12,16 +23,6 @@ Pretendemos organizar o trabalho de forma que todos os membros participem pelo m
 - Gabriel Chaves (Back-end/Devops)
 
 - Lívia Almeida (UI/UX, Front-end, DBA)
-
-## Projeto
-
-O **Puncto** é uma aplicação de apontamento de horas voltada para profissionais autônomos. Além de fazer o controle de horas, permite também geração de invoices.
-
-Features:
-- Autenticacao
-- Lancamento de horas
-- Geracao automatizada de invoices
-- Cadastro de clientes
 
 ## Stack
 
@@ -55,17 +56,21 @@ Features:
 
   - [SuperTest](https://github.com/visionmedia/supertest)
 
-- **Ops**
+- **DevOps**
 
-  - Cloud Provider (A definir)
+  - [Firebase](https://firebase.google.com/)
   - [Github Actions](https://github.com/features/actions)
 
+## Arquitetura
+
+![Puncto Architecture](./PunctoArchitecture.png)
+
 ## User Stories
- - **Autenticacao**: como usuario, sou capaz de criar uma conta, fazer log in e salvar as coisas.
- - **Cadastro de dados pessoais:** como usuario, consigo cadastrar os dados do meu cliente na plataforma, para nao precisar preencher todo mes
- - **Cadastro de clientes:** como usuario, consigo cadastrar os dados do meu cliente na plataforma, para nao precisar preencher todo mes
- - **Lancamento de horas:** como usuario, consigo especificar quantas horas trabalhei no dia (interface no estilo "play/pause" ou uma tabela/input pedindo horas de inicio e termino?) e salvar essa informacao. Consigo tambem visualizar isso de forma consolidada facilmente
- - **Geracao automatizada de invoices:** como usuario, consigo facilmente juntar as informacoes de lancamento de hora do mes, com as de um cliente cadastrado e mais algumas informacoes adicionais e gerar um invoice automatico.
+ - **Autenticacao**: Como usuario, sou capaz de criar uma conta, fazer log in e salvar meus dados, lancamentos de hora e clientes.
+ - **Cadastro de dados pessoais:** Como usuario, consigo cadastrar os meus dados na plataforma, de forma que não preciso manualmente preenche-los para gerar os invoices todo mes.
+ - **Cadastro de clientes:** Como usuario, consigo cadastrar os dados do meu cliente na plataforma, para nao precisar preencher todo mes ao gerar os invoices
+ - **Lancamento de horas:** Como usuario, consigo especificar quantas horas trabalhei no dia e salvar essa informacao. Consigo tambem visualizar isso de forma consolidada facilmente.
+ - **Geracao automatizada de invoices:** Como usuario, consigo facilmente juntar as informacoes de lancamento de hora do mes, com as de um cliente cadastrado e os meus proprios dados, e gerar um invoice automatico.
 
 ## SPRINT 1
   - Fazer setup backend [Gabriel] [Inception]
