@@ -34,6 +34,11 @@ const routes: Array<RouteConfig> = [
       auth: true,
     },
   },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: () => import('@/views/Logout.vue'),
+  },
 ]
 
 const router = new VueRouter({

@@ -11,8 +11,8 @@ export default new Vuex.Store({
     logged: false,
   },
   mutations: {
-    setCNPJ(state) {
-      state.cnpj = '82.652.456/0001-09'
+    setCNPJ(state, payload = '') {
+      state.cnpj = payload
     },
     setLoading(state, payload: boolean) {
       state.loading = payload
@@ -20,14 +20,19 @@ export default new Vuex.Store({
     setLogin(state, payload: boolean) {
       state.logged = payload
     },
-    setName(state) {
-      state.fullname = 'Um grande nome de empresa que não cabe no menu Ltda'
+    setName(state, payload = '') {
+      state.fullname = payload
     },
   },
   actions: {
     async login({ commit }) {
-      commit('setCNPJ')
+      commit('setCNPJ', '82.652.456/0001-09')
       commit('setLogin', true)
+      commit('setName', 'Um grande nome de empresa que não cabe no menu Ltda')
+    },
+    async logout({ commit }) {
+      commit('setCNPJ')
+      commit('setLogin', false)
       commit('setName')
     },
     loadStart({ commit }) {
