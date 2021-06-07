@@ -7,11 +7,11 @@
       <PtIcon :name="icon" v-if="icon" />
       {{ label }}
     </label>
-    <textarea v-if="type === 'textarea'" :value="value"
+    <textarea v-if="type === 'textarea'" :value="value" :name="name"
 		:placeholder="placeholder" :required="required"
     @blur="focus = false" @focus="focus = true"
     @input="$emit('input', $event.target.value)" />
-    <input v-else :type="type" :value="value"
+    <input v-else :type="type" :value="value" :name="name"
 		:placeholder="placeholder" :required="required"
     @blur="focus = false" @focus="focus = true"
     @input="$emit('input', $event.target.value)">
@@ -39,6 +39,10 @@ export default Vue.extend({
       type: String,
     },
     mask: {
+      required: false,
+      type: String,
+    },
+    name: {
       required: false,
       type: String,
     },
@@ -101,6 +105,7 @@ export default Vue.extend({
     svg {
       height: 10px;
       width: 10px;
+			transition: fill $time;
 
 			path {
 				fill: $pt-midnight;
@@ -115,7 +120,7 @@ export default Vue.extend({
     .pt-input-label {
       color: $pt-ocean;
 
-			svg path {
+			svg, svg path {
 				fill: $pt-ocean;
 			}
     }
