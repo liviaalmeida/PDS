@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-md-4 offset-md-4 card">
+    <div class="row align-items-center h-100">
+      <div class=" col-4 mx-auto card">
         <PtLogo />
         <div class="text">
           <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
@@ -68,6 +68,10 @@ export default Vue.extend({
     align-items: center;
     text-align: center;
     color: #000000;
+  }
+
+  .container {
+    height: 100%;
   }
 
 </style>
