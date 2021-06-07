@@ -1,21 +1,17 @@
 <template>
   <div class="container">
-    <div class="card">
-      <PtLogo />
-      <div class="text">
-        <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
+    <div class="row">
+      <div class="col-md-4 offset-md-4 card">
+        <PtLogo />
+        <div class="text">
+          <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
+        </div>
+        <form @submit.prevent="onSubmit" @reset="onReset">
+          <PtInput label="Email" v-model="form.email" icon="email" required placeholder="Digite seu email para entrar" />
+          <PtInput label="Senha" v-model="form.password" type="password" icon="lock" required placeholder="Digite sua senha" />
+          <PtButton> Login </PtButton>
+        </form>
       </div>
-      <form @submit.prevent="onSubmit" @reset="onReset">
-        <PtInput label="Email" v-model="form.email"
-        icon="email" required
-        placeholder="Digite seu email para entrar" />
-        <PtInput label="Senha" v-model="form.password"
-        type="password" icon="lock" required
-        placeholder="Digite sua senha" />
-        <PtButton>
-          Login
-        </PtButton>
-      </form>
     </div>
   </div>
 </template>
@@ -52,10 +48,10 @@ export default Vue.extend({
   }
 
   .card {
-    width: 500px;
+    /*width: 500px;
     position: absolute;
     left: 477px;
-    top: 247px;
+    top: 247px;*/
     background: white;
     border-radius: 5px 5px 0px 0px;
   }
