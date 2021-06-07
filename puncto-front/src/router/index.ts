@@ -43,13 +43,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, _, next) => {
+  const logged = store.getters['logged']
   if (to.meta?.auth) {
-    if (store.getters['logged']) {
-      if (to.path === '/login') {
-        next({
-          path: '/',
-        })
-      }
+    if (logged) {
       next()
     } else {
       next({
@@ -59,6 +55,8 @@ router.beforeEach((to, _, next) => {
         },
       })
     }
+  } else if (to.path === '/login' && logged) {
+    next({ path: '/' })
   } else {
     next()
   }
