@@ -1,7 +1,7 @@
 <template>
   <div class="pt-button">
     <button @click="$emit('click', $event)"
-    :type="type" :disabled="disabled">
+    :type="type" :disabled="disabled || loading">
       <div class="pt-button-loading"
       v-if="loading">
       </div>
@@ -79,5 +79,19 @@ export default Vue.extend({
     font-size: 13px;
     padding-top: 5px;
   }
+
+  &-loading {
+    animation: spinner 1.2s cubic-bezier(.91,.04,.87,.57) 0s infinite;
+    border: 5px solid rgba($pt-sapphire, .8);
+    border-right-color: rgba($pt-silver, .8);
+    border-radius: 50%;
+    margin: 0 auto;
+    height: 25px;
+    width: 25px;
+  }
+}
+
+@keyframes spinner {
+  100% { transform: rotate(360deg); }
 }
 </style>
