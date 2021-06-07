@@ -4,15 +4,15 @@ import PtIcon from '@/components/PtIcon.vue'
 import PtLogo from '@/components/PtLogo.vue'
 
 describe('PtLogo', () => {
-	let ptLogo: Wrapper<Vue>
+  let ptLogo: Wrapper<Vue>
 
-	beforeEach(() => {
-		ptLogo = shallowMount(PtLogo, {
-			components: {
-				PtIcon,
-			},
-		})
-	})
+  beforeEach(() => {
+    ptLogo = shallowMount(PtLogo, {
+      components: {
+        PtIcon,
+      },
+    })
+  })
 
   it('renders the logo element', () => {
     expect(ptLogo.find('.logo')).toBeDefined()

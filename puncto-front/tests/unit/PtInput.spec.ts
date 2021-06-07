@@ -4,19 +4,19 @@ import PtIcon from '@/components/PtIcon.vue'
 import PtInput from '@/components/input/PtInput.vue'
 
 describe('PtInput', () => {
-	const label = 'Test Input'
-	let ptInput: Wrapper<Vue>
+  const label = 'Test Input'
+  let ptInput: Wrapper<Vue>
 
-	beforeEach(() => {
-		ptInput = shallowMount(PtInput, {
-			propsData: {
-				label,
-			},
-			components: {
-				PtIcon,
-			},
-		})
-	})
+  beforeEach(() => {
+    ptInput = shallowMount(PtInput, {
+      propsData: {
+        label,
+      },
+      components: {
+        PtIcon,
+      },
+    })
+  })
 
   it('renders a input', () => {
     expect(ptInput.find('input')).toBeDefined()
