@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <PtMenu />
+    <PtMenu v-if="logged" />
     <div class="view">
-      <div class="view-header">
+      <div class="view-header" v-if="logged">
         <PtLogo />
         <h1 class="view-header-title">
           {{ title }}
@@ -16,6 +16,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import PtMenu from './components/menu/PtMenu.vue'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { mapGetters } from 'vuex'
+
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
 
 export default Vue.extend({
   components: {
@@ -30,6 +38,9 @@ export default Vue.extend({
     title(): string | null | undefined {
       return this.$route.name
     },
+    ...mapGetters({
+      logged: 'logged',
+    }),
   },
 })
 </script>
