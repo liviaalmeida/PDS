@@ -1,20 +1,20 @@
 export interface ICompanyProps {
-    nome: string;
+    name: string;
     cnpj: string;
     email: string;
-    endereco: string;
+    address: string;
 }
 
 export class CompanyDto {
-    nome: string;
+    name: string;
     cnpj: string;
     email: string;
-    endereco: string;
+    address: string;
 
     public constructor(props: ICompanyProps) {
-        this.nome = props.nome;
+        this.name = props.name;
         this.cnpj = props.cnpj;
         this.email = props.email;
-        this.endereco = props.endereco;
+        this.address = props.address;
     }
 }

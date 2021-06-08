@@ -3,22 +3,15 @@ import { Request, Response } from 'express'
 import { container } from '../inversify.config';
 import { CompanyDto } from '../dto/companyDto';
 import { CompanyService } from '../service/companyService';
+import InvalidCompanyRequestError from '../exceptions/InvalidCompanyRequestError';
 
 const router = express.Router()
 
-const validCompany = (company: CompanyDto): Boolean => {
-    if (company.email && company.cnpj && company.endereco && company.nome)
-        return true
 
-    return false
-}
 
 router.post('/', async (req: Request, res: Response) => {
     try {
         const company = req.body as CompanyDto
-
-        if (!validCompany(company))
-            throw new InvalidCompanyRequestError()
 
         const companyService = container.get(CompanyService)
 
