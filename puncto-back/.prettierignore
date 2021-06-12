@@ -1,8 +1,7 @@
 /node_modules
 /yarn.lock
 **/out/*
-package.json
-nodemon.json
-tsconfig.json
+*.json
+*.yml
 jest.config.js
 .eslintrc
