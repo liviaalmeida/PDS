@@ -1,13 +1,13 @@
-import "reflect-metadata";
-import { Connection, getConnection, Repository } from "typeorm";
-import { UserDto, IUserProps } from "../dto/userDto";
+import 'reflect-metadata';
+import { Connection, getConnection, Repository } from 'typeorm';
+import { UserDto, IUserProps } from '../dto/userDto';
 import { User } from '../entity/User';
-import { injectable } from "inversify";
+import { injectable } from 'inversify';
 
 @injectable()
 export class UserRepository {
   private getUserRepository(): Repository<User> {
-    const connection: Connection = getConnection()
+    const connection: Connection = getConnection();
     return connection.getRepository(User);
   }
 
@@ -24,17 +24,15 @@ export class UserRepository {
 
   async findAllUsers(): Promise<Array<UserDto>> {
     const repository = this.getUserRepository();
-    const allUsers = await repository.find() as UserDto[];
-    console.log(allUsers)
-    return allUsers
+    const allUsers = (await repository.find()) as UserDto[];
+    console.log(allUsers);
+    return allUsers;
   }
 
   async findByEmail(email: string): Promise<UserDto> {
     const repository = this.getUserRepository();
 
-    const user = await repository.findOne({ where: { email } }) as UserDto;
-    return user
+    const user = (await repository.findOne({ where: { email } })) as UserDto;
+    return user;
   }
 }
-
-

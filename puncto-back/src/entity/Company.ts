@@ -1,20 +1,19 @@
-import { Entity, ObjectIdColumn, Column, BaseEntity, BeforeUpdate, BeforeInsert } from "typeorm";
+import { Entity, ObjectIdColumn, Column, BaseEntity } from 'typeorm';
 
 @Entity()
 export class Company extends BaseEntity {
+  @ObjectIdColumn()
+  id: number;
 
-    @ObjectIdColumn()
-    id: number;
+  @Column()
+  name: string;
 
-    @Column()
-    name: string;
+  @Column()
+  cnpj: string;
 
-    @Column()
-    cnpj: string;
+  @Column()
+  email: string;
 
-    @Column()
-    email: string;
-
-    @Column()
-    address: string;
+  @Column()
+  address: string;
 }
