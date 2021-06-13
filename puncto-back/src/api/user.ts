@@ -7,18 +7,18 @@ import { LoginDto } from '../dto/loginDto';
 import { UserService } from '../service/userService';
 import { AuthService } from '../service/authService';
 import { container } from '../inversify.config';
+import { validate, validationError } from '../validation';
 
 const log: Logger = new Logger();
 
 const router = express.Router();
+const authService = container.get(AuthService);
+const userService = container.get(UserService);
 
-// @TODO validar payload
 // @TODO validar email unico antes de cadastrar
 router.post('/signup', async (req: Request, res: Response) => {
   try {
     const user = req.body as UserDto;
-    const userService = container.get(UserService);
-    const authService = container.get(AuthService);
 
     await userService.createUser(user);
 
@@ -29,16 +29,14 @@ router.post('/signup', async (req: Request, res: Response) => {
     });
   } catch (err) {
     log.error('Error signing up: ', err);
-    res.status(err.statusCode).json();
+    res.status(err.statusCode).json(err.message);
   }
 });
 
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', validate(LoginDto), async (req: Request, res: Response) => {
   try {
     const credentials = req.body as LoginDto;
 
-    const userService = container.get(UserService);
-    const authService = container.get(AuthService);
     const user = await userService.findByEmail(credentials.email);
 
     authService.authenticate(credentials, user.password);
@@ -49,16 +47,17 @@ router.post('/login', async (req: Request, res: Response) => {
     });
   } catch (err) {
     log.warn('Error logging in up: ', err);
-    res.status(err.statusCode).json();
+    res.status(err.statusCode).json(err.message);
   }
 });
 
 router.get('/user', async (req: Request, res: Response) => {
   try {
-    const userService = container.get(UserService);
     const allUsers = await userService.findAllUsers();
     res.status(200).json(allUsers);
   } catch (exception) {}
 });
+
+router.use(validationError);
 
 export default router;
