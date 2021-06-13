@@ -16,7 +16,7 @@ const authService = container.get(AuthService);
 const userService = container.get(UserService);
 
 // @TODO validar email unico antes de cadastrar
-router.post('/signup', async (req: Request, res: Response) => {
+router.post('/signup', validate(UserDto), async (req: Request, res: Response) => {
   try {
     const user = req.body as UserDto;
 

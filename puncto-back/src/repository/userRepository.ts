@@ -3,7 +3,7 @@ import { Connection, getConnection, Repository } from 'typeorm';
 import { Logger } from "tslog";
 import { injectable } from 'inversify';
 
-import { UserDto, IUserProps } from '../dto/userDto';
+import { UserDto } from '../dto/userDto';
 import { User } from '../entity/User';
 import { DatabaseErrorException } from '../exceptions/DatabaseErrorException';
 
@@ -16,7 +16,7 @@ export class UserRepository {
     return connection.getRepository(User);
   }
 
-  async createUser(props: IUserProps): Promise<void> {
+  async createUser(props: UserDto): Promise<void> {
     const repository = this.getUserRepository();
     const user = new User();
     user.firstName = props.firstName;
