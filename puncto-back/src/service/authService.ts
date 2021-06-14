@@ -8,6 +8,12 @@ import { LoginDto } from '../dto/loginDto';
 import { auth } from '../config';
 import { UnauthorizedException } from '../exceptions/UnauthorizedException';
 
+export type AuthInfo = {
+  userEmail: string;
+  iat: number;
+  exp: number;
+}
+
 @injectable()
 export class AuthService {
   authenticate(credentials: LoginDto, passwordHash: string): void {
@@ -19,6 +25,15 @@ export class AuthService {
   }
 
   generateToken(email: string): string {
-    return jwt.sign({ userEmail: email }, auth.secret, { expiresIn: '7d' });
+    const token = jwt.sign({ userEmail: email }, auth.secret, { expiresIn: auth.expires });
+    return token;
+  }
+
+  verifyToken(jwtToken: string): AuthInfo {
+    try {
+      return jwt.verify(jwtToken, auth.secret) as AuthInfo;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid auth token');
+    }
   }
 }
