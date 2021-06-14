@@ -45,7 +45,7 @@ export class UserRepository {
     }
   }
 
-  async findByEmail(email: string): Promise<UserDto> {
+  async findByEmail(email: string): Promise<UserDto | undefined> {
     const repository = this.getUserRepository();
 
     try {
