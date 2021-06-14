@@ -1,5 +1,5 @@
 <template>
-    <component :is="iconLoader" class="icon"
+    <component :is="iconLoader" :class="['icon', name]"
     @click="$emit('click', $event)">
     </component>
 </template>
