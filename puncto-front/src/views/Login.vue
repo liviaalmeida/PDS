@@ -1,25 +1,23 @@
 <template>
-  <div class="container">
-    <div class="row align-items-center h-100">
-      <div class="col-4 align-items-center mx-auto">
-        <PtLogo />
-        <div class="card">
-          <div class="text">
-            <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
-          </div>
-          <form @submit.prevent="onSubmit" @reset.prevent="onReset">
-            <PtInput label="Email" v-model="form.email"
-            icon="email" required
-            placeholder="Digite seu email para entrar" />
-            <PtInput label="Senha" v-model="form.password"
-            type="password" icon="lock" required
-            placeholder="Digite sua senha" />
-            <PtButton>
-              Login
-            </PtButton>
-          </form>
-        </div>
+  <div class="login container">
+    <PtLogo />
+    <div class="login-card card">
+      <div class="login-text">
+        <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
       </div>
+      <form @submit.prevent="onSubmit" @reset.prevent="onReset">
+        <PtInput label="Email" v-model="form.email"
+        type="email" icon="email" required
+        class="login-input"
+        placeholder="Digite seu email para entrar" />
+        <PtInput label="Senha" v-model="form.password"
+        type="password" icon="lock" required
+        class="login-input"
+        placeholder="Digite sua senha" />
+        <PtButton>
+          Login
+        </PtButton>
+      </form>
     </div>
   </div>
 </template>
@@ -64,17 +62,23 @@ export default Vue.extend({
 })
 </script>
 
-<style>
-  .container {
-    height: 100%;
-  }
-  .card {
+<style lang="scss">
+.login {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  max-width: 415px;
+
+  &-card {
     background: white;
-    border-radius: 5px 5px 0px 0px;
-    padding: 20px;
+    border-radius: 5px;
+    padding: 20px 30px;
   }
-  .text {
-    align: center;
+
+  &-text {
     font-family: Ubuntu;
     font-style: normal;
     font-weight: bold;
@@ -85,4 +89,9 @@ export default Vue.extend({
     text-align: center;
     color: #000000;
   }
+
+  &-input {
+    margin-bottom: 10px;
+  }
+}
 </style>
