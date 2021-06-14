@@ -1,6 +1,6 @@
 import * as express from 'express';
-import {Validator, ValidationError} from "class-validator";
-import {plainToClass} from 'class-transformer';
+import { Validator, ValidationError } from "class-validator";
+import { plainToClass } from 'class-transformer';
 
 type Constructor<T> = {new(): T};
 

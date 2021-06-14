@@ -7,13 +7,16 @@ import { LoginDto } from '../dto/loginDto';
 import { UserService } from '../service/userService';
 import { AuthService } from '../service/authService';
 import { container } from '../inversify.config';
-import { validate, validationError } from '../validation';
+import { validate, validationError } from '../middlewares/validation';
+import { authMiddleware } from '../middlewares/authentication';
 
 const log: Logger = new Logger();
 
 const router = express.Router();
 const authService = container.get(AuthService);
 const userService = container.get(UserService);
+
+router.use('/user', authMiddleware)
 
 // @TODO validar email unico antes de cadastrar
 router.post('/signup', validate(UserDto), async (req: Request, res: Response) => {
@@ -46,7 +49,7 @@ router.post('/login', validate(LoginDto), async (req: Request, res: Response) =>
       authToken,
     });
   } catch (err) {
-    log.warn('Error logging in up: ', err);
+    log.warn('Error logging in: ', err);
     res.status(err.statusCode).json(err.message);
   }
 });
