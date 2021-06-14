@@ -1,21 +1,18 @@
 import * as express from 'express';
-import {deserialize} from 'json-typescript-mapper';
-import {Validator} from "class-validator";
-import {ValidationError} from 'class-validator';
+import {Validator, ValidationError} from "class-validator";
+import {plainToClass} from 'class-transformer';
 
 type Constructor<T> = {new(): T};
 
 // funcao de validacao, precisa ser manualmente chamada ao definir
 // uma rota com que precisa de validacao de payload
 // recebe o DTO da request
-export function validate<T>(type: Constructor<T>): express.RequestHandler {
+export function validate<T extends object>(type: Constructor<T>): express.RequestHandler {
   const validator = new Validator();
 
   return (req, res, next) => {
-    const input = deserialize(type, req.body);
+    const input = plainToClass(type, req.body);
 
-    // @TODO corrigir tipagem pra nao precisar do tsignore =/
-    // @ts-ignore
     const errors = validator.validateSync(input);
     if (errors.length > 0) {
       next(errors);
