@@ -83,7 +83,6 @@ export default Vue.extend({
   text-align: left;
   transition: border-color $time;
   min-height: 50px;
-  margin: 10px;
 
   input, textarea {
     border: none;
@@ -106,7 +105,6 @@ export default Vue.extend({
     svg {
       height: 10px;
       width: 10px;
-			transition: fill $time;
 
 			path {
 				fill: $pt-midnight;
@@ -121,7 +119,7 @@ export default Vue.extend({
     .pt-input-label {
       color: $pt-ocean;
 
-			svg, svg path {
+			svg path {
 				fill: $pt-ocean;
 			}
     }
