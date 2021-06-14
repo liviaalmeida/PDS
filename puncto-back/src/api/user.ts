@@ -1,56 +1,63 @@
 import express from 'express';
 import { Request, Response } from 'express';
+import { Logger } from 'tslog';
+
 import { UserDto } from '../dto/userDto';
 import { LoginDto } from '../dto/loginDto';
 import { UserService } from '../service/userService';
 import { AuthService } from '../service/authService';
 import { container } from '../inversify.config';
+import { validate, validationError } from '../validation';
+
+const log: Logger = new Logger();
 
 const router = express.Router();
+const authService = container.get(AuthService);
+const userService = container.get(UserService);
 
-// @TODO validar payload
 // @TODO validar email unico antes de cadastrar
-// @TODO validacao de erros
-router.post('/signup', async (req: Request, res: Response) => {
+router.post('/signup', validate(UserDto), async (req: Request, res: Response) => {
   try {
     const user = req.body as UserDto;
-    const userService = container.get(UserService);
+
     await userService.createUser(user);
-    res.status(201).json('Created');
+
+    const authToken = authService.generateToken(user.email);
+
+    res.status(201).json({
+        authToken
+    });
   } catch (err) {
-    console.log('Error signing up: ', err);
+    log.error('Error signing up: ', err);
+    res.status(err.statusCode).json(err.message);
   }
 });
 
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', validate(LoginDto), async (req: Request, res: Response) => {
   try {
     const credentials = req.body as LoginDto;
 
-    const userService = container.get(UserService);
-    const authService = container.get(AuthService);
     const user = await userService.findByEmail(credentials.email);
 
-    const authToken = await authService.authenticate(credentials, user.password);
-
-    // @TODO handle this more nicely
-    if (!authToken) {
-      res.status(401).json('Invalid Credentials');
-    }
+    authService.authenticate(credentials, user.password);
+    const authToken = authService.generateToken(credentials.email);    
 
     res.status(200).json({
       authToken,
     });
   } catch (err) {
-    console.log('Error signing up: ', err);
-    res.status(500);
+    log.warn('Error logging in up: ', err);
+    res.status(err.statusCode).json(err.message);
   }
 });
 
 router.get('/user', async (req: Request, res: Response) => {
   try {
-    const userService = container.get(UserService);
     const allUsers = await userService.findAllUsers();
     res.status(200).json(allUsers);
   } catch (exception) {}
 });
+
+router.use(validationError);
+
 export default router;

@@ -1,7 +1,8 @@
-import { ConnectionOptions, createConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 import userRouter from './api/user';
 import companyRouter from './api/company';
 import { connectionOptions } from './config';
+
 const express = require('express');
 const app = express();
 const port = 3000;

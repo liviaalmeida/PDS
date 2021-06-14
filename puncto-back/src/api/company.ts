@@ -16,7 +16,7 @@ router.post('/', async (req: Request, res: Response) => {
     await companyService.createCompany(company);
     res.status(201).send();
   } catch (err) {
-    if (err instanceof InvalidCompanyRequestError) return res.status(err.responseStatusCode).json(err.message);
+    if (err instanceof InvalidCompanyRequestError) return res.status(err.statusCode).json(err.message);
 
     return res.status(500).json('Some unexpected error happened while creating a company.');
   }

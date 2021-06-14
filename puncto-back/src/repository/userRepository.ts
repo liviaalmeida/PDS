@@ -1,8 +1,13 @@
 import 'reflect-metadata';
 import { Connection, getConnection, Repository } from 'typeorm';
-import { UserDto, IUserProps } from '../dto/userDto';
-import { User } from '../entity/User';
+import { Logger } from "tslog";
 import { injectable } from 'inversify';
+
+import { UserDto } from '../dto/userDto';
+import { User } from '../entity/User';
+import { DatabaseErrorException } from '../exceptions/DatabaseErrorException';
+
+const log: Logger = new Logger();
 
 @injectable()
 export class UserRepository {
@@ -11,7 +16,7 @@ export class UserRepository {
     return connection.getRepository(User);
   }
 
-  async createUser(props: IUserProps): Promise<void> {
+  async createUser(props: UserDto): Promise<void> {
     const repository = this.getUserRepository();
     const user = new User();
     user.firstName = props.firstName;
@@ -19,20 +24,37 @@ export class UserRepository {
     user.email = props.email;
     user.password = props.password;
 
-    await repository.save(user);
+    try {
+      await repository.save(user);
+    } catch (error) {
+      log.error(error);
+      throw new DatabaseErrorException('Failed to save user to database.');
+    }
   }
 
   async findAllUsers(): Promise<Array<UserDto>> {
     const repository = this.getUserRepository();
-    const allUsers = (await repository.find()) as UserDto[];
-    console.log(allUsers);
-    return allUsers;
+
+    try {
+      const allUsers = (await repository.find()) as UserDto[];
+      log.debug('Found users: ', allUsers);
+      return allUsers;
+    } catch (error) {
+      log.error(error);
+      throw new DatabaseErrorException('Error finding all users in database.');
+    }
   }
 
-  async findByEmail(email: string): Promise<UserDto> {
+  async findByEmail(email: string): Promise<UserDto | undefined> {
     const repository = this.getUserRepository();
 
-    const user = (await repository.findOne({ where: { email } })) as UserDto;
-    return user;
+    try {
+      const user = (await repository.findOne({ where: { email } })) as UserDto;
+      log.debug('Found user: ', user);
+      return user;
+    } catch (error) {
+      log.error(error);
+      throw new DatabaseErrorException('Error finding user in database.');
+    }
   }
 }

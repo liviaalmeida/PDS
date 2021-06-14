@@ -1,14 +1,14 @@
-export interface ILoginProps {
-  email: string;
-  password: string;
-}
+import { Length } from 'class-validator';
 
 export class LoginDto {
+  @Length(5, 100)
   email: string;
+
+  @Length(5, 100)
   password: string;
 
-  public constructor(props: ILoginProps) {
-    this.email = props.email;
-    this.password = props.password;
+  public constructor() {
+    this.email = '';
+    this.password = '';
   }
 }
