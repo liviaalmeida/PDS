@@ -77,6 +77,8 @@ export default Vue.extend({
 
     &--login {
       background-image: url('~@/assets/imgs/background.png');
+      background-repeat: no-repeat;
+      background-size: cover;
     }
   }
 }
