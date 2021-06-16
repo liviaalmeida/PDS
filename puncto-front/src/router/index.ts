@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -33,12 +34,45 @@ const routes: Array<RouteConfig> = [
       auth: true,
     },
   },
+  {
+    path: '/ajuda',
+    name: 'Ajuda',
+    component: () => import('@/views/Help.vue'),
+    meta: {
+      auth: true,
+    },
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: () => import('@/views/Logout.vue'),
+  },
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+})
+
+router.beforeEach((to, _, next) => {
+  const logged = store.getters['logged']
+  if (to.meta?.auth) {
+    if (logged) {
+      next()
+    } else {
+      next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath,
+        },
+      })
+    }
+  } else if (to.path === '/login' && logged) {
+    next({ path: '/' })
+  } else {
+    next()
+  }
 })
 
 export default router

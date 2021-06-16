@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div>
     <div class="container">
       <div class="row">
@@ -21,53 +22,90 @@
               Login
             </PtButton>
           </div>
+=======
+  <div class="container">
+    <div class="row align-items-center h-100">
+      <div class="col-4 align-items-center mx-auto">
+        <PtLogo />
+        <div class="card">
+          <div class="text">
+            <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
+          </div>
+          <form @submit.prevent="onSubmit" @reset.prevent="onReset">
+            <PtInput label="Email" v-model="form.email"
+            icon="email" required
+            placeholder="Digite seu email para entrar" />
+            <PtInput label="Senha" v-model="form.password"
+            type="password" icon="lock" required
+            placeholder="Digite sua senha" />
+            <PtButton>
+              Login
+            </PtButton>
+          </form>
+>>>>>>> b532db248eb03582eff888d251fc48b1276d124e
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import { login } from '../api'
+
+export default Vue.extend({
   data() {
     return {
       form: {
         email: '',
-        password: ''
-      }
+        password: '',
+      },
+      loading: false,
     }
   },
-  methods: {
-    onSubmit(event) {
-      event.preventDefault()
-      alert(JSON.stringify(this.form))
-      return
+  computed: {
+    redirect(): string {
+      return this.$route.query?.redirect as string || '/'
     },
-    onReset(event) {
-      event.preventDefault()
+  },
+  methods: {
+    async onSubmit() {
+      this.$store.dispatch('loadStart')
+      await login()
+        .then(() => {
+          this.$store.dispatch('login')
+          this.$store.dispatch('loadStop')
+          this.$router.push(this.redirect)
+        })
+        .catch(() => {
+          this.$store.dispatch('loadStop')
+        })
+    },
+    onReset(): void {
       this.form.email = ''
       this.form.password = ''
-      return
-    }
-  }
-}
+    },
+  },
+})
 </script>
 
 <style>
-  p {
-    
+  .container {
+    height: 100%;
   }
   .card {
+<<<<<<< HEAD
     /*width: 500px;
     position: absolute;
     left: 477px;
     top: 247px;*/
+=======
+>>>>>>> b532db248eb03582eff888d251fc48b1276d124e
     background: white;
     border-radius: 5px 5px 0px 0px;
-  }
-
-  .text {
     padding: 20px;
+  }
+  .text {
     align: center;
     font-family: Ubuntu;
     font-style: normal;
@@ -79,6 +117,7 @@ export default {
     text-align: center;
     color: #000000;
   }
+<<<<<<< HEAD
 
   .logo {
     align-items: center;
@@ -108,4 +147,6 @@ export default {
     margin-bottom: 20px*/; 
   }
 
+=======
+>>>>>>> b532db248eb03582eff888d251fc48b1276d124e
 </style>

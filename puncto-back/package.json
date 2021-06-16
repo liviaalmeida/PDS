@@ -11,7 +11,7 @@
     "eslint": "^7.27.0",
     "jest": "^27.0.1",
     "nodemon": "^2.0.7",
-    "prettier": "^2.3.0",
+    "prettier": "2.3.1",
     "ts-jest": "^27.0.0",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.2"
@@ -20,7 +20,7 @@
     "clean": "rm -rf ./out",
     "build": "npm run clean && tsc",
     "test": "npm run build && jest",
-    "mongodb": "docker compose up -d",
+    "mongodb": "docker-compose up -d",
     "start": "npm run build && npm run mongodb && node out/index.js",
     "dev": "nodemon --config nodemon.json src/index.ts",
     "dev:debug": "nodemon --config nodemon.json --inspect-brk src/index.ts",
@@ -29,11 +29,14 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
     "express": "^4.17.1",
     "inversify": "^5.1.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.9",
     "reflect-metadata": "^0.1.13",
+    "tslog": "^3.2.0",
     "typeorm": "^0.2.32"
   }
 }
