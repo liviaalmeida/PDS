@@ -22,9 +22,9 @@ const routes: Array<RouteConfig> = [
     path: '/cadastro',
     name: 'Cadastro',
     component: () => import('@/views/Registration.vue'),
-    meta: {
+    /*meta: {
       auth: true,
-    },
+    },*/
   },
   {
     path: '/clientes',
