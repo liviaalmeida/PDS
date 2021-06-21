@@ -1,4 +1,28 @@
 <template>
+<<<<<<< HEAD
+  <div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 card">
+          <div class="logo">
+            <PtIcon name="watch" />
+            <h1>puncto</h1>
+          </div>
+          <div class="text">
+            <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
+          </div>
+          <div class="form-group" @submit="onSubmit" @reset="onReset">
+            <PtInput disabled="false" icon="email" label="Email" placeholder="Digite seu email para entrar" required="true" type="email" v-model="form.email">
+              Button content
+            </PtInput>
+            <PtInput disabled="false" icon="lock" label="Senha" placeholder="Digite sua senha" required="true" type="password" v-model="form.password">
+              Button content
+            </PtInput>
+            <PtButton disabled="false" help="Help message under button" type="submit">
+              Login
+            </PtButton>
+          </div>
+=======
   <div class="container">
     <div class="row align-items-center h-100">
       <div class="col-4 align-items-center mx-auto">
@@ -7,11 +31,18 @@
           <div class="text">
             <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
           </div>
-          <form @submit.prevent="onSubmit" @reset="onReset">
-            <PtInput label="Email" v-model="form.email" icon="email" required placeholder="Digite seu email para entrar" />
-            <PtInput label="Senha" v-model="form.password" type="password" icon="lock" required placeholder="Digite sua senha" />
-            <PtButton class="button"> Login </PtButton>
+          <form @submit.prevent="onSubmit" @reset.prevent="onReset">
+            <PtInput label="Email" v-model="form.email"
+            icon="email" required
+            placeholder="Digite seu email para entrar" />
+            <PtInput label="Senha" v-model="form.password"
+            type="password" icon="lock" required
+            placeholder="Digite sua senha" />
+            <PtButton>
+              Login
+            </PtButton>
           </form>
+>>>>>>> b532db248eb03582eff888d251fc48b1276d124e
         </div>
       </div>
     </div>
@@ -20,6 +51,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { login } from '../api'
 
 export default Vue.extend({
   data() {
@@ -28,15 +60,28 @@ export default Vue.extend({
         email: '',
         password: '',
       },
+      loading: false,
     }
   },
-  methods: {
-    onSubmit(event: any): void {
-      event.preventDefault()
-      alert(JSON.stringify(this.form))
+  computed: {
+    redirect(): string {
+      return this.$route.query?.redirect as string || '/'
     },
-    onReset(event: any): void {
-      event.preventDefault()
+  },
+  methods: {
+    async onSubmit() {
+      this.$store.dispatch('loadStart')
+      await login()
+        .then(() => {
+          this.$store.dispatch('login')
+          this.$store.dispatch('loadStop')
+          this.$router.push(this.redirect)
+        })
+        .catch(() => {
+          this.$store.dispatch('loadStop')
+        })
+    },
+    onReset(): void {
       this.form.email = ''
       this.form.password = ''
     },
@@ -45,13 +90,17 @@ export default Vue.extend({
 </script>
 
 <style>
-  .view {
-    background-image: url('~@/assets/imgs/background.png');
-  }
   .container {
     height: 100%;
   }
   .card {
+<<<<<<< HEAD
+    /*width: 500px;
+    position: absolute;
+    left: 477px;
+    top: 247px;*/
+=======
+>>>>>>> b532db248eb03582eff888d251fc48b1276d124e
     background: white;
     border-radius: 5px 5px 0px 0px;
     padding: 20px;
@@ -68,4 +117,36 @@ export default Vue.extend({
     text-align: center;
     color: #000000;
   }
+<<<<<<< HEAD
+
+  .logo {
+    align-items: center;
+    align: center;
+    gap: 5px;
+    h1 {
+      color: $pt-sapphire;
+      font-family: 'Ubuntu';
+      font-size: 28px;
+    }
+  }
+
+  .input {
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    border-radius: 5px;
+    /*width: 324px;
+    height: 50px;
+    margin: 10px 0px 20px 85px;*/
+  }
+
+  .button {
+    background: #324B96;
+    border-radius: 5px;
+    /*width: 324px;
+    height: 50px;
+    margin-bottom: 20px*/; 
+  }
+
+=======
+>>>>>>> b532db248eb03582eff888d251fc48b1276d124e
 </style>
