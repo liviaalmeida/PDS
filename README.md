@@ -73,14 +73,22 @@ Pretendemos organizar o trabalho de forma que todos os membros participem pelo m
  - **Geracao automatizada de invoices:** Como usuario, consigo facilmente juntar as informacoes de lancamento de hora do mes, com as de um cliente cadastrado e os meus proprios dados, e gerar um invoice automatico.
 
 ## SPRINT 1
-  - Fazer setup backend [Gabriel] [Inception]
-  - Fazer setup frontend [Livia] [Inception]
-  - Fazer prototipo visual [Livia] [Autenticacao]
-  - Fazer diagrama da arquitetura do projeto [Philipe]
-  - Criar api de login [Philipe] [Autenticacao]
-  - Criar tela de login [Bruna] [Autenticacao]
-  - Criar api de cadastro de dados pessoais [Gabriel] [Cadastro de dados pessoais]
-  - Criar tela de cadastro de dados pessoais [Bruna] [Cadastro de dados pessoais]
+  Lista de historias de usuario e suas tasks para o escopo dessa sprint:
+
+  - Inception
+    * Fazer setup backend [Gabriel]
+    * Fazer setup frontend [Livia]
+    * Fazer prototipo visual [Livia]
+    * Fazer diagrama da arquitetura do projeto [Philipe]
+    * Middleware de validacao na API [Philipe]
+  - Autenticacao
+    * Criar api de login e cadastro [Philipe]
+    * Middleware de autenticacao na API [Philipe]
+    * Criar tela de login [Bruna]
+    * Criar tela de cadastro []
+  - Cadastro de dados pessoais
+    * Criar api de cadastro de dados pessoais [Gabriel]
+    * Criar tela de cadastro de dados pessoais [Bruna]
 
 ## SPRINT 2
   - Criar api de cadastro de clientes
