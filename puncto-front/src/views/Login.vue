@@ -1,28 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 offset-md-3 card">
-          <div class="logo">
-            <PtIcon name="watch" />
-            <h1>puncto</h1>
-          </div>
-          <div class="text">
-            <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
-          </div>
-          <div class="form-group" @submit="onSubmit" @reset="onReset">
-            <PtInput disabled="false" icon="email" label="Email" placeholder="Digite seu email para entrar" required="true" type="email" v-model="form.email">
-              Button content
-            </PtInput>
-            <PtInput disabled="false" icon="lock" label="Senha" placeholder="Digite sua senha" required="true" type="password" v-model="form.password">
-              Button content
-            </PtInput>
-            <PtButton disabled="false" help="Help message under button" type="submit">
-              Login
-            </PtButton>
-          </div>
-=======
   <div class="container">
     <div class="row align-items-center h-100">
       <div class="col-4 align-items-center mx-auto">
@@ -42,7 +18,6 @@
               Login
             </PtButton>
           </form>
->>>>>>> b532db248eb03582eff888d251fc48b1276d124e
         </div>
       </div>
     </div>
@@ -90,23 +65,21 @@ export default Vue.extend({
 </script>
 
 <style>
+ /* h1 {
+    color: $pt-sapphire;
+    font-family: 'Ubuntu';
+    font-size: 28px;
+  }*/
   .container {
     height: 100%;
   }
   .card {
-<<<<<<< HEAD
-    /*width: 500px;
-    position: absolute;
-    left: 477px;
-    top: 247px;*/
-=======
->>>>>>> b532db248eb03582eff888d251fc48b1276d124e
     background: white;
     border-radius: 5px 5px 0px 0px;
     padding: 20px;
   }
   .text {
-    align: center;
+    text-align: center;
     font-family: Ubuntu;
     font-style: normal;
     font-weight: bold;
@@ -117,19 +90,11 @@ export default Vue.extend({
     text-align: center;
     color: #000000;
   }
-<<<<<<< HEAD
-
   .logo {
     align-items: center;
-    align: center;
+    text-align: center;
     gap: 5px;
-    h1 {
-      color: $pt-sapphire;
-      font-family: 'Ubuntu';
-      font-size: 28px;
-    }
   }
-
   .input {
     border: 1px solid #000000;
     box-sizing: border-box;
@@ -146,7 +111,4 @@ export default Vue.extend({
     height: 50px;
     margin-bottom: 20px*/; 
   }
-
-=======
->>>>>>> b532db248eb03582eff888d251fc48b1276d124e
 </style>

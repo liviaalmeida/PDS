@@ -43,7 +43,7 @@ export default Vue.extend({
       this.form.name = ''
       this.form.cnpj = ''
       this.form.email = ''
-      this.form.address = ''
+      this.form.address = []
     },
   },
 })
@@ -65,7 +65,7 @@ export default Vue.extend({
     width: 49%;
   }
   .text {
-    align: center;
+    text-align: center;
     font-family: Ubuntu;
     font-style: normal;
     font-weight: bold;
