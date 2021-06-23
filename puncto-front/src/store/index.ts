@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     cnpj: '',
+    email: '',
     fullname: '',
     loading: false,
     logged: false,
@@ -13,6 +14,9 @@ export default new Vuex.Store({
   mutations: {
     setCNPJ(state, payload = '') {
       state.cnpj = payload
+    },
+    setEmail(state, payload = '') {
+      state.email = payload
     },
     setLoading(state, payload: boolean) {
       state.loading = payload
@@ -25,13 +29,15 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async login({ commit }) {
+    async login({ commit }, payload: string) {
       commit('setCNPJ', '82.652.456/0001-09')
+      commit('setEmail', payload)
       commit('setLogin', true)
       commit('setName', 'Um grande nome de empresa que não cabe no menu Ltda')
     },
     async logout({ commit }) {
       commit('setCNPJ')
+      commit('setEmail')
       commit('setLogin', false)
       commit('setName')
     },
