@@ -11,7 +11,7 @@
           {{ title }}
         </h1>
       </div>
-      <router-view />
+      <router-view class="view-body" />
     </div>
   </div>
 </template>
@@ -58,14 +58,10 @@ export default Vue.extend({
   }
 
   .view {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     overflow: auto;
-    //padding: 20px;
-    /*position: absolute;
-    width: 100%;
-    height: 100%;
-    background: url("background.png");
-=======*/
     padding: 20px;
     &-header {
       display: flex;
@@ -78,6 +74,9 @@ export default Vue.extend({
         font-family: 'Ubuntu';
         font-size: 28px;
       }
+    }
+    &-body {
+      flex: 1;
     }
 
     &--login {
