@@ -10,11 +10,13 @@
     <textarea v-if="type === 'textarea'" :value="value" :name="name"
 		:placeholder="placeholder" :required="required"
     @blur="focus = false" @focus="focus = true"
-    @input="$emit('input', $event.target.value)" />
+    @input="$emit('input', $event.target.value)"
+    v-bind="inputAttrs" />
     <input v-else :type="type" :value="value" :name="name"
 		:placeholder="placeholder" :required="required"
     @blur="focus = false" @focus="focus = true"
-    @input="$emit('input', $event.target.value)">
+    @input="$emit('input', $event.target.value)"
+    v-bind="inputAttrs" >
   </div>
 </template>
 
@@ -33,6 +35,10 @@ export default Vue.extend({
     icon: {
       required: false,
       type: String,
+    },
+    'input-attrs': {
+      required: false,
+      type: Object,
     },
     label: {
       required: true,
