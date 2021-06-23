@@ -63,31 +63,31 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue'
 
 export default Vue.extend({
   data() {
     return {
       form: {
-        name: "",
-        cnpj: "",
-        email: "",
+        name: '',
+        cnpj: '',
+        email: '',
         address: [],
       },
-    };
+    }
   },
   methods: {
     onSubmit(): void {
-      alert(JSON.stringify(this.form));
+      alert(JSON.stringify(this.form))
     },
     onReset(): void {
-      this.form.name = "";
-      this.form.cnpj = "";
-      this.form.email = "";
-      this.form.address = [];
+      this.form.name = ''
+      this.form.cnpj = ''
+      this.form.email = ''
+      this.form.address = []
     },
   },
-});
+})
 </script>
 
 <style lang="scss">
