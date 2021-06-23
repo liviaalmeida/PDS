@@ -8,10 +8,10 @@ export type Endpoint = {
 }
 export class API {
   token: string | null = null
-  base = 'localhost:3000'
+  base = 'http://localhost:3000'
   auth = auth
 
-  get headers() {
+  get headers(): { headers: { Authorization: string } } {
     return {
       headers: {
         Authorization: `Bearer ${this.token}`,
