@@ -11,7 +11,7 @@ export class CompanyService {
     this._companyRepositoy = companyRepository;
   }
 
-  validCompany(company: CompanyDto): Boolean {
+  validCompany(company: CompanyDto): boolean {
     if (company.email && company.cnpj && company.address && company.name) return true;
 
     return false;

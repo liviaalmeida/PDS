@@ -3,6 +3,7 @@ import { createConnection } from 'typeorm';
 import userRouter from './api/user';
 import companyRouter from './api/company';
 import { connectionOptions } from './config';
+import cors from "cors";
 
 const express = require('express');
 
@@ -18,6 +19,8 @@ declare global {
 
 const app = express();
 const port = 3000;
+
+app.use(cors());
 
 app.use(express.json());
 
