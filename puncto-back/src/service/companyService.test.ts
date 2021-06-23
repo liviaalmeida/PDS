@@ -1,5 +1,5 @@
 import { CompanyService } from './companyService';
-import { CompanyDto, ICompanyProps } from '../dto/companyDto';
+import { CompanyDto } from '../dto/companyDto';
 
 describe('Company service', () => {
   let companyService;
@@ -11,16 +11,14 @@ describe('Company service', () => {
     companyService = new CompanyService(mockCompanyRepository);
   });
 
-  const getCompany = (props: ICompanyProps) => {
-    return new CompanyDto(props);
-  };
+
   it('Should call createCompany at companyRepository ', async () => {
-    const company = getCompany({
+    const company = {
       name: 'inter',
       cnpj: '123903843',
       email: 'banco@inter.com',
       address: 'rua pernambuco, 231, savassi',
-    });
+    } as CompanyDto;
     await companyService.createCompany(company);
 
     expect(mockCompanyRepository.createCompany).toHaveBeenCalledTimes(1);
