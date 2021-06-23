@@ -65,6 +65,11 @@ export default Vue.extend({
 </script>
 
 <style>
+ /* h1 {
+    color: $pt-sapphire;
+    font-family: 'Ubuntu';
+    font-size: 28px;
+  }*/
   .container {
     height: 100%;
   }
@@ -74,7 +79,7 @@ export default Vue.extend({
     padding: 20px;
   }
   .text {
-    align: center;
+    text-align: center;
     font-family: Ubuntu;
     font-style: normal;
     font-weight: bold;
@@ -84,5 +89,26 @@ export default Vue.extend({
     align-items: center;
     text-align: center;
     color: #000000;
+  }
+  .logo {
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+  }
+  .input {
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    border-radius: 5px;
+    /*width: 324px;
+    height: 50px;
+    margin: 10px 0px 20px 85px;*/
+  }
+
+  .button {
+    background: #324B96;
+    border-radius: 5px;
+    /*width: 324px;
+    height: 50px;
+    margin-bottom: 20px*/; 
   }
 </style>
