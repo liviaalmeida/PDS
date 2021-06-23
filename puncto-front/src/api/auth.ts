@@ -1,4 +1,4 @@
-import { Endpoint } from "."
+import { Endpoint } from '.'
 
 const login: Endpoint = {
   url: '/login',
@@ -14,7 +14,15 @@ const logout: Endpoint = {
   },
 }
 
+const signup: Endpoint = {
+  url: '/signup',
+  options: {
+    method: 'POST',
+  },
+}
+
 export {
   login,
   logout,
+  signup,
 }
