@@ -1,11 +1,24 @@
 <template>
   <div class="login container">
     <PtLogo />
-    <div class="login-card card">
+    <div class="login-card">
       <div class="login-text">
         <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
       </div>
-      <form @submit.prevent="onSubmit" @reset.prevent="onReset">
+      <div class="login-type">
+        <label>
+          <input type="radio" name="login-type"
+          v-model="loginType" value="login">
+          <span>login</span>
+        </label>
+        <label>
+          <input type="radio" name="login-type"
+          v-model="loginType" value="sign-up">
+          <span>sign-up</span>
+        </label>
+      </div>
+      <form @submit.prevent="onSubmit" @reset.prevent="onReset"
+      @input="onInput($event.target.form)">
         <PtInput label="Email" v-model="form.email"
         type="email" icon="email" required
         class="login-input"
@@ -13,9 +26,10 @@
         <PtInput label="Senha" v-model="form.password"
         type="password" icon="lock" required
         class="login-input"
-        placeholder="Digite sua senha" />
-        <PtButton>
-          Login
+        placeholder="Digite sua senha"
+        :input-attrs="{ minLength: 6 }" />
+        <PtButton :disabled="!valid">
+          {{ button }}
         </PtButton>
       </form>
     </div>
@@ -24,7 +38,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { login } from '../api'
 
 export default Vue.extend({
   data() {
@@ -34,29 +47,38 @@ export default Vue.extend({
         password: '',
       },
       loading: false,
+      loginType: 'login',
+      valid: false,
     }
   },
   computed: {
+    button(): string {
+      return this.loginType === 'login' ?
+        'Login' : 'Sign Up'
+    },
     redirect(): string {
       return this.$route.query?.redirect as string || '/'
     },
   },
   methods: {
-    async onSubmit() {
-      this.$store.dispatch('loadStart')
-      await login()
-        .then(() => {
-          this.$store.dispatch('login')
-          this.$store.dispatch('loadStop')
-          this.$router.push(this.redirect)
-        })
-        .catch(() => {
-          this.$store.dispatch('loadStop')
-        })
+    onInput(form: HTMLFormElement): void {
+      this.valid = form.checkValidity()
     },
     onReset(): void {
       this.form.email = ''
       this.form.password = ''
+    },
+    async onSubmit() {
+      this.$store.dispatch('loadStart')
+      try {
+        const endpoint = this.loginType === 'login' ? this.$api.auth.login : this.$api.auth.signup
+        const { authToken } = await this.$api.fetch(endpoint, this.form)
+        this.$api.setToken(authToken)
+      } catch {
+        alert('Erro ao tentar logar')
+      } finally {
+        this.$store.dispatch('loadStop')
+      }
     },
   },
 })
@@ -72,6 +94,28 @@ export default Vue.extend({
   gap: 10px;
   max-width: 415px;
 
+  &-type {
+    color: $pt-sapphire;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Ubuntu';
+    margin-bottom: 20px;
+
+    input {
+      display: none;
+    }
+
+    span {
+      cursor: pointer;
+      font-size: 20px;
+      opacity: .5;
+    }
+
+    input:checked ~ span {
+      opacity: 1;
+    }
+  }
+
   &-card {
     background: white;
     border-radius: 5px;
@@ -79,7 +123,7 @@ export default Vue.extend({
   }
 
   &-text {
-    font-family: Ubuntu;
+    font-family: 'Ubuntu';
     font-style: normal;
     font-weight: bold;
     font-size: 18px;
