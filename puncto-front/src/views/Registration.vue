@@ -8,6 +8,7 @@
             <PtInput class="input" label="CNPJ" v-model="form.cnpj" type="text" icon="profile" required placeholder="Digite seu CNPJ" />
             <PtInput class="input" label="Email" v-model="form.email" type="email" icon="email" required placeholder="Digite seu email" />
           </div>
+          <br />
           <div class="address"><p> Endereço </p></div>
           <PtInput label="Linha 1" v-model="form.addres" type="text" icon="marker" required placeholder="Digite seu endereço" />
           <PtInput label="Linha 1" v-model="form.addres" type="text" icon="marker" required placeholder="Digite seu email" />
@@ -59,7 +60,7 @@ export default Vue.extend({
   }
   .formulary {
     padding: 20px;
-    width: 60%;
+    width: 40%;
     background-color: white;
   }
   .input {
@@ -76,8 +77,5 @@ export default Vue.extend({
     align-items: center;
     text-align: center;
     color: #000000;
-  }
-  .card{
-    background-color: white;
   }
 </style>
