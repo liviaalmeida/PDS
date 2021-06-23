@@ -2,7 +2,7 @@
   <div class="row align-items-center h-100">
     <div class="d-flex flex-column align-items-center mx-auto">
       <div class="p-2 bd-highlight formulary">
-        <form @submit.prevent="onSubmit" @reset="onReset">
+        <form @submit.prevent="onSubmit" @reset.prevent="onReset">
           <PtInput label="Nome" v-model="form.name" icon="profile" required placeholder="Nome Completo" />
           <div class="d-flex justify-content-between">
             <PtInput class="input" label="CNPJ" v-model="form.cnpj" type="text" icon="profile" required placeholder="Digite seu CNPJ" />
@@ -34,12 +34,10 @@ export default Vue.extend({
     }
   },
   methods: {
-    onSubmit(event: any): void {
-      event.preventDefault()
+    onSubmit(): void {
       alert(JSON.stringify(this.form))
     },
-    onReset(event: any): void {
-      event.preventDefault()
+    onReset(): void {
       this.form.name = ''
       this.form.cnpj = ''
       this.form.email = ''
