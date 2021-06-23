@@ -73,7 +73,10 @@ export default Vue.extend({
       try {
         const endpoint = this.loginType === 'login' ? this.$api.auth.login : this.$api.auth.signup
         const { authToken } = await this.$api.fetch(endpoint, this.form)
+        this.$cookies.set('authToken', authToken)
         this.$api.setToken(authToken)
+        this.$store.dispatch('login')
+        this.$router.push(this.redirect)
       } catch {
         alert('Erro ao tentar logar')
       } finally {
