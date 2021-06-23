@@ -1,10 +1,9 @@
-import Vue from 'vue'
-import { shallowMount, Wrapper } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PtIcon from '@/components/PtIcon.vue'
 import PtLogo from '@/components/PtLogo.vue'
 
 describe('PtLogo', () => {
-  let ptLogo: Wrapper<Vue>
+  let ptLogo
 
   beforeEach(() => {
     ptLogo = shallowMount(PtLogo, {
