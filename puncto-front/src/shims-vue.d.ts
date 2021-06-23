@@ -1,5 +1,5 @@
-import Vue from 'vue';
-import API from './api';
+import Vue from 'vue'
+import API from './api'
 
 declare module 'vue/types/vue' {
   interface Vue {
