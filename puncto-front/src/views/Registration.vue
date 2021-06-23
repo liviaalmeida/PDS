@@ -60,6 +60,7 @@ export default Vue.extend({
   .formulary {
     padding: 20px;
     width: 60%;
+    background-color: white;
   }
   .input {
     width: 49%;
@@ -75,5 +76,8 @@ export default Vue.extend({
     align-items: center;
     text-align: center;
     color: #000000;
+  }
+  .card{
+    background-color: white;
   }
 </style>
