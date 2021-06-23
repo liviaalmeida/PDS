@@ -16,14 +16,10 @@ describe('User service', () => {
     userService = new UserService(mockUserRepository);
     mockAllUsers = [
       {
-        firstName: 'Gabriel',
-        lastName: 'Chaves',
         email: 'gabrielchaves@gmail.com',
         password: '123456',
       },
       {
-        firstName: 'Philipe',
-        lastName: 'Atela',
         email: 'philipe@gmail.com',
         password: '123456',
       },
@@ -33,8 +29,6 @@ describe('User service', () => {
   it('createUser should call userRepository.createUser', () => {
     const spyUserRepository = jest.spyOn(mockUserRepository, 'createUser');
     userService.createUser({
-        firstName: 'Gabriel',
-        lastName: 'Chaves',
         email: 'gabrielchaves@gmail.com',
         password: '123456',
       },
@@ -54,8 +48,6 @@ describe('User service', () => {
     expect(users).toHaveLength(2);
     expect(users).toContainEqual(
       {
-        firstName: 'Gabriel',
-        lastName: 'Chaves',
         email: 'gabrielchaves@gmail.com',
         password: '123456',
       },
@@ -67,8 +59,6 @@ describe('User service', () => {
       .spyOn(mockUserRepository, 'findByEmail')
       .mockImplementation((): Promise<UserDto> => {
         return Promise.resolve({
-          firstName: 'Philipe',
-          lastName: 'Atela',
           email: 'philipe@gmail.com',
           password: '123456',
         });
@@ -78,8 +68,6 @@ describe('User service', () => {
     expect(spyUserRepository).toHaveBeenCalledTimes(1);
     expect(users).toEqual(
       {
-        firstName: 'Philipe',
-        lastName: 'Atela',
         email: 'philipe@gmail.com',
         password: '123456',
       },

@@ -1,7 +1,7 @@
 import { AuthService } from './authService';
 
 jest.mock('bcrypt', () => ({
-    compareSync: jest.fn(() => true),
+    compareSync: jest.fn(() => false),
   }));
 
 describe('Auth service', () => {
@@ -14,7 +14,7 @@ describe('Auth service', () => {
     const authenticateWrapper = () => {
         authService.authenticate({
             email: 'philipe@test.com',
-            password: '12345'
+            password: '1234'
         }, '12345');
     }
 

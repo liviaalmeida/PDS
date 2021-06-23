@@ -19,8 +19,6 @@ export class UserRepository {
   async createUser(props: UserDto): Promise<void> {
     const repository = this.getUserRepository();
     const user = new User();
-    user.firstName = props.firstName;
-    user.lastName = props.lastName;
     user.email = props.email;
     user.password = props.password;
 
