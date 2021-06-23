@@ -3,11 +3,15 @@ import { Request, Response } from 'express';
 import { container } from '../inversify.config';
 import { CompanyDto } from '../dto/companyDto';
 import { CompanyService } from '../service/companyService';
+import { validate } from '../middlewares/validation';
 import InvalidCompanyRequestError from '../exceptions/InvalidCompanyRequestError';
+import { authMiddleware } from '../middlewares/authentication';
 
 const router = express.Router();
 
-router.post('/', async (req: Request, res: Response) => {
+router.use('/', authMiddleware)
+
+router.post('/', validate(CompanyDto), async (req: Request, res: Response) => {
   try {
     const company = req.body as CompanyDto;
 
