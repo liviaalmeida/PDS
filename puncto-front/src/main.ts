@@ -1,7 +1,9 @@
 import Vue from 'vue'
+import VueCookies from 'vue-cookies'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import pluginAPI from './api/Plugin'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 import PtButton from '@/components/input/PtButton.vue'
@@ -9,6 +11,8 @@ import PtIcon from '@/components/PtIcon.vue'
 import PtInput from '@/components/input/PtInput.vue'
 import PtLogo from '@/components/PtLogo.vue'
 
+Vue.use(VueCookies)
+Vue.use(pluginAPI)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 

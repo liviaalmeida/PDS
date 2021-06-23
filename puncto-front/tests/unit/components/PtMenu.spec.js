@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import { shallowMount, Wrapper, createLocalVue } from '@vue/test-utils'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
 import MenuItem from '@/components/menu/MenuItem.vue'
 import PtIcon from '@/components/PtIcon.vue'
 import PtMenu from '@/components/menu/PtMenu.vue'
@@ -17,7 +16,7 @@ describe('PtMenu', () => {
     getters
   })
 
-  let ptMenu: Wrapper<Vue>
+  let ptMenu
 
   beforeEach(() => {
     ptMenu = shallowMount(PtMenu, {

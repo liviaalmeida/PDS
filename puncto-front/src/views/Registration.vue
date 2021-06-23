@@ -1,81 +1,119 @@
 <template>
-  <div class="row align-items-center h-100">
-    <div class="d-flex flex-column align-items-center mx-auto">
-      <div class="p-2 bd-highlight formulary">
-        <form @submit.prevent="onSubmit" @reset="onReset">
-          <PtInput label="Nome" v-model="form.name" icon="profile" required placeholder="Nome Completo" />
-          <div class="d-flex justify-content-between">
-            <PtInput class="input" label="CNPJ" v-model="form.cnpj" type="text" icon="profile" required placeholder="Digite seu CNPJ" />
-            <PtInput class="input" label="Email" v-model="form.email" type="email" icon="email" required placeholder="Digite seu email" />
-          </div>
-          <br />
-          <div class="address"><p> Endereço </p></div>
-          <PtInput label="Linha 1" v-model="form.addres" type="text" icon="marker" required placeholder="Digite seu endereço" />
-          <PtInput label="Linha 1" v-model="form.addres" type="text" icon="marker" required placeholder="Digite seu email" />
-          <PtInput label="Linha 1" v-model="form.addres" type="text" icon="marker" required placeholder="Digite seu email" />
-          <PtButton class="button"> Salvar </PtButton>
-        </form>
+  <div class="registration d-flex justify-content-center align-items-center">
+    <form
+      @submit.prevent="onSubmit"
+      @reset.prevent="onReset"
+      class="registration-form w-100"
+    >
+      <PtInput
+        label="Nome"
+        v-model="form.name"
+        icon="profile"
+        required
+        placeholder="Nome Completo"
+      />
+      <div class="registration-form-line d-flex justify-content-between">
+        <PtInput
+          class="registration-input"
+          label="CNPJ"
+          v-model="form.cnpj"
+          type="text"
+          icon="profile"
+          required
+          placeholder="Digite seu CNPJ"
+        />
+        <PtInput
+          class="registration-input"
+          label="Email"
+          v-model="form.email"
+          type="email"
+          icon="email"
+          required
+          placeholder="Digite seu email"
+        />
       </div>
-    </div>
+      <div class="registration-address">Endereço</div>
+      <PtInput
+        label="Linha 1"
+        v-model="form.addres"
+        type="text"
+        icon="marker"
+        required
+        placeholder="Digite seu endereço"
+      />
+      <PtInput
+        label="Linha 2"
+        v-model="form.addres"
+        type="text"
+        icon="marker"
+        required
+        placeholder="Digite seu endereço"
+      />
+      <PtInput
+        label="Linha 3"
+        v-model="form.addres"
+        type="text"
+        icon="marker"
+        required
+        placeholder="Digite seu endereço"
+      />
+      <PtButton class="button"> Salvar </PtButton>
+    </form>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 
 export default Vue.extend({
   data() {
     return {
       form: {
-        name: '',
-        cnpj: '',
-        email: '',
-        address: []
+        name: "",
+        cnpj: "",
+        email: "",
+        address: [],
       },
-    }
+    };
   },
   methods: {
-    onSubmit(event: any): void {
-      event.preventDefault()
-      alert(JSON.stringify(this.form))
+    onSubmit(): void {
+      alert(JSON.stringify(this.form));
     },
-    onReset(event: any): void {
-      event.preventDefault()
-      this.form.name = ''
-      this.form.cnpj = ''
-      this.form.email = ''
-      this.form.address = []
+    onReset(): void {
+      this.form.name = "";
+      this.form.cnpj = "";
+      this.form.email = "";
+      this.form.address = [];
     },
   },
-})
+});
 </script>
 
-<style>
-  .container {
-    height: 100%;
+<style lang="scss">
+.registration {
+  &-address {
+    text-align: left;
+    font-size: 14px;
+    transform: translateY(5px);
   }
-  .address{
+  &-form {
+    max-width: 520px;
+    margin: 0 auto;
     display: flex;
-    margin-left: 0.5em;
+    flex-direction: column;
+  }
+  &-form,
+  &-form-line {
+    gap: 10px;
   }
   .formulary {
     padding: 20px;
     width: 40%;
     background-color: white;
   }
-  .input {
-    width: 49%;
+  &-input {
+    flex: 1;
   }
-  .text {
-    text-align: center;
-    font-family: Ubuntu;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 21px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: #000000;
-  }
+}
 </style>

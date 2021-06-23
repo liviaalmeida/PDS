@@ -1,32 +1,43 @@
 <template>
-  <div class="container">
-    <div class="row align-items-center h-100">
-      <div class="col-4 align-items-center mx-auto">
-        <PtLogo />
-        <div class="card">
-          <div class="text">
-            <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
-          </div>
-          <form @submit.prevent="onSubmit" @reset.prevent="onReset">
-            <PtInput label="Email" v-model="form.email"
-            icon="email" required
-            placeholder="Digite seu email para entrar" />
-            <PtInput label="Senha" v-model="form.password"
-            type="password" icon="lock" required
-            placeholder="Digite sua senha" />
-            <PtButton>
-              Login
-            </PtButton>
-          </form>
-        </div>
+  <div class="login container">
+    <PtLogo />
+    <div class="login-card">
+      <div class="login-text">
+        <p>Gerencie seu tempo com clientes, crie invoices e acompanhe seu fluxo de caixa em um lugar só. É gratuito!</p>
       </div>
+      <div class="login-type">
+        <label>
+          <input type="radio" name="login-type"
+          v-model="loginType" value="login">
+          <span>login</span>
+        </label>
+        <label>
+          <input type="radio" name="login-type"
+          v-model="loginType" value="sign-up">
+          <span>sign-up</span>
+        </label>
+      </div>
+      <form @submit.prevent="onSubmit" @reset.prevent="onReset"
+      @input="onInput($event.target.form)">
+        <PtInput label="Email" v-model="form.email"
+        type="email" icon="email" required
+        class="login-input"
+        placeholder="Digite seu email para entrar" />
+        <PtInput label="Senha" v-model="form.password"
+        type="password" icon="lock" required
+        class="login-input"
+        placeholder="Digite sua senha"
+        :input-attrs="{ minLength: 6 }" />
+        <PtButton :disabled="!valid">
+          {{ button }}
+        </PtButton>
+      </form>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { login } from '../api'
 
 export default Vue.extend({
   data() {
@@ -36,51 +47,86 @@ export default Vue.extend({
         password: '',
       },
       loading: false,
+      loginType: 'login',
+      valid: false,
     }
   },
   computed: {
+    button(): string {
+      return this.loginType === 'login' ?
+        'Login' : 'Sign Up'
+    },
     redirect(): string {
       return this.$route.query?.redirect as string || '/'
     },
   },
   methods: {
-    async onSubmit() {
-      this.$store.dispatch('loadStart')
-      await login()
-        .then(() => {
-          this.$store.dispatch('login')
-          this.$store.dispatch('loadStop')
-          this.$router.push(this.redirect)
-        })
-        .catch(() => {
-          this.$store.dispatch('loadStop')
-        })
+    onInput(form: HTMLFormElement): void {
+      this.valid = form.checkValidity()
     },
     onReset(): void {
       this.form.email = ''
       this.form.password = ''
     },
+    async onSubmit() {
+      this.$store.dispatch('loadStart')
+      try {
+        const endpoint = this.loginType === 'login' ? this.$api.auth.login : this.$api.auth.signup
+        const { authToken } = await this.$api.fetch(endpoint, this.form)
+        this.$cookies.set('authToken', authToken)
+        this.$api.setToken(authToken)
+        this.$store.dispatch('login')
+        this.$router.push(this.redirect)
+      } catch {
+        alert('Erro ao tentar logar')
+      } finally {
+        this.$store.dispatch('loadStop')
+      }
+    },
   },
 })
 </script>
 
-<style>
- /* h1 {
+<style lang="scss">
+.login {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  max-width: 415px;
+
+  &-type {
     color: $pt-sapphire;
+    display: flex;
+    justify-content: space-between;
     font-family: 'Ubuntu';
-    font-size: 28px;
-  }*/
-  .container {
-    height: 100%;
+    margin-bottom: 20px;
+
+    input {
+      display: none;
+    }
+
+    span {
+      cursor: pointer;
+      font-size: 20px;
+      opacity: .5;
+    }
+
+    input:checked ~ span {
+      opacity: 1;
+    }
   }
-  .card {
+
+  &-card {
     background: white;
-    border-radius: 5px 5px 0px 0px;
-    padding: 20px;
+    border-radius: 5px;
+    padding: 20px 30px;
   }
-  .text {
-    text-align: center;
-    font-family: Ubuntu;
+
+  &-text {
+    font-family: 'Ubuntu';
     font-style: normal;
     font-weight: bold;
     font-size: 18px;
@@ -90,25 +136,9 @@ export default Vue.extend({
     text-align: center;
     color: #000000;
   }
-  .logo {
-    align-items: center;
-    text-align: center;
-    gap: 5px;
-  }
-  .input {
-    border: 1px solid #000000;
-    box-sizing: border-box;
-    border-radius: 5px;
-    /*width: 324px;
-    height: 50px;
-    margin: 10px 0px 20px 85px;*/
-  }
 
-  .button {
-    background: #324B96;
-    border-radius: 5px;
-    /*width: 324px;
-    height: 50px;
-    margin-bottom: 20px*/; 
+  &-input {
+    margin-bottom: 10px;
   }
+}
 </style>
