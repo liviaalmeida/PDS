@@ -60,16 +60,13 @@ export default Vue.extend({
   .view {
     flex: 1;
     overflow: auto;
-<<<<<<< HEAD
     //padding: 20px;
-    position: absolute;
+    /*position: absolute;
     width: 100%;
     height: 100%;
     background: url("background.png");
-=======
+=======*/
     padding: 20px;
->>>>>>> b532db248eb03582eff888d251fc48b1276d124e
-
     &-header {
       display: flex;
       justify-content: space-between;
