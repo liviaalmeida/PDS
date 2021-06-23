@@ -11,10 +11,11 @@ export class API {
   base = 'http://localhost:3000'
   auth = auth
 
-  get headers(): { headers: { Authorization: string } } {
+  get headers(): { headers: Record<string, string> } {
     return {
       headers: {
-        Authorization: `Bearer ${this.token}`,
+        ...(this.token && {'Authorization': `Bearer ${this.token}`}),
+        'Content-Type': 'application/json',
       }
     }
   }
@@ -24,13 +25,14 @@ export class API {
   }
 
   async fetch({ url, options }: Endpoint, body: unknown): Promise<Response> {
-    return await fetch(
+    const response = await fetch(
       `${this.base}${url}`,
       {
-        ...(this.token && this.headers),
+        ...this.headers,
         ...(body !== undefined && { body: JSON.stringify(body) }),
         ...options,
       }
     )
+    return await response.json()
   }
 }
