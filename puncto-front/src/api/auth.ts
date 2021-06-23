@@ -1,13 +1,17 @@
-function timeout(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+import { Endpoint } from "."
+
+const login: Endpoint = {
+  url: '/login',
+  options: {
+    method: 'POST',
+  },
 }
 
-async function login(): Promise<unknown> {
-  return await timeout(3000)
-}
-
-async function logout(): Promise<unknown> {
-  return await timeout(1500)
+const logout: Endpoint = {
+  url: '/logout',
+  options: {
+    method: 'POST',
+  },
 }
 
 export {
