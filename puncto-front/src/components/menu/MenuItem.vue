@@ -41,7 +41,7 @@ export default Vue.extend({
   font-weight: 700;
   height: 30px;
   text-decoration: none;
-  opacity: .8;
+  opacity: .5;
   transition: opacity $time;
 
   &:hover, &.router-link-exact-active {

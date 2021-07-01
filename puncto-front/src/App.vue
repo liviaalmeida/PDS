@@ -1,14 +1,17 @@
 <template>
   <div id="app">
+    <PtLoader v-if="loading" />
     <PtMenu v-if="logged" />
-    <div class="view">
+    <div :class="[{
+      'view--login': !logged
+    }, 'view']">
       <div class="view-header" v-if="logged">
         <PtLogo />
         <h1 class="view-header-title">
           {{ title }}
         </h1>
       </div>
-      <router-view />
+      <router-view class="view-body" />
     </div>
   </div>
 </template>
@@ -16,18 +19,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import PtMenu from './components/menu/PtMenu.vue'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import PtLoader from './components/PtLoader.vue'
 import { mapGetters } from 'vuex'
-
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
 
 export default Vue.extend({
   components: {
     PtMenu,
+    PtLoader,
   },
   data() {
     return {
@@ -39,6 +37,7 @@ export default Vue.extend({
       return this.$route.name
     },
     ...mapGetters({
+      loading: 'loading',
       logged: 'logged',
     }),
   },
@@ -59,10 +58,11 @@ export default Vue.extend({
   }
 
   .view {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     overflow: auto;
     padding: 20px;
-
     &-header {
       display: flex;
       justify-content: space-between;
@@ -74,6 +74,15 @@ export default Vue.extend({
         font-family: 'Ubuntu';
         font-size: 28px;
       }
+    }
+    &-body {
+      flex: 1;
+    }
+
+    &--login {
+      background-image: url('~@/assets/imgs/background.png');
+      background-repeat: no-repeat;
+      background-size: cover;
     }
   }
 }

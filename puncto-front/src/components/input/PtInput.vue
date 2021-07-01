@@ -10,11 +10,13 @@
     <textarea v-if="type === 'textarea'" :value="value" :name="name"
 		:placeholder="placeholder" :required="required"
     @blur="focus = false" @focus="focus = true"
-    @input="$emit('input', $event.target.value)" />
+    @input="$emit('input', $event.target.value)"
+    v-bind="inputAttrs" />
     <input v-else :type="type" :value="value" :name="name"
 		:placeholder="placeholder" :required="required"
     @blur="focus = false" @focus="focus = true"
-    @input="$emit('input', $event.target.value)">
+    @input="$emit('input', $event.target.value)"
+    v-bind="inputAttrs" >
   </div>
 </template>
 
@@ -33,6 +35,10 @@ export default Vue.extend({
     icon: {
       required: false,
       type: String,
+    },
+    'input-attrs': {
+      required: false,
+      type: Object,
     },
     label: {
       required: true,
@@ -83,7 +89,6 @@ export default Vue.extend({
   text-align: left;
   transition: border-color $time;
   min-height: 50px;
-  margin: 10px;
 
   input, textarea {
     border: none;
@@ -106,7 +111,6 @@ export default Vue.extend({
     svg {
       height: 10px;
       width: 10px;
-			transition: fill $time;
 
 			path {
 				fill: $pt-midnight;
@@ -121,7 +125,7 @@ export default Vue.extend({
     .pt-input-label {
       color: $pt-ocean;
 
-			svg, svg path {
+			svg path {
 				fill: $pt-ocean;
 			}
     }

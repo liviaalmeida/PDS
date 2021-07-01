@@ -1,20 +1,14 @@
-export interface IUserProps {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-}
+import { Length } from 'class-validator';
 
 export class UserDto {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
+  @Length(5, 100)
+  email: string;
 
-    public constructor(props: IUserProps) {
-        this.firstName = props.firstName;
-        this.lastName = props.lastName;
-        this.email = props.email;
-        this.password = props.password;
-    }
+  @Length(5, 100)
+  password: string;
+
+  public constructor() {
+    this.email = '';
+    this.password = '';
+  }
 }
