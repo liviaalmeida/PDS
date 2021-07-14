@@ -20,9 +20,11 @@
         ►
       </button>
     </div>
-    <PtMonth :date="date" v-model="value" v-if="!picking"
-    :fullfilled="[new Date(2021, 4, 11), new Date(2021, 4, 12), new Date(2021, 4, 13)]"
-    :pending="[new Date(2021, 4, 14)]" />
+    <PtMonth :date="date" v-model="day"
+    @select="$emit('select', $event)"
+    v-if="!picking"
+    :fullfilled="fullfilled"
+    :pending="pending" />
     <PtMonths :months="months" @month="pickMonth"
     v-if="pickingMonth" />
     <PtYears :year="year" @year="pickYear"
@@ -44,17 +46,28 @@ export default Vue.extend({
     PtYears,
   },
   model: {
-
+    event: 'select',
   },
   props: {
-
+    fullfilled: {
+      required: false,
+      type: Array,
+    },
+    pending: {
+      required: false,
+      type: Array,
+    },
+    value: {
+      required: true,
+      type: Date,
+    },
   },
   data() {
     return {
       date: new Date(),
+      day: new Date(this.value),
       pickingMonth: false,
       pickingYear: false,
-      value: new Date(),
     }
   },
   computed: {
