@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import cookie from 'vue-cookies'
 
 Vue.use(Vuex)
 
@@ -9,7 +10,8 @@ export default new Vuex.Store({
     email: '',
     fullname: '',
     loading: false,
-    logged: false,
+    // @ts-expect-error access get in server-side
+    logged: !!cookie.get('authToken'),
   },
   mutations: {
     setCNPJ(state, payload = '') {
@@ -50,6 +52,7 @@ export default new Vuex.Store({
   },
   getters: {
     cnpj: (state) => state.cnpj,
+    email: (state) => state.email,
     fullname: (state) => state.fullname,
     loading: (state) => state.loading,
     logged: (state) => state.logged,
