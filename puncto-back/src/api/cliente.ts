@@ -25,7 +25,7 @@ router.post('/', validate(ClienteDto), async (req: Request, res: Response) => {
   }
 });
 
-router.get('/', validate(ClienteDto), async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     const userEmail = req.query.userEmail as string
 

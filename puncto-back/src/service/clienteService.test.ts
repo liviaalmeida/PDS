@@ -7,6 +7,7 @@ describe('Cliente service', () => {
   beforeAll(() => {
     mockClienteRepository = {
       create: jest.fn(),
+      findAllClientes: jest.fn()
     };
     clienteService = new ClienteService(mockClienteRepository);
   });
@@ -23,5 +24,13 @@ describe('Cliente service', () => {
 
     expect(mockClienteRepository.create).toHaveBeenCalledTimes(1);
     expect(mockClienteRepository.create).toHaveBeenCalledWith(cliente);
+  });
+
+  it('Should call findAllClientes at clienteRepository ', async () => {
+    const userEmail = "teste@email.com"
+    await clienteService.findAllClientes(userEmail);
+
+    expect(mockClienteRepository.findAllClientes).toHaveBeenCalledTimes(1);
+    expect(mockClienteRepository.findAllClientes).toHaveBeenCalledWith(userEmail);
   });
 });
