@@ -7,9 +7,12 @@ import pluginAPI from './api/Plugin'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 import PtButton from '@/components/input/PtButton.vue'
+import PtCalendar from '@/components/calendar/PtCalendar.vue'
 import PtIcon from '@/components/PtIcon.vue'
 import PtInput from '@/components/input/PtInput.vue'
 import PtLogo from '@/components/PtLogo.vue'
+
+import { directive } from 'v-visible'
 
 Vue.use(VueCookies)
 Vue.use(pluginAPI)
@@ -24,9 +27,12 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.config.productionTip = false
 
 Vue.component('PtButton', PtButton)
+Vue.component('PtCalendar', PtCalendar)
 Vue.component('PtIcon', PtIcon)
 Vue.component('PtInput', PtInput)
 Vue.component('PtLogo', PtLogo)
+
+Vue.directive('visible', directive)
 
 new Vue({
   router,
