@@ -8,14 +8,13 @@ import { ClienteDto } from '../dto/clienteDto';
 import InvalidClienteRequestError from '../exceptions/InvalidClienteRequestError';
 
 const router = express.Router();
+const clienteService = container.get(ClienteService);
 
 router.use('/', authMiddleware)
 
 router.post('/', validate(ClienteDto), async (req: Request, res: Response) => {
   try {
     const cliente = req.body as ClienteDto;
-
-    const clienteService = container.get(ClienteService);
 
     await clienteService.create(cliente);
     res.status(201).send();
@@ -25,4 +24,22 @@ router.post('/', validate(ClienteDto), async (req: Request, res: Response) => {
     return res.status(500).json('Some unexpected error happened while creating a cliente.');
   }
 });
+
+router.get('/', validate(ClienteDto), async (req: Request, res: Response) => {
+  try {
+    const userEmail = req.query.userEmail as string
+
+    if (!userEmail)
+      throw new InvalidClienteRequestError()
+
+    const clientes = await clienteService.findAllClientes(userEmail)
+
+    res.status(200).json(clientes);
+  } catch (err) {
+    if (err instanceof InvalidClienteRequestError) return res.status(err.statusCode).json(err.message);
+
+    return res.status(500).json('Some unexpected error happened while creating a cliente.');
+  }
+});
+
 export default router;

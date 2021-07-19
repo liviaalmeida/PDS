@@ -1,14 +1,14 @@
-import { IsBoolean, IsDate, IsNumber, Length } from 'class-validator';
+import { IsBoolean, IsNumber, Length } from 'class-validator';
 
 export class PontoDto {
     @Length(5, 100)
     email: string;
 
     @IsNumber()
-    timestampDate: Number;
+    timestampDate: number;
 
     @IsBoolean()
-    registroDeEntrada: Boolean
+    registroDeEntrada: boolean
 
     public constructor() {
         this.email = '';

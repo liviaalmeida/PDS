@@ -26,7 +26,7 @@ app.use(express.json());
 
 app.use(userRouter);
 
-// @TODO alterar o endpoint de /company para /cliente
+//@TODO alterar o endpoint de /company para /cliente
 app.use('/company', clienteRouter);
 
 app.use('/ponto', pontoRouter)

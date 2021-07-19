@@ -8,11 +8,14 @@ export class ClienteDto {
   email: string;
   @Length(2, 100)
   address: string;
+  @Length(2, 100)
+  userEmail: string;
 
   public constructor() {
     this.name = '';
     this.cnpj = '';
     this.email = '';
     this.address = '';
+    this.userEmail = '';
   }
 }

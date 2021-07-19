@@ -9,8 +9,8 @@ export class Ponto extends BaseEntity {
     email: string;
 
     @Column()
-    timestampDate: Number;
+    timestampDate: number;
 
     @Column()
-    registroDeEntrada: Boolean;
+    registroDeEntrada: boolean;
 }
