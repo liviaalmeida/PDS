@@ -2,7 +2,7 @@ import { createConnection } from 'typeorm';
 
 import cors from 'cors';
 import userRouter from './api/user';
-import companyRouter from './api/company';
+import clienteRouter from './api/cliente';
 import pontoRouter from './api/ponto';
 import { connectionOptions } from './config';
 
@@ -26,7 +26,8 @@ app.use(express.json());
 
 app.use(userRouter);
 
-app.use('/company', companyRouter);
+// @TODO alterar o endpoint de /company para /cliente
+app.use('/company', clienteRouter);
 
 app.use('/ponto', pontoRouter)
 

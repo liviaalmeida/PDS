@@ -1,7 +1,7 @@
 import { Entity, ObjectIdColumn, Column, BaseEntity } from 'typeorm';
 
 @Entity()
-export class Company extends BaseEntity {
+export class Cliente extends BaseEntity {
   @ObjectIdColumn()
   id: number;
 
