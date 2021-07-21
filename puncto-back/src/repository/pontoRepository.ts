@@ -1,8 +1,10 @@
 import 'reflect-metadata';
-import { Connection, getConnection, Repository } from 'typeorm';
+import { Between, Connection, getConnection, LessThan, LessThanOrEqual, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
 import { injectable } from 'inversify';
-import { PontoDto } from '../dto/pontoDto';
+import { PontoRequestDto } from '../dto/pontoRequestDto';
 import { Ponto } from '../entity/Ponto';
+import { DatabaseErrorException } from '../exceptions/DatabaseErrorException';
+import { PontoDto } from '../dto/pontoDto';
 
 @injectable()
 export class PontoRepository {
@@ -11,13 +13,53 @@ export class PontoRepository {
         return connection.getRepository(Ponto);
     }
 
-    async save(pontoDto: PontoDto): Promise<void> {
+    async save(userEmail: string, pontoRequestDto: PontoRequestDto): Promise<PontoDto> {
         const repository = this.getPontoRepository();
         const ponto = new Ponto();
 
-        ponto.email = pontoDto.email;
-        ponto.timestampDate = pontoDto.timestampDate
-        ponto.registroDeEntrada = pontoDto.registroDeEntrada
-        await repository.save(ponto);
+        ponto.timestampDateEntrada = pontoRequestDto.timestampDateEntrada
+        ponto.timestampDateSaida = pontoRequestDto.timestampDateSaida
+        ponto.clienteId = pontoRequestDto.clienteId
+        ponto.descricaoAtividade = pontoRequestDto.descricaoAtividade
+        ponto.userEmail = userEmail
+        let newPonto = await repository.save(ponto) as PontoDto;
+
+        return newPonto
+    }
+
+    async findAll(userEmail: string): Promise<Array<PontoDto>> {
+        const repository = this.getPontoRepository();
+
+        try {
+            const allPontos = (await repository.find({ where: { userEmail } })) as PontoDto[];
+            return allPontos;
+        } catch (error) {
+            throw new DatabaseErrorException('Error finding all clientes in database.');
+        }
+    }
+
+    async find(userEmail: string, absoluteInitialTimestamp: number, absoluteEndTimestamp: number): Promise<Array<PontoDto>> {
+        const repository = this.getPontoRepository();
+
+        try {
+            const allPontos = await repository.find({
+                where: {
+                    userEmail: userEmail,
+                    timestampDateEntrada: {
+                        $gte: absoluteInitialTimestamp
+                    },
+                    timestampDateSaida: {
+                        $lte: absoluteEndTimestamp
+                    },
+                },
+            }) as PontoDto[]
+
+            return allPontos;
+        } catch (error) {
+            console.log(error)
+            throw new DatabaseErrorException('Error finding all clientes in database.');
+        }
     }
 }
+
+

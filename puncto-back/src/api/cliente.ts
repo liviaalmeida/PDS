@@ -4,7 +4,7 @@ import { container } from '../inversify.config';
 import { ClienteService } from '../service/clienteService';
 import { validate } from '../middlewares/validation';
 import { authMiddleware } from '../middlewares/authentication';
-import { ClienteDto } from '../dto/clienteDto';
+import { ClienteRequestDto } from '../dto/clienteRequestDto';
 import InvalidClienteRequestError from '../exceptions/InvalidClienteRequestError';
 
 const router = express.Router();
@@ -12,12 +12,13 @@ const clienteService = container.get(ClienteService);
 
 router.use('/', authMiddleware)
 
-router.post('/', validate(ClienteDto), async (req: Request, res: Response) => {
+router.post('/', validate(ClienteRequestDto), async (req: Request, res: Response) => {
   try {
-    const cliente = req.body as ClienteDto;
+    const cliente = req.body as ClienteRequestDto;
+    const userEmail = req.userEmail;
 
-    await clienteService.create(cliente);
-    res.status(201).send();
+    let newClienteId = await clienteService.create(userEmail, cliente);
+    res.status(201).send(newClienteId);
   } catch (err) {
     if (err instanceof InvalidClienteRequestError) return res.status(err.statusCode).json(err.message);
 
@@ -27,10 +28,7 @@ router.post('/', validate(ClienteDto), async (req: Request, res: Response) => {
 
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const userEmail = req.query.userEmail as string
-
-    if (!userEmail)
-      throw new InvalidClienteRequestError()
+    const userEmail = req.userEmail
 
     const clientes = await clienteService.findAllClientes(userEmail)
 

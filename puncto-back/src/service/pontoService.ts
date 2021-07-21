@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'inversify';
-import { PontoDto } from '../dto/pontoDto';
+import { PontoRequestDto } from '../dto/pontoRequestDto';
 import { PontoRepository } from '../repository/pontoRepository';
+import { PontoDto } from '../dto/pontoDto';
 
 @injectable()
 export class PontoService {
@@ -10,7 +11,50 @@ export class PontoService {
         this._pontoRepository = pontoRepository;
     }
 
-    async save(ponto: PontoDto): Promise<void> {
-        await this._pontoRepository.save(ponto);
+    private hoursToMiliseconds(hours: number): number {
+        return (hours * 60 * 60 * 1000)
+    }
+
+    private minutesToMiliseconds(minutes: number): number {
+        return (minutes * 60 * 1000)
+    }
+
+    private secondsToMiliseconds(seconds: number): number {
+        return (seconds * 1000)
+    }
+
+    private createAbsoluteInitialTimestamp(timestampDate: number): number {
+        var date = new Date(timestampDate)
+
+        var hours = date.getHours()
+        var minutes = date.getMinutes()
+        var seconds = date.getSeconds()
+        var miliseconds = date.getMilliseconds()
+
+        return (timestampDate - this.hoursToMiliseconds(hours) - this.minutesToMiliseconds(minutes) - this.secondsToMiliseconds(seconds) - miliseconds)
+    }
+
+    private createAbsoluteEndTimestamp(absoluteInitialTimestamp: number): number {
+        var hoursInMiliseconds = this.hoursToMiliseconds(23)
+        var minutesInMiliseconds = this.minutesToMiliseconds(59)
+        var secondsInMiliseconds = this.secondsToMiliseconds(59)
+        var miliseconds = 999
+
+        return (absoluteInitialTimestamp + hoursInMiliseconds + minutesInMiliseconds + secondsInMiliseconds + miliseconds)
+    }
+
+    async save(userEmail: string, pontoRequestDto: PontoRequestDto): Promise<PontoDto> {
+        return await this._pontoRepository.save(userEmail, pontoRequestDto);
+    }
+
+    async findAll(userEmail: string): Promise<Array<PontoDto>> {
+        return await this._pontoRepository.findAll(userEmail);
+    }
+
+    async find(userEmail: string, timestampDate: number): Promise<Array<PontoDto>> {
+        var absoluteInitialTimestamp = this.createAbsoluteInitialTimestamp(timestampDate)
+        var absoluteEndTimestamp = this.createAbsoluteEndTimestamp(absoluteInitialTimestamp)
+
+        return await this._pontoRepository.find(userEmail, absoluteInitialTimestamp, absoluteEndTimestamp);
     }
 }

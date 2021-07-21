@@ -1,5 +1,5 @@
 import { ClienteService } from './clienteService';
-import { ClienteDto } from '../dto/clienteDto';
+import { ClienteRequestDto } from '../dto/clienteRequestDto';
 
 describe('Cliente service', () => {
   let clienteService;
@@ -19,7 +19,7 @@ describe('Cliente service', () => {
       cnpj: '123903843',
       email: 'banco@inter.com',
       address: 'rua pernambuco, 231, savassi',
-    } as ClienteDto;
+    } as ClienteRequestDto;
     await clienteService.create(cliente);
 
     expect(mockClienteRepository.create).toHaveBeenCalledTimes(1);

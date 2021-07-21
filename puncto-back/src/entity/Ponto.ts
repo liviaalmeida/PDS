@@ -6,11 +6,17 @@ export class Ponto extends BaseEntity {
     id: number;
 
     @Column()
-    email: string;
+    timestampDateEntrada: number;
 
     @Column()
-    timestampDate: number;
+    timestampDateSaida: number;
 
     @Column()
-    registroDeEntrada: boolean;
+    clienteId: string;
+
+    @Column()
+    descricaoAtividade: string;
+
+    @Column()
+    userEmail: string;
 }
