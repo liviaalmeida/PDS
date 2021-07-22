@@ -12,11 +12,11 @@ export class ClienteService {
   }
 
 
-  async create(userEmail: string, cliente: ClienteRequestDto): Promise<Number> {
-    return await this._clienteRepository.create(userEmail, cliente);
+  async save(userEmail: string, cliente: ClienteRequestDto): Promise<Number> {
+    return await this._clienteRepository.save(userEmail, cliente);
   }
 
-  async findAllClientes(userEmail: string): Promise<Array<ClienteDto>> {
-    return await this._clienteRepository.findAllClientes(userEmail)
+  async find(userEmail: string): Promise<Array<ClienteDto>> {
+    return await this._clienteRepository.find(userEmail)
   }
 }

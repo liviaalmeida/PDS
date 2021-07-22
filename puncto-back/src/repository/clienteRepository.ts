@@ -14,7 +14,7 @@ export class ClienteRepository {
     return connection.getRepository(Cliente);
   }
 
-  async create(userEmail: string, clienteDto: ClienteRequestDto): Promise<Number> {
+  async save(userEmail: string, clienteDto: ClienteRequestDto): Promise<Number> {
     const repository = this.getClienteRepository();
     const cliente = new Cliente();
     cliente.name = clienteDto.name;
@@ -27,7 +27,7 @@ export class ClienteRepository {
     return inserted.id;
   }
 
-  async findAllClientes(userEmail: string): Promise<Array<ClienteDto>> {
+  async find(userEmail: string): Promise<Array<ClienteDto>> {
     const repository = this.getClienteRepository();
 
     try {

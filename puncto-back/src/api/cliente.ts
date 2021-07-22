@@ -17,7 +17,7 @@ router.post('/', validate(ClienteRequestDto), async (req: Request, res: Response
     const cliente = req.body as ClienteRequestDto;
     const userEmail = req.userEmail;
 
-    let newClienteId = await clienteService.create(userEmail, cliente);
+    let newClienteId = await clienteService.save(userEmail, cliente);
     res.status(201).send(newClienteId);
   } catch (err) {
     if (err instanceof InvalidClienteRequestError) return res.status(err.statusCode).json(err.message);
@@ -30,7 +30,7 @@ router.get('/', async (req: Request, res: Response) => {
   try {
     const userEmail = req.userEmail
 
-    const clientes = await clienteService.findAllClientes(userEmail)
+    const clientes = await clienteService.find(userEmail)
 
     res.status(200).json(clientes);
   } catch (err) {
