@@ -12,36 +12,24 @@ export class PontoService {
         this._pontoRepository = pontoRepository;
     }
 
-    private hoursToMiliseconds(hours: number): number {
-        return (hours * 60 * 60 * 1000)
-    }
-
-    private minutesToMiliseconds(minutes: number): number {
-        return (minutes * 60 * 1000)
-    }
-
-    private secondsToMiliseconds(seconds: number): number {
-        return (seconds * 1000)
-    }
-
     private createAbsoluteInitialTimestamp(timestampDate: number): number {
         var date = new Date(timestampDate)
+        date.setHours(0)
+        date.setMinutes(0)
+        date.setSeconds(0)
+        date.setMilliseconds(0)
 
-        var hours = date.getHours()
-        var minutes = date.getMinutes()
-        var seconds = date.getSeconds()
-        var miliseconds = date.getMilliseconds()
-
-        return (timestampDate - this.hoursToMiliseconds(hours) - this.minutesToMiliseconds(minutes) - this.secondsToMiliseconds(seconds) - miliseconds)
+        return date.getTime()
     }
 
     private createAbsoluteEndTimestamp(absoluteInitialTimestamp: number): number {
-        var hoursInMiliseconds = this.hoursToMiliseconds(23)
-        var minutesInMiliseconds = this.minutesToMiliseconds(59)
-        var secondsInMiliseconds = this.secondsToMiliseconds(59)
-        var miliseconds = 999
+        var date = new Date(absoluteInitialTimestamp)
+        date.setHours(23)
+        date.setMinutes(59)
+        date.setSeconds(59)
+        date.setMilliseconds(999)
 
-        return (absoluteInitialTimestamp + hoursInMiliseconds + minutesInMiliseconds + secondsInMiliseconds + miliseconds)
+        return date.getTime()
     }
 
     async save(userEmail: string, pontoInicialRequest: PontoInicialRequest): Promise<PontoDto> {
