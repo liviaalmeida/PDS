@@ -1,5 +1,7 @@
 import { PontoService } from './pontoService';
 import { PontoInicialRequest } from '../dto/pontoInicialRequest';
+import { isEmail } from 'class-validator';
+import { PontoRequest } from '../dto/pontoRequest';
 
 describe('Ponto service', () => {
     let pontoService;
@@ -7,37 +9,52 @@ describe('Ponto service', () => {
     beforeAll(() => {
         mockPontoRepository = {
             save: jest.fn(),
-            findAll: jest.fn(),
+            update: jest.fn(),
             find: jest.fn(),
         };
         pontoService = new PontoService(mockPontoRepository);
     });
 
 
-    it('Should call create at clienteRepository ', async () => {
+    it('Should call save at pontoRepository ', async () => {
+        const userEmail = "teste@isEmail.com"
         const ponto = {
-            timestampDateEntrada: 1626728432573
+            timestampDateEntrada: 1626728432573,
+            clienteId: "12xskalm",
+            descricaoAtividade: "criando tela inicial"
+
         } as PontoInicialRequest;
-        await pontoService.save(ponto);
+        await pontoService.save(userEmail, ponto);
 
         expect(mockPontoRepository.save).toHaveBeenCalledTimes(1);
-        expect(mockPontoRepository.save).toHaveBeenCalledWith(ponto);
+        expect(mockPontoRepository.save).toHaveBeenCalledWith(userEmail, ponto);
     });
 
-    it('Should list all pontos for user', async () => {
+    it('Should call update at pontoRepository', async () => {
         const userEmail = "teste@email.com"
-        await pontoService.findAll(userEmail);
+        const ponto = {
+            id: "abcdefg",
+            timestampDateEntrada: 1626728432573,
+            timestampDateSaida: 1626728432574,
+            clienteId: "12xskalm",
+            descricaoAtividade: "criando tela inicial"
 
-        expect(mockPontoRepository.findAll).toHaveBeenCalledTimes(1);
-        expect(mockPontoRepository.findAll).toHaveBeenCalledWith(userEmail);
+        } as PontoRequest;
+        await pontoService.update(userEmail, ponto);
+
+        expect(mockPontoRepository.update).toHaveBeenCalledTimes(1);
+        expect(mockPontoRepository.update).toHaveBeenCalledWith(userEmail, ponto);
     });
 
-    it('Should list registers from the same day as the timestamp for the user', async () => {
+    it('Should call find at pontoRepository', async () => {
         const userEmail = "teste@email.com"
         const timestampDate = 1626728432575
         await pontoService.find(userEmail, timestampDate);
 
+        const absoluteInitialTimestamp = 1626663600000
+        const absoluteEndTimestamp = 1626749999999
+
         expect(mockPontoRepository.find).toHaveBeenCalledTimes(1);
-        expect(mockPontoRepository.find).toHaveBeenCalledWith(userEmail, timestampDate);
+        expect(mockPontoRepository.find).toHaveBeenCalledWith(userEmail, absoluteInitialTimestamp, absoluteEndTimestamp);
     });
 });
