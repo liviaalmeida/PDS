@@ -1,8 +1,9 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'inversify';
-import { PontoRequestDto } from '../dto/pontoRequestDto';
+import { PontoInicialRequest } from '../dto/pontoInicialRequest';
 import { PontoRepository } from '../repository/pontoRepository';
 import { PontoDto } from '../dto/pontoDto';
+import { PontoRequest } from '../dto/pontoRequest';
 
 @injectable()
 export class PontoService {
@@ -43,12 +44,12 @@ export class PontoService {
         return (absoluteInitialTimestamp + hoursInMiliseconds + minutesInMiliseconds + secondsInMiliseconds + miliseconds)
     }
 
-    async save(userEmail: string, pontoRequestDto: PontoRequestDto): Promise<PontoDto> {
-        return await this._pontoRepository.save(userEmail, pontoRequestDto);
+    async save(userEmail: string, pontoInicialRequest: PontoInicialRequest): Promise<PontoDto> {
+        return await this._pontoRepository.save(userEmail, pontoInicialRequest);
     }
 
-    async findAll(userEmail: string): Promise<Array<PontoDto>> {
-        return await this._pontoRepository.findAll(userEmail);
+    async update(userEmail: string, pontoRequest: PontoRequest): Promise<PontoDto> {
+        return await this._pontoRepository.update(userEmail, pontoRequest);
     }
 
     async find(userEmail: string, timestampDate: number): Promise<Array<PontoDto>> {

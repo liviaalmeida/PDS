@@ -1,12 +1,10 @@
-import { IsBoolean, IsNumber, IsString, Length } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString, Length } from 'class-validator';
 
-export class PontoRequestDto {
+export class PontoInicialRequest {
+    @IsNotEmpty()
     timestampDateEntrada: number;
-    timestampDateSaida: number;
-
     @Length(5, 30)
     clienteId: string;
-
     @Length(5, 30)
     descricaoAtividade: string;
 

@@ -1,5 +1,5 @@
 import { PontoService } from './pontoService';
-import { PontoRequestDto } from '../dto/pontoRequestDto';
+import { PontoInicialRequest } from '../dto/pontoInicialRequest';
 
 describe('Ponto service', () => {
     let pontoService;
@@ -16,9 +16,8 @@ describe('Ponto service', () => {
 
     it('Should call create at clienteRepository ', async () => {
         const ponto = {
-            timestampDateEntrada: 1626728432573,
-            timestampDateSaida: 1626728432575,
-        } as PontoRequestDto;
+            timestampDateEntrada: 1626728432573
+        } as PontoInicialRequest;
         await pontoService.save(ponto);
 
         expect(mockPontoRepository.save).toHaveBeenCalledTimes(1);

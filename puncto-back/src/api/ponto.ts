@@ -3,22 +3,37 @@ import { Request, Response } from 'express';
 import { container } from '../inversify.config';
 import { validate } from '../middlewares/validation';
 import { authMiddleware } from '../middlewares/authentication';
-import { PontoRequestDto } from '../dto/pontoRequestDto';
+import { PontoInicialRequest } from '../dto/pontoInicialRequest';
 import { PontoService } from '../service/pontoService';
 import { PontoDto } from '../dto/pontoDto';
+import { PontoRequest } from '../dto/pontoRequest';
 
 const router = express.Router();
 
 router.use('/', authMiddleware)
 
-router.post('/', validate(PontoRequestDto), async (req: Request, res: Response) => {
+router.post('/', validate(PontoInicialRequest), async (req: Request, res: Response) => {
     try {
-        const pontoRequestDto = req.body as PontoRequestDto;
+        const pontoInicialRequest = req.body as PontoInicialRequest;
         const userEmail = req.userEmail;
 
         const pontoService = container.get(PontoService);
 
-        let ponto = await pontoService.save(userEmail, pontoRequestDto);
+        let ponto = await pontoService.save(userEmail, pontoInicialRequest);
+        res.status(201).send(ponto);
+    } catch (err) {
+        return res.status(500).json('Some unexpected error happened while saving the ponto.');
+    }
+});
+
+router.put('/', validate(PontoRequest), async (req: Request, res: Response) => {
+    try {
+        const pontoRequest = req.body as PontoRequest;
+        const userEmail = req.userEmail;
+
+        const pontoService = container.get(PontoService);
+
+        const ponto = await pontoService.update(userEmail, pontoRequest);
         res.status(201).send(ponto);
     } catch (err) {
         return res.status(500).json('Some unexpected error happened while saving the ponto.');

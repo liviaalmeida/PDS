@@ -1,10 +1,11 @@
 import 'reflect-metadata';
-import { Between, Connection, getConnection, LessThan, LessThanOrEqual, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
+import { Between, Connection, getConnection, LessThan, LessThanOrEqual, MongoRepository, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
 import { injectable } from 'inversify';
-import { PontoRequestDto } from '../dto/pontoRequestDto';
+import { PontoInicialRequest } from '../dto/pontoInicialRequest';
 import { Ponto } from '../entity/Ponto';
 import { DatabaseErrorException } from '../exceptions/DatabaseErrorException';
 import { PontoDto } from '../dto/pontoDto';
+import { PontoRequest } from '../dto/pontoRequest';
 
 @injectable()
 export class PontoRepository {
@@ -13,29 +14,24 @@ export class PontoRepository {
         return connection.getRepository(Ponto);
     }
 
-    async save(userEmail: string, pontoRequestDto: PontoRequestDto): Promise<PontoDto> {
+    async save(userEmail: string, pontoInicialRequest: PontoInicialRequest): Promise<PontoDto> {
         const repository = this.getPontoRepository();
         const ponto = new Ponto();
 
-        ponto.timestampDateEntrada = pontoRequestDto.timestampDateEntrada
-        ponto.timestampDateSaida = pontoRequestDto.timestampDateSaida
-        ponto.clienteId = pontoRequestDto.clienteId
-        ponto.descricaoAtividade = pontoRequestDto.descricaoAtividade
+        ponto.timestampDateEntrada = pontoInicialRequest.timestampDateEntrada
+        ponto.clienteId = pontoInicialRequest.clienteId
+        ponto.descricaoAtividade = pontoInicialRequest.descricaoAtividade
         ponto.userEmail = userEmail
         let newPonto = await repository.save(ponto) as PontoDto;
 
         return newPonto
     }
 
-    async findAll(userEmail: string): Promise<Array<PontoDto>> {
+    async update(userEmail: string, pontoRequest: PontoRequest): Promise<PontoDto> {
         const repository = this.getPontoRepository();
+        let pontoToUpdate = await repository.findOne(pontoRequest.id) as Ponto;
 
-        try {
-            const allPontos = (await repository.find({ where: { userEmail } })) as PontoDto[];
-            return allPontos;
-        } catch (error) {
-            throw new DatabaseErrorException('Error finding all clientes in database.');
-        }
+        return await repository.save({ id: pontoToUpdate.id, timestampDateEntrada: pontoRequest.timestampDateEntrada, timestampDateSaida: pontoRequest.timestampDateSaida, clienteId: pontoRequest.clienteId, descricaoAtividade: pontoRequest.descricaoAtividade }) as PontoDto
     }
 
     async find(userEmail: string, absoluteInitialTimestamp: number, absoluteEndTimestamp: number): Promise<Array<PontoDto>> {
