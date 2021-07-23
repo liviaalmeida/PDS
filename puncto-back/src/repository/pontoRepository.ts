@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Between, Connection, getConnection, LessThan, LessThanOrEqual, MongoRepository, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
+import { Connection, getConnection, Repository } from 'typeorm';
 import { injectable } from 'inversify';
 import { PontoInicialRequest } from '../dto/pontoInicialRequest';
 import { Ponto } from '../entity/Ponto';
@@ -37,29 +37,45 @@ export class PontoRepository {
     async find(userEmail: string, absoluteInitialTimestamp: number, absoluteEndTimestamp: number): Promise<Array<PontoDto>> {
         const repository = this.getPontoRepository();
 
-        try {
-            const allPontos = await repository.find({
-                where: {
-                    userEmail: userEmail,
-                    timestampDateEntrada: {
-                        $gte: absoluteInitialTimestamp
-                    },
-                    timestampDateSaida: {
-                        $lte: absoluteEndTimestamp
-                    },
+        const allPontos = await repository.find({
+            where: {
+                userEmail: userEmail,
+                timestampDateEntrada: {
+                    $gte: absoluteInitialTimestamp
                 },
-            }) as PontoDto[]
+                $or: [{
+                    timestampDateSaida: {
+                        $lte: absoluteEndTimestamp,
+                    }
+                }, { timestampDateSaida: null }]
+            },
+        }) as PontoDto[]
 
-            return allPontos;
-        } catch (error) {
-            console.log(error)
-            throw new DatabaseErrorException('Error finding all clientes in database.');
-        }
+        return allPontos;
     }
 
     async delete(pontoId: string): Promise<void> {
         const repository = this.getPontoRepository();
         await repository.delete(pontoId)
+    }
+
+    async findPontosPorMes(userEmail: string, timestampInicioMes: number, timestampFimMes: number): Promise<Array<PontoDto>> {
+        const repository = this.getPontoRepository();
+        const allPontos = await repository.find({
+            where: {
+                userEmail: userEmail,
+                timestampDateEntrada: {
+                    $gte: timestampInicioMes
+                },
+                $or: [{
+                    timestampDateSaida: {
+                        $lte: timestampFimMes,
+                    }
+                }, { timestampDateSaida: null }]
+            },
+        }) as PontoDto[]
+
+        return allPontos;
     }
 }
 

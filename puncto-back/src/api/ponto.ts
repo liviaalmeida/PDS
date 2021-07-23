@@ -7,6 +7,7 @@ import { PontoInicialRequest } from '../dto/pontoInicialRequest';
 import { PontoService } from '../service/pontoService';
 import { PontoDto } from '../dto/pontoDto';
 import { PontoRequest } from '../dto/pontoRequest';
+import { PontoAbertoDto } from '../dto/pontoAbertoDto';
 
 const router = express.Router();
 
@@ -64,6 +65,21 @@ router.delete('/:pontoId', async (req: Request, res: Response) => {
         res.status(204).send();
     } catch (err) {
         return res.status(500).json('Some unexpected error happened while deleting the ponto.');
+    }
+});
+
+//O mes será um número de 0 a 11, sendo 0 janeiro e 11 dezembro
+router.get('/mes/:mes', async (req: Request, res: Response) => {
+    try {
+        const userEmail: string = req.userEmail;
+        const mes: number = Number(req.params.mes);
+
+        const pontoService = container.get(PontoService);
+
+        let pontosAbertosEFechados: Array<PontoAbertoDto> = await pontoService.listaPontosAbertosEFechados(userEmail, mes);
+        res.status(200).json(pontosAbertosEFechados);
+    } catch (err) {
+        return res.status(500).json('Some unexpected error happened while getting the ponto.');
     }
 });
 export default router;
