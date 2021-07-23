@@ -56,6 +56,11 @@ export class PontoRepository {
             throw new DatabaseErrorException('Error finding all clientes in database.');
         }
     }
+
+    async delete(pontoId: string): Promise<void> {
+        const repository = this.getPontoRepository();
+        await repository.delete(pontoId)
+    }
 }
 
 

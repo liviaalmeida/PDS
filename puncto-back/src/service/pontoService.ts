@@ -46,4 +46,8 @@ export class PontoService {
 
         return await this._pontoRepository.find(userEmail, absoluteInitialTimestamp, absoluteEndTimestamp);
     }
+
+    async delete(pontoId: string): Promise<void> {
+        return await this._pontoRepository.delete(pontoId);
+    }
 }

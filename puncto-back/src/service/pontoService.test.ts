@@ -11,6 +11,7 @@ describe('Ponto service', () => {
             save: jest.fn(),
             update: jest.fn(),
             find: jest.fn(),
+            delete: jest.fn(),
         };
         pontoService = new PontoService(mockPontoRepository);
     });
@@ -56,5 +57,13 @@ describe('Ponto service', () => {
 
         expect(mockPontoRepository.find).toHaveBeenCalledTimes(1);
         expect(mockPontoRepository.find).toHaveBeenCalledWith(userEmail, absoluteInitialTimestamp, absoluteEndTimestamp);
+    });
+
+    it('Should call delete at pontoRepository', async () => {
+        const pontoId = "1626728432575"
+        await pontoService.delete(pontoId);
+
+        expect(mockPontoRepository.delete).toHaveBeenCalledTimes(1);
+        expect(mockPontoRepository.delete).toHaveBeenCalledWith(pontoId);
     });
 });
