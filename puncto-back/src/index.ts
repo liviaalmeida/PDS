@@ -2,7 +2,8 @@ import { createConnection } from 'typeorm';
 
 import cors from 'cors';
 import userRouter from './api/user';
-import companyRouter from './api/company';
+import clienteRouter from './api/cliente';
+import pontoRouter from './api/ponto';
 import { connectionOptions } from './config';
 
 const express = require('express');
@@ -25,7 +26,9 @@ app.use(express.json());
 
 app.use(userRouter);
 
-app.use('/company', companyRouter);
+app.use('/cliente', clienteRouter);
+
+app.use('/ponto', pontoRouter)
 
 app.listen(port, async () => {
   await createConnection(connectionOptions);

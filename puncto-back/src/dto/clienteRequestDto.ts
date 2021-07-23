@@ -1,5 +1,5 @@
 import { Length } from 'class-validator';
-export class CompanyDto {
+export class ClienteRequestDto {
   @Length(2, 100)
   name: string;
   @Length(2, 100)
