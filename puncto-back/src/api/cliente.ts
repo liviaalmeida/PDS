@@ -17,7 +17,7 @@ router.post('/', validate(ClienteRequestDto), async (req: Request, res: Response
     const cliente = req.body as ClienteRequestDto;
     const userEmail = req.userEmail;
 
-    let newClienteId = await clienteService.save(userEmail, cliente);
+    const newClienteId = await clienteService.save(userEmail, cliente);
     res.status(201).send(newClienteId);
   } catch (err) {
     if (err instanceof InvalidClienteRequestError) return res.status(err.statusCode).json(err.message);

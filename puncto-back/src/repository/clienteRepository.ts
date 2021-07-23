@@ -14,7 +14,7 @@ export class ClienteRepository {
     return connection.getRepository(Cliente);
   }
 
-  async save(userEmail: string, clienteDto: ClienteRequestDto): Promise<Number> {
+  async save(userEmail: string, clienteDto: ClienteRequestDto): Promise<number> {
     const repository = this.getClienteRepository();
     const cliente = new Cliente();
     cliente.name = clienteDto.name;
@@ -23,7 +23,7 @@ export class ClienteRepository {
     cliente.address = clienteDto.address;
     cliente.userEmail = userEmail;
 
-    var inserted = await repository.save(cliente);
+    const inserted = await repository.save(cliente);
     return inserted.id;
   }
 

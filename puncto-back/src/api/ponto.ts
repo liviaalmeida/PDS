@@ -20,7 +20,7 @@ router.post('/', validate(PontoInicialRequest), async (req: Request, res: Respon
 
         const pontoService = container.get(PontoService);
 
-        let ponto = await pontoService.save(userEmail, pontoInicialRequest);
+        const ponto = await pontoService.save(userEmail, pontoInicialRequest);
         res.status(201).send(ponto);
     } catch (err) {
         return res.status(500).json('Some unexpected error happened while creating the ponto.');
@@ -44,11 +44,11 @@ router.put('/', validate(PontoRequest), async (req: Request, res: Response) => {
 router.get('/:timestamp', async (req: Request, res: Response) => {
     try {
         const userEmail: string = req.userEmail;
-        const timestamp: number = Number(req.params.timestamp);
+        const timestamp = Number(req.params.timestamp);
 
         const pontoService = container.get(PontoService);
 
-        var pontos: Array<PontoDto> = await pontoService.find(userEmail, timestamp);
+        const pontos: Array<PontoDto> = await pontoService.find(userEmail, timestamp);
         res.status(200).json(pontos);
     } catch (err) {
         return res.status(500).json('Some unexpected error happened while getting the ponto.');
@@ -57,7 +57,7 @@ router.get('/:timestamp', async (req: Request, res: Response) => {
 
 router.delete('/:pontoId', async (req: Request, res: Response) => {
     try {
-        const pontoId: string = req.params.pontoId;
+        const pontoId = req.params.pontoId;
 
         const pontoService = container.get(PontoService);
 
@@ -72,11 +72,11 @@ router.delete('/:pontoId', async (req: Request, res: Response) => {
 router.get('/mes/:mes', async (req: Request, res: Response) => {
     try {
         const userEmail: string = req.userEmail;
-        const mes: number = Number(req.params.mes);
+        const mes = Number(req.params.mes);
 
         const pontoService = container.get(PontoService);
 
-        let pontosAbertosEFechados: Array<PontoAbertoDto> = await pontoService.listaPontosAbertosEFechados(userEmail, mes);
+        const pontosAbertosEFechados: Array<PontoAbertoDto> = await pontoService.listaPontosAbertosEFechados(userEmail, mes);
         res.status(200).json(pontosAbertosEFechados);
     } catch (err) {
         return res.status(500).json('Some unexpected error happened while getting the ponto.');

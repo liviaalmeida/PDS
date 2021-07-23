@@ -3,7 +3,6 @@ import { Connection, getConnection, Repository } from 'typeorm';
 import { injectable } from 'inversify';
 import { PontoInicialRequest } from '../dto/pontoInicialRequest';
 import { Ponto } from '../entity/Ponto';
-import { DatabaseErrorException } from '../exceptions/DatabaseErrorException';
 import { PontoDto } from '../dto/pontoDto';
 import { PontoRequest } from '../dto/pontoRequest';
 
@@ -22,14 +21,14 @@ export class PontoRepository {
         ponto.clienteId = pontoInicialRequest.clienteId
         ponto.descricaoAtividade = pontoInicialRequest.descricaoAtividade
         ponto.userEmail = userEmail
-        let newPonto = await repository.save(ponto) as PontoDto;
+        const newPonto = await repository.save(ponto) as PontoDto;
 
         return newPonto
     }
 
     async update(userEmail: string, pontoRequest: PontoRequest): Promise<PontoDto> {
         const repository = this.getPontoRepository();
-        let pontoToUpdate = await repository.findOne(pontoRequest.id) as Ponto;
+        const pontoToUpdate = await repository.findOne(pontoRequest.id) as Ponto;
 
         return await repository.save({ id: pontoToUpdate.id, timestampDateEntrada: pontoRequest.timestampDateEntrada, timestampDateSaida: pontoRequest.timestampDateSaida, clienteId: pontoRequest.clienteId, descricaoAtividade: pontoRequest.descricaoAtividade }) as PontoDto
     }

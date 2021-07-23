@@ -12,7 +12,7 @@ export class ClienteService {
   }
 
 
-  async save(userEmail: string, cliente: ClienteRequestDto): Promise<Number> {
+  async save(userEmail: string, cliente: ClienteRequestDto): Promise<number> {
     return await this._clienteRepository.save(userEmail, cliente);
   }
 

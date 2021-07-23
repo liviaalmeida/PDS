@@ -1,6 +1,5 @@
 import { PontoService } from './pontoService';
 import { PontoInicialRequest } from '../dto/pontoInicialRequest';
-import { isEmail } from 'class-validator';
 import { PontoRequest } from '../dto/pontoRequest';
 
 describe('Ponto service', () => {

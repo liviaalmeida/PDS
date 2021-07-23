@@ -14,7 +14,7 @@ export class PontoService {
     }
 
     private createAbsoluteInitialTimestamp(timestampDate: number): number {
-        var date = new Date(timestampDate)
+        const date = new Date(timestampDate)
         date.setHours(0)
         date.setMinutes(0)
         date.setSeconds(0)
@@ -24,7 +24,7 @@ export class PontoService {
     }
 
     private createAbsoluteEndTimestamp(absoluteInitialTimestamp: number): number {
-        var date = new Date(absoluteInitialTimestamp)
+        const date = new Date(absoluteInitialTimestamp)
         date.setHours(23)
         date.setMinutes(59)
         date.setSeconds(59)
@@ -34,22 +34,22 @@ export class PontoService {
     }
 
     private createTimestampInicioMes(mes: number): number {
-        var dataAtual = new Date()
+        const dataAtual = new Date()
         return new Date(dataAtual.getFullYear(), mes, 1).getTime();
     }
 
     private createTimestampFimMes(mes: number): number {
-        var dataAtual = new Date()
+        const dataAtual = new Date()
         return new Date(dataAtual.getFullYear(), mes + 1, 0).getTime();
     }
 
     private preenchePontosAbertosEFechados(timestampFimMes: number, pontos: Array<PontoDto>): Array<PontoAbertoDto> {
-        let numeroDias: number = new Date(timestampFimMes).getDate()
-        let pontosAbertos: Array<PontoAbertoDto> = new Array<PontoAbertoDto>()
+        const numeroDias: number = new Date(timestampFimMes).getDate()
+        const pontosAbertos: Array<PontoAbertoDto> = new Array<PontoAbertoDto>()
 
         for (let dia = 1; dia <= numeroDias; dia++) {
-            let diaPossuiPontoAberto = pontos.some(it => {
-                let dataEntrada = new Date(it.timestampDateEntrada)
+            const diaPossuiPontoAberto = pontos.some(it => {
+                const dataEntrada = new Date(it.timestampDateEntrada)
                 if (dataEntrada.getDate() == dia && (it.timestampDateSaida == undefined))
                     return true
 
@@ -71,8 +71,8 @@ export class PontoService {
     }
 
     async find(userEmail: string, timestampDate: number): Promise<Array<PontoDto>> {
-        var absoluteInitialTimestamp = this.createAbsoluteInitialTimestamp(timestampDate)
-        var absoluteEndTimestamp = this.createAbsoluteEndTimestamp(absoluteInitialTimestamp)
+        const absoluteInitialTimestamp = this.createAbsoluteInitialTimestamp(timestampDate)
+        const absoluteEndTimestamp = this.createAbsoluteEndTimestamp(absoluteInitialTimestamp)
 
         return await this._pontoRepository.find(userEmail, absoluteInitialTimestamp, absoluteEndTimestamp);
     }
@@ -82,9 +82,9 @@ export class PontoService {
     }
 
     async listaPontosAbertosEFechados(userEmail: string, mes: number): Promise<Array<PontoAbertoDto>> {
-        var timestampInicioMes = this.createTimestampInicioMes(mes)
-        var timestampFimMes = this.createTimestampFimMes(mes)
-        let pontos: Array<PontoDto> = await this._pontoRepository.findPontosPorMes(userEmail, timestampInicioMes, timestampFimMes);
+        const timestampInicioMes = this.createTimestampInicioMes(mes)
+        const timestampFimMes = this.createTimestampFimMes(mes)
+        const pontos: Array<PontoDto> = await this._pontoRepository.findPontosPorMes(userEmail, timestampInicioMes, timestampFimMes);
         return this.preenchePontosAbertosEFechados(timestampFimMes, pontos)
     }
 

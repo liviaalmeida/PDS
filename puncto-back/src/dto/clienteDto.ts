@@ -1,4 +1,3 @@
-import { Length } from 'class-validator';
 export class ClienteDto {
 
     id: number;
