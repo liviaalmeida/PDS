@@ -11,7 +11,9 @@
     "forceConsistentCasingInFileNames": true,        /* Disallow inconsistently-cased references to the same file. */
     "outDir": "out",
     "strictPropertyInitialization": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "sourceMap": true
   },
   "include": ["./src/**/*"],  
+  "exclude": ["./config"],
 }

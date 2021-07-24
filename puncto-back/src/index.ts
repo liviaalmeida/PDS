@@ -1,36 +1,15 @@
 import { createConnection } from 'typeorm';
 
-import cors from 'cors';
-import userRouter from './api/user';
-import clienteRouter from './api/cliente';
-import pontoRouter from './api/ponto';
+import app from './server';
+import config from './config';
 import { connectionOptions } from './config';
 
-const express = require('express');
+const port = config.port;
 
-// meio gambiarra isso, mas não achei outra forma facil
-// de permitir injetar outros valores na request
-declare global {
-  namespace Express {
-    interface Request {
-      userEmail: string
-    }
-  }
-}
-
-const app = express();
-const port = 3000;
-
-app.use(cors());
-app.use(express.json());
-
-app.use(userRouter);
-
-app.use('/cliente', clienteRouter);
-
-app.use('/ponto', pontoRouter)
+createConnection(connectionOptions);
 
 app.listen(port, async () => {
-  await createConnection(connectionOptions);
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Running on ${process.env.NODE_ENV} environment`);
+
+  console.log(`Server listening at http://localhost:${port}`);
 });

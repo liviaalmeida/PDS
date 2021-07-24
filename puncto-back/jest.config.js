@@ -6,5 +6,6 @@ module.exports = {
     "./out/**/*",
     "!**/node_modules/**",
     "!**/vendor/**"
-  ]
+  ],
+  testPathIgnorePatterns: ["<rootDir>/config/", "<rootDir>/node_modules/"]
 };
