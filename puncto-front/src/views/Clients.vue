@@ -81,7 +81,7 @@ export default Vue.extend({
       alert(JSON.stringify(this.clientName))
     },
     onReset(): void {
-      this.cleintName = ''
+      this.clientName = ''
     },
     onAdd: function (event){
       alert('Adicionar um novo cliente')
