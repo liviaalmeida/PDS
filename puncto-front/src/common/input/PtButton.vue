@@ -50,6 +50,8 @@ export default Vue.extend({
 <style lang="scss">
 .pt-button {
   text-align: center;
+  margin: 0 auto;
+  width: 100%;
 
   button {
     background-color: $pt-sapphire;
