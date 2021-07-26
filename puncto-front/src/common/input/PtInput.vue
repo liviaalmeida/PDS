@@ -2,21 +2,24 @@
   <div :class="['pt-input', {
     'pt-input--disabled': disabled,
     'pt-input--focused': focus,
+    'pt-input--small': small,
   }]">
     <label class="pt-input-label">
       <PtIcon :name="icon" v-if="icon" />
       {{ label }}
     </label>
-    <textarea v-if="type === 'textarea'" :value="value" :name="name"
+    <textarea v-if="type === 'textarea'" :name="name"
 		:placeholder="placeholder" :required="required"
     @blur="focus = false" @focus="focus = true"
     @input="$emit('input', $event.target.value)"
-    v-bind="inputAttrs" />
-    <input v-else :type="type" :value="value" :name="name"
+    v-bind="inputAttrs" v-model="model"
+    :disabled="disabled" />
+    <input v-else :type="type" :name="name"
 		:placeholder="placeholder" :required="required"
     @blur="focus = false" @focus="focus = true"
     @input="$emit('input', $event.target.value)"
-    v-bind="inputAttrs" >
+    v-bind="inputAttrs" v-mask="mask" v-model="model"
+    :disabled="disabled" >
   </div>
 </template>
 
@@ -60,6 +63,10 @@ export default Vue.extend({
       required: false,
       type: Boolean,
     },
+    small: {
+      required: false,
+      type: Boolean,
+    },
     type: {
       default: 'text',
       required: false,
@@ -73,7 +80,13 @@ export default Vue.extend({
   data() {
     return {
       focus: false,
+      model: this.value || '',
     }
+  },
+  watch: {
+    value() {
+      this.model = this.value
+    },
   },
 })
 </script>
@@ -111,6 +124,7 @@ export default Vue.extend({
     svg {
       height: 10px;
       width: 10px;
+      margin: 0 3px 0 0;
 
 			path {
 				fill: $pt-midnight;
@@ -128,6 +142,37 @@ export default Vue.extend({
 			svg path {
 				fill: $pt-ocean;
 			}
+    }
+  }
+
+  &--small {
+    background-color: $pt-coconut;
+    border: none;
+    min-height: 35px;
+    padding: 0 5px;
+
+    &.pt-input--focused {
+      .pt-input-label {
+        color: $pt-midnight;
+      }
+
+      svg path {
+        fill: $pt-midnight;
+      }
+    }
+
+    &.pt-input--disabled {
+      background-color: transparent;
+
+      input {
+        background-color: transparent;
+      }
+    }
+
+    .pt-input-label {
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 0;
     }
   }
 }

@@ -1,5 +1,7 @@
 <template>
-  <div class="pt-button">
+  <div :class="['pt-button', {
+    'pt-button--round': round,
+  }]">
     <button @click="$emit('click', $event)"
     :type="type" :disabled="disabled || loading">
       <div class="pt-button-loading"
@@ -32,6 +34,10 @@ export default Vue.extend({
       required: false,
       type: Boolean,
     },
+    round: {
+      required: false,
+      type: Boolean,
+    },
     type: {
       default: 'submit',
       required: false,
@@ -43,8 +49,6 @@ export default Vue.extend({
 
 <style lang="scss">
 .pt-button {
-  display: flex;
-  flex-direction: column;
   text-align: center;
 
   button {
@@ -88,6 +92,15 @@ export default Vue.extend({
     margin: 0 auto;
     height: 25px;
     width: 25px;
+  }
+
+  &--round {
+    button {
+      border-radius: 50%;
+      padding: 0;
+      height: 35px;
+      width: 35px;
+    }
   }
 }
 
