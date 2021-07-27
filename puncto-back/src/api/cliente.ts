@@ -7,6 +7,12 @@ import { authMiddleware } from '../middlewares/authentication';
 import { ClienteRequestDto } from '../dto/clienteRequestDto';
 import InvalidClienteRequestError from '../exceptions/InvalidClienteRequestError';
 
+interface ClientRequest extends Request {
+  query: {
+    search? :string
+  }
+}
+
 const router = express.Router();
 const clienteService = container.get(ClienteService);
 
@@ -26,17 +32,17 @@ router.post('/', validate(ClienteRequestDto), async (req: Request, res: Response
   }
 });
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (req: ClientRequest, res: Response) => {
   try {
     const userEmail = req.userEmail
 
-    const clientes = await clienteService.find(userEmail)
+    const clientes = await clienteService.find(userEmail, req.query.search);
 
     res.status(200).json(clientes);
   } catch (err) {
     if (err instanceof InvalidClienteRequestError) return res.status(err.statusCode).json(err.message);
 
-    return res.status(500).json('Some unexpected error happened while creating a cliente.');
+    return res.status(500).json('Some unexpected error happened while finding a client.');
   }
 });
 
