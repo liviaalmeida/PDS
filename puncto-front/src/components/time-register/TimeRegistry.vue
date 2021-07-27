@@ -1,16 +1,18 @@
 <template>
-  <div :class="['time-registry', {
+  <form :class="['time-registry', {
     'time-registry--editing': editing,
-  }]">
+  }]" @submit.prevent="confirmEditing">
     <div class="time-registry-header">
       <div class="time-registry-header-times">
         <PtInput small label="Entrada"
+        name="start"
         placeholder="HH:MM"
         :mask="'##:##'"
         v-model="model.start"
         :disabled="!editing"
         required />
         <PtInput small label="Saída"
+        name="end"
         placeholder="HH:MM"
         :mask="'##:##'"
         v-model="model.end"
@@ -18,26 +20,25 @@
       </div>
       <div class="time-registry-header-icons"
       v-if="editing" key="icons-editing">
-        <PtIcon name="check"
-        @click="confirmEditing" />
-        <PtIcon name="close"
+        <PtButtonIcon icon="check" />
+        <PtButtonIcon icon="close" type="button"
         @click="cancelEditing" />
       </div>
       <div class="time-registry-header-icons"
       v-else key="icons-disabled">
-        <PtIcon name="edit"
-        @click="editing = true" />
-        <PtIcon name="delete"
+        <PtButtonIcon icon="edit" type="button"
+        :disabled="!canEdit"
+        @click="onEdit" />
+        <PtButtonIcon icon="delete" type="button"
         @click="$emit('delete', punch.id)" />
       </div>
     </div>
     <PtInput small label="Cliente" icon="clients"
-    required v-model="model.client"
+    required name="client" v-model="model.client"
     :disabled="!editing" />
-    <PtInput small label="Atividade"
-    v-model="model.activity"
-    :disabled="!editing" />
-  </div>
+    <PtInput small label="Atividade" :disabled="!editing"
+    name="activity" v-model="model.activity" />
+  </form>
 </template>
 
 <script lang="ts">
@@ -46,6 +47,14 @@ import { Punch } from '../../domain/Punch'
 
 export default Vue.extend({
   props: {
+    canEdit: {
+      required: false,
+      type: Boolean,
+    },
+    onSave: {
+      required: true,
+      type: Function,
+    },
     punch: {
       required: false,
       type: Object as () => Punch,
@@ -53,22 +62,36 @@ export default Vue.extend({
   },
   data() {
     return {
-      editing: false,
+      editing: this.punch.id === '0',
       model: {
         ...this.punch,
       },
     }
   },
   methods: {
+    emitEditing() {
+      this.$emit('edit', this.editing)
+    },
     cancelEditing() {
       this.editing = false
+      this.emitEditing()
+      
+      if (this.punch.id === '0') {
+        this.$emit('delete', this.punch.id)
+        return
+      }
+
       this.model = {
         ...this.punch,
       }
     },
     confirmEditing() {
-      this.editing = false
-      this.$emit('save', this.model)
+      this.editing = !this.onSave(this.model)
+      this.emitEditing()
+    },
+    onEdit() {
+      this.editing = true
+      this.emitEditing()
     },
   },
   watch: {
@@ -80,6 +103,9 @@ export default Vue.extend({
         }
       },
     },
+  },
+  mounted() {
+    this.emitEditing()
   },
 })
 </script>
@@ -111,7 +137,6 @@ export default Vue.extend({
       gap: 7px;
 
       svg {
-        cursor: pointer;
         height: 15px;
         width: 15px;
 
