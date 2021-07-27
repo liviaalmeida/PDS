@@ -4,6 +4,7 @@ import { Logger } from 'tslog';
 
 import { UserDto } from '../dto/userDto';
 import { LoginDto } from '../dto/loginDto';
+import { PersonalDataDto } from '../dto/personalDataDto';
 import { UserService } from '../service/userService';
 import { AuthService } from '../service/authService';
 import { container } from '../inversify.config';
@@ -61,6 +62,19 @@ router.get('/user', async (req: Request, res: Response) => {
     const allUsers = await userService.findAllUsers();
     res.status(200).json(allUsers);
   } catch (exception) {}
+});
+
+router.put('/user', validate(PersonalDataDto), async (req: Request, res: Response) => {
+  try {
+    const payload = req.body as PersonalDataDto;
+
+    const editResponse = await userService.editUserData(req.userEmail, payload);
+
+    res.status(200).json(editResponse);
+  } catch (err) {
+    log.warn('Error editing user data: ', err);
+    res.status(err.statusCode).json(err.message);
+  }
 });
 
 router.use(validationError);

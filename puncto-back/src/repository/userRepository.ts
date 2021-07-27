@@ -6,6 +6,7 @@ import { injectable } from 'inversify';
 import { UserDto } from '../dto/userDto';
 import { User } from '../entity/User';
 import { DatabaseErrorException } from '../exceptions/DatabaseErrorException';
+import { PersonalDataDto } from '../dto/personalDataDto';
 
 const log: Logger = new Logger();
 
@@ -53,6 +54,27 @@ export class UserRepository {
     } catch (error) {
       log.error(error);
       throw new DatabaseErrorException('Error finding user in database.');
+    }
+  }
+
+  async editUserData(email: string, payload: PersonalDataDto): Promise<PersonalDataDto> {
+    const repository = this.getUserRepository();
+
+    try {
+    const user = await repository.findOne({ where: { email } });
+    const updatedEntity = await repository.save({
+      ...user,
+      ...payload
+    });
+
+    return {
+      name: updatedEntity.name,
+      cnpj: updatedEntity.cnpj,
+      address: updatedEntity.address,
+    };
+    } catch (error) {
+      log.error(error);
+      throw new DatabaseErrorException('Failed to edit user in database.');
     }
   }
 }
