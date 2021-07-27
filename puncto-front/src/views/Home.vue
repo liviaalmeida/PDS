@@ -63,10 +63,6 @@ export default Vue.extend({
   methods: {
     onAdd(punch: Punch) {
       window.alert(`add ${punch.start} ${punch.end}`)
-      this.punches = [
-        ...this.punches,
-        punch,
-      ]
     },
     onDelete(id: string) {
       window.alert(`delete ${id}`)
