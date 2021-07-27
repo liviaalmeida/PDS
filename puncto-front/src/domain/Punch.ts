@@ -1,7 +1,7 @@
 export class Punch {
 	id = ''
 	start = ''
-	end = ''
+	end? = ''
 	client = ''
-	activity = ''
+	activity? = ''
 }
