@@ -38,4 +38,8 @@ export class UserService {
   async editUserData(email: string, payload: PersonalDataDto): Promise<PersonalDataDto> {
     return await this._userRepositoy.editUserData(email, payload);
   }
+
+  async getUserData(email: string): Promise<PersonalDataDto> {
+    return await this._userRepositoy.getUserData(email);
+  }
 }

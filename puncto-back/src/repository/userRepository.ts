@@ -23,6 +23,11 @@ export class UserRepository {
     user.email = props.email;
     user.password = props.password;
 
+    // set additional fields to empty initially
+    user.address = '';
+    user.name = '';
+    user.cnpj = '';
+
     try {
       await repository.save(user);
     } catch (error) {
@@ -75,6 +80,27 @@ export class UserRepository {
     } catch (error) {
       log.error(error);
       throw new DatabaseErrorException('Failed to edit user in database.');
+    }
+  }
+
+  async getUserData(email: string): Promise<PersonalDataDto> {
+    const repository = this.getUserRepository();
+
+    try {
+      const user = await repository.findOne({ where: { email } });
+      log.debug('Found user: ', user);
+      if (!user) {
+        throw new Error('User not found.');
+      }
+
+      return {
+        name: user.name,
+        cnpj: user.cnpj,
+        address: user.address,
+      };
+    } catch (error) {
+      log.error(error);
+      throw new DatabaseErrorException('Error finding user data in database.');
     }
   }
 }

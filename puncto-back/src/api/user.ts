@@ -56,12 +56,13 @@ router.post('/login', validate(LoginDto), async (req: Request, res: Response) =>
 });
 
 router.get('/user', async (req: Request, res: Response) => {
-  console.log('Fetching users for email: ', req.userEmail);
-
   try {
-    const allUsers = await userService.findAllUsers();
-    res.status(200).json(allUsers);
-  } catch (exception) {}
+    const user = await userService.getUserData(req.userEmail);
+    res.status(200).json(user);
+  } catch (exception) {
+    log.error('Error fetching user data: ', exception);
+    res.status(exception.statusCode).json(exception.message);
+  }
 });
 
 router.put('/user', validate(PersonalDataDto), async (req: Request, res: Response) => {

@@ -113,5 +113,26 @@ describe('Users API', () => {
 
     expect(editRes.status).toBe(401);
   });
+
+  it('can get personal data', async () => {
+    await createTestUser();
+
+    const loginResponse = await testApi.post('/login').set('Accept', 'application/json').send(testUserCredentials);
+    await testApi.put('/user')
+      .set('Accept', 'application/json')
+      .set('Authorization', `Bearer ${loginResponse.body.authToken}`)
+      .send({
+        cnpj: '12.32.12.14/123',
+        name: 'novo nome',
+        address: 'novo endereco',
+      });
+
+    const getRes = await testApi.get('/user')
+      .set('Accept', 'application/json')
+      .set('Authorization', `Bearer ${loginResponse.body.authToken}`)
+
+    expect(getRes.status).toBe(200);
+    expect(getRes.body.name).toBe('novo nome');
+  });
 });
 
