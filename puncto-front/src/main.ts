@@ -8,6 +8,7 @@ import VueMask from 'v-mask'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 import PtButton from '@/common/input/PtButton.vue'
+import PtButtonIcon from '@/common/input/PtButtonIcon.vue'
 import PtCalendar from '@/common/calendar/PtCalendar.vue'
 import PtIcon from '@/common/PtIcon.vue'
 import PtInput from '@/common/input/PtInput.vue'
@@ -29,6 +30,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.config.productionTip = false
 
 Vue.component('PtButton', PtButton)
+Vue.component('PtButtonIcon', PtButtonIcon)
 Vue.component('PtCalendar', PtCalendar)
 Vue.component('PtIcon', PtIcon)
 Vue.component('PtInput', PtInput)
