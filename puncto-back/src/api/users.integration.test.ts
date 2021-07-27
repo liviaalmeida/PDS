@@ -7,14 +7,20 @@ import { truncate } from '../test-utils/helpers';
 
 const testApi = supertest(app);
 
-describe('Authentication flow', () => {
+describe('Users API', () => {
+  const testUserCredentials = {
+    email: 'test@test.com',
+    password: '123456',
+  }
+
+  async function createTestUser() {
+    await testApi.post('/signup').set('Accept', 'application/json').send(testUserCredentials);
+  }
+
   beforeAll(async () => {
     await createConnection(connectionOptions);
+    await truncate();
   });
-
-  // afterAll(async () => {
-  //   await connection.close();
-  // });
 
   beforeEach(async () => {
     await truncate();
@@ -22,35 +28,24 @@ describe('Authentication flow', () => {
 
   it('can create new user', async () => {
     const signupRes = await testApi.post('/signup').set('Accept', 'application/json').send({
-      email: 'test@test.com',
+      email: 'testUser@test.com',
       password: '123456',
     });
-
     expect(signupRes.status).toBe(201);
   });
 
   it('can log in', async () => {
-    await testApi.post('/signup').set('Accept', 'application/json').send({
-      email: 'test@test.com',
-      password: '123456',
-    });
-
-    const res = await testApi.post('/login').set('Accept', 'application/json').send({
-      email: 'test@test.com',
-      password: '123456',
-    });
+    await createTestUser();
+    const res = await testApi.post('/login').set('Accept', 'application/json').send(testUserCredentials);
     expect(res.status).toBe(200);
   });
 
   it('returns 401 for invalid credentials', async () => {
-    await testApi.post('/signup').set('Accept', 'application/json').send({
-      email: 'test@test.com',
-      password: '123456',
-    });
+    await createTestUser();
 
     const res = await testApi.post('/login').set('Accept', 'application/json').send({
       email: 'test@test.com',
-      password: '123456789',
+      password: 'wrongpassword',
     });
     expect(res.status).toBe(401);
   });
@@ -76,4 +71,47 @@ describe('Authentication flow', () => {
     });
     expect(res.status).toBe(400);
   });
+
+  it('can edit personal data', async () => {
+    await createTestUser();
+
+    const loginResponse = await testApi.post('/login').set('Accept', 'application/json').send(testUserCredentials);
+
+    const editRes = await testApi.put('/user')
+      .set('Accept', 'application/json')
+      .set('Authorization', `Bearer ${loginResponse.body.authToken}`)
+      .send({
+        cnpj: '12.32.12.14/123',
+        name: 'novo nome',
+        address: 'novo endereco',
+      });
+
+    expect(editRes.status).toBe(200);
+  });
+
+  it('returns 400 on invalid payload to edit', async () => {
+    await createTestUser();
+    const loginResponse = await testApi.post('/login').set('Accept', 'application/json').send(testUserCredentials);
+
+    const editRes = await testApi
+      .put('/user')
+      .set('Authorization', `Bearer ${loginResponse.body.authToken}`)
+      .set('Accept', 'application/json').send({
+        email: 'test@test.com',
+        password: '123456',
+      });
+
+    expect(editRes.status).toBe(400);
+  });
+
+  it('returns 401 on non authenticated request', async () => {
+    const editRes = await testApi.put('/user').set('Accept', 'application/json').send({
+      cnpj: '12.32.12.14/123',
+      name: 'novo nome',
+      address: 'novo endereco',
+    });
+
+    expect(editRes.status).toBe(401);
+  });
 });
+
