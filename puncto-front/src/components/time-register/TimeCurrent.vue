@@ -20,12 +20,16 @@ export default Vue.extend({
     return {
       day: `${moment().format('dddd')}, ${moment().format('LL').toLowerCase()}`,
       time: moment().format('LT'),
+      update: 0,
     }
   },
   mounted() {
-    setInterval(() => {
+    this.update = setInterval(() => {
       this.time = moment().format('LT')
     }, 5000)
+  },
+  beforeDestroy() {
+    clearInterval(this.update)
   },
 })
 </script>
