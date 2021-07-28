@@ -27,11 +27,13 @@ export class ClienteRepository {
     return inserted.id;
   }
 
-  async find(userEmail: string): Promise<Array<ClienteDto>> {
+  async find(userEmail: string, query?: string): Promise<Array<ClienteDto>> {
     const repository = this.getClienteRepository();
 
     try {
-      const allClientes = (await repository.find({ where: { userEmail } })) as ClienteDto[];
+      const whereClause = query ? { where: { userEmail, name: new RegExp(`^${query}`) } } : { where: { userEmail } };
+      
+      const allClientes = (await repository.find(whereClause)) as ClienteDto[];
       return allClientes;
     } catch (error) {
       throw new DatabaseErrorException('Error finding all clientes in database.');

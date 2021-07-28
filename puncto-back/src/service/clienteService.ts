@@ -16,7 +16,7 @@ export class ClienteService {
     return await this._clienteRepository.save(userEmail, cliente);
   }
 
-  async find(userEmail: string): Promise<Array<ClienteDto>> {
-    return await this._clienteRepository.find(userEmail)
+  async find(userEmail: string, query?: string): Promise<Array<ClienteDto>> {
+    return await this._clienteRepository.find(userEmail, query);
   }
 }

@@ -5,6 +5,7 @@ import { Logger } from 'tslog';
 import { UserDto } from '../dto/userDto';
 import { UserRepository } from '../repository/userRepository';
 import { NotFoundException } from '../exceptions/NotFoundException';
+import { PersonalDataDto } from '../dto/personalDataDto';
 
 const log: Logger = new Logger();
 
@@ -32,5 +33,13 @@ export class UserService {
   async findAllUsers(): Promise<Array<UserDto>> {
     const allUsers = await this._userRepositoy.findAllUsers();
     return allUsers;
+  }
+
+  async editUserData(email: string, payload: PersonalDataDto): Promise<PersonalDataDto> {
+    return await this._userRepositoy.editUserData(email, payload);
+  }
+
+  async getUserData(email: string): Promise<PersonalDataDto> {
+    return await this._userRepositoy.getUserData(email);
   }
 }
