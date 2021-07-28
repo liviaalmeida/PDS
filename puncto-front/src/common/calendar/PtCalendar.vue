@@ -6,7 +6,7 @@
       :disabled="picking">
         ◄
       </button>
-      <div>
+      <div class="to-test">
         <button @click="onMonth">
           {{ month }}
         </button>
