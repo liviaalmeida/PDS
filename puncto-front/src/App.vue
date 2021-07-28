@@ -18,8 +18,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import PtMenu from './components/menu/PtMenu.vue'
-import PtLoader from './components/PtLoader.vue'
+import PtMenu from './common/menu/PtMenu.vue'
+import PtLoader from './common/PtLoader.vue'
 import { mapGetters } from 'vuex'
 
 export default Vue.extend({

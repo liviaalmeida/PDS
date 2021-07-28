@@ -4,13 +4,15 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import pluginAPI from './api/Plugin'
+import VueMask from 'v-mask'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
-import PtButton from '@/components/input/PtButton.vue'
-import PtCalendar from '@/components/calendar/PtCalendar.vue'
-import PtIcon from '@/components/PtIcon.vue'
-import PtInput from '@/components/input/PtInput.vue'
-import PtLogo from '@/components/PtLogo.vue'
+import PtButton from '@/common/input/PtButton.vue'
+import PtButtonIcon from '@/common/input/PtButtonIcon.vue'
+import PtCalendar from '@/common/calendar/PtCalendar.vue'
+import PtIcon from '@/common/PtIcon.vue'
+import PtInput from '@/common/input/PtInput.vue'
+import PtLogo from '@/common/PtLogo.vue'
 
 import { directive } from 'v-visible'
 
@@ -18,6 +20,7 @@ Vue.use(VueCookies)
 Vue.use(pluginAPI)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(VueMask)
 
 import '@/assets/scss/reset.scss'
 import '@/assets/scss/fonts.scss'
@@ -27,6 +30,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.config.productionTip = false
 
 Vue.component('PtButton', PtButton)
+Vue.component('PtButtonIcon', PtButtonIcon)
 Vue.component('PtCalendar', PtCalendar)
 Vue.component('PtIcon', PtIcon)
 Vue.component('PtInput', PtInput)
