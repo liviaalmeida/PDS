@@ -136,13 +136,8 @@ export default Vue.extend({
       display: flex;
       gap: 7px;
 
-      svg {
-        height: 15px;
-        width: 15px;
-
-        path {
-          fill: $pt-silver;
-        }
+      svg path {
+        fill: $pt-silver;
       }
     }
   }
