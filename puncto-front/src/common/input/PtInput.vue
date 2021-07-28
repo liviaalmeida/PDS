@@ -133,6 +133,19 @@ export default Vue.extend({
     }
   }
 
+  &--disabled {
+    background-color: $pt-fog;
+    border-color: $pt-coal;
+
+    .pt-input-label {
+      color: $pt-coal;
+
+			svg path {
+				fill: $pt-coal;
+			}
+    }
+  }
+
   &--focused {
     border-color: $pt-ocean;
 
@@ -151,6 +164,7 @@ export default Vue.extend({
     min-height: 35px;
     padding: 0 5px;
 
+    &.pt-input--disabled,
     &.pt-input--focused {
       .pt-input-label {
         color: $pt-midnight;

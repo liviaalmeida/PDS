@@ -38,5 +38,10 @@ export default Vue.extend({
   &:not(:disabled) {
     cursor: pointer;
   }
+
+  svg {
+    height: 15px;
+    width: 15px;
+  }
 }
 </style>
