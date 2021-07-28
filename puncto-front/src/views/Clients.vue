@@ -65,7 +65,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .clients {
   max-width: 588px;
   margin: 0 auto;
