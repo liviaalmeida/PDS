@@ -41,6 +41,10 @@ export default Vue.extend({
       logged: 'logged',
     }),
   },
+  async mounted() {
+    const token = this.$cookies.get('authToken')
+    if (token) this.$api.setToken(token)
+  },
 })
 </script>
 
