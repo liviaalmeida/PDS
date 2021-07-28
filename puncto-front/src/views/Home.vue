@@ -9,7 +9,8 @@
     </div>
     <div class="flex-column justify-content-center">
       <div class="home-header">
-        <PtButton class="home-button" :disabled="editing">
+        <PtButton class="home-button" :disabled="editing"
+        @click="onRegister">
           Registrar Ponto
         </PtButton>
       </div>
@@ -28,6 +29,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import moment from 'moment'
 import TimeCurrent from '../components/time-register/TimeCurrent.vue'
 import TimeGroup from '../components/time-register/TimeGroup.vue'
 import { Punch } from '../domain/Punch'
@@ -75,6 +77,9 @@ export default Vue.extend({
     },
     onSave(punch: Punch) {
       window.alert(`save ${punch.id}`)
+    },
+    onRegister() {
+      window.alert(`register ${moment().format('LT')}`)
     },
   },
 })
