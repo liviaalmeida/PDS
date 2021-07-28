@@ -100,6 +100,7 @@ export class UserRepository {
       return {
         name: user.name,
         cnpj: user.cnpj,
+        email: user.email,
         address: user.address,
         addressTwo: user.addressTwo,
         addressThree: user.addressThree,
