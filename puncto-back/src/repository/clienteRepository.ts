@@ -21,6 +21,8 @@ export class ClienteRepository {
     cliente.cnpj = clienteDto.cnpj;
     cliente.email = clienteDto.email;
     cliente.address = clienteDto.address;
+    cliente.addressTwo = clienteDto.addressTwo;
+    cliente.addressThree = clienteDto.addressThree;
     cliente.userEmail = userEmail;
 
     const inserted = await repository.save(cliente);

@@ -25,6 +25,8 @@ export class UserRepository {
 
     // set additional fields to empty initially
     user.address = '';
+    user.addressTwo = '';
+    user.addressThree = '';
     user.name = '';
     user.cnpj = '';
 
@@ -76,6 +78,8 @@ export class UserRepository {
       name: updatedEntity.name,
       cnpj: updatedEntity.cnpj,
       address: updatedEntity.address,
+      addressTwo: updatedEntity.addressTwo,
+      addressThree: updatedEntity.addressThree,
     };
     } catch (error) {
       log.error(error);
@@ -97,6 +101,8 @@ export class UserRepository {
         name: user.name,
         cnpj: user.cnpj,
         address: user.address,
+        addressTwo: user.addressTwo,
+        addressThree: user.addressThree,
       };
     } catch (error) {
       log.error(error);
