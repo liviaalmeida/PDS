@@ -84,6 +84,8 @@ describe('Users API', () => {
         cnpj: '12.32.12.14/123',
         name: 'novo nome',
         address: 'novo endereco',
+        addressTwo: 'endereco 2',
+        addressThree: 'endereco 3',
       });
 
     expect(editRes.status).toBe(200);
@@ -125,6 +127,8 @@ describe('Users API', () => {
         cnpj: '12.32.12.14/123',
         name: 'novo nome',
         address: 'novo endereco',
+        addressTwo: 'endereco dois',
+        addressThree: 'endereco tres',
       });
 
     const getRes = await testApi.get('/user')
