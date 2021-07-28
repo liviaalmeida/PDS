@@ -18,10 +18,6 @@ describe('PtInput', () => {
       propsData: {
         label,
         type,
-        value: 'kkkkkk'
-      },
-      model: {
-        prop: 'value',
       },
       components: {
         PtIcon,
