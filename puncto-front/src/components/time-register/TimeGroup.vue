@@ -43,6 +43,10 @@ export default Vue.extend({
       required: true,
       type: Boolean,
     },
+    pending: {
+      required: true,
+      type: Boolean,
+    },
     punches: {
       required: true,
       type: Array as () => Array<Punch>,
@@ -57,9 +61,6 @@ export default Vue.extend({
   computed: {
     dayText(): string {
       return moment(this.day).format('LL').toLowerCase()
-    },
-    pending(): boolean {
-      return !this.editing && !this.data.every((punch: Punch) => !!punch.end)
     },
     sortPunchs(): (pc1: Punch, pc2: Punch) => number {
       return (pc1: Punch, pc2: Punch) => pc1.start < pc2.start ? -1 : 1

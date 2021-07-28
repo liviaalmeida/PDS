@@ -16,6 +16,7 @@
       <TimeGroup :punches="punches"
       :day="daySelected"
       :editing="editing"
+      :pending="pending"
       class="home-punches"
       @add="onAdd"
       @delete="onDelete"
@@ -59,6 +60,11 @@ export default Vue.extend({
         }
       ] as Punch[],
     }
+  },
+  computed: {
+    pending(): boolean {
+      return !this.editing && !this.punches.every((punch: Punch) => !!punch.end)
+    },
   },
   methods: {
     onAdd(punch: Punch) {
