@@ -5,7 +5,7 @@
     <div class="client-registry-header"
     v-if="editing" key="icons-editing">
       <PtButtonIcon icon="check" type="submit"
-      @click="editing = true" />
+      @click="confirmEditing" />
       <PtButtonIcon icon="close" type="button"
       @click="cancelEditing" />
     </div>
@@ -52,7 +52,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      editing: false,
+      editing: !this.client.id,
       model: { ...this.client },
     }
   },
@@ -67,6 +67,10 @@ export default Vue.extend({
       this.model = {
         ...this.client,
       }
+    },
+    confirmEditing() {
+      this.editing = false
+      this.emitEditing()
     },
   },
 })
