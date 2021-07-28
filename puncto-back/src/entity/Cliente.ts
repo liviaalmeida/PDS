@@ -18,5 +18,11 @@ export class Cliente extends BaseEntity {
   address: string;
 
   @Column()
+  addressTwo: string;
+
+  @Column()
+  addressThree: string;
+
+  @Column()
   userEmail: string;
 }

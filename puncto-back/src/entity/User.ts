@@ -21,6 +21,12 @@ export class User extends BaseEntity {
   @Column()
   address: string;
 
+  @Column()
+  addressTwo: string;
+
+  @Column()
+  addressThree: string;
+
   @BeforeInsert()
   @BeforeUpdate()
   hashPassword(): void {
