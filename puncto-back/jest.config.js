@@ -7,5 +7,9 @@ module.exports = {
     "!**/node_modules/**",
     "!**/vendor/**"
   ],
+  testMatch: [
+    '<rootDir>/src/**/*.unit.test.ts',
+  ],
   testPathIgnorePatterns: ["<rootDir>/config/", "<rootDir>/node_modules/"]
 };
+
