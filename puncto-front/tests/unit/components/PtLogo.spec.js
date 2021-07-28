@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
-import PtIcon from '@/components/PtIcon.vue'
-import PtLogo from '@/components/PtLogo.vue'
+import PtIcon from '@/common/PtIcon.vue'
+import PtLogo from '@/common/PtLogo.vue'
 
 describe('PtLogo', () => {
   let ptLogo

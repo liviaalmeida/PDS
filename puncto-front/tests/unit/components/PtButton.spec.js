@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import PtButton from '@/components/input/PtButton.vue'
+import PtButton from '@/common/input/PtButton.vue'
 
 describe('PtButton', () => {
   const help = 'Help text under button'

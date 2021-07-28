@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import MenuItem from '@/components/menu/MenuItem.vue'
-import PtIcon from '@/components/PtIcon.vue'
-import PtMenu from '@/components/menu/PtMenu.vue'
+import MenuItem from '@/common/menu/MenuItem.vue'
+import PtIcon from '@/common/PtIcon.vue'
+import PtMenu from '@/common/menu/PtMenu.vue'
 import Vuex from 'vuex'
 
 describe('PtMenu', () => {

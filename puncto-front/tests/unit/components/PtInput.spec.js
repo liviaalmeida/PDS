@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
-import PtIcon from '@/components/PtIcon.vue'
-import PtInput from '@/components/input/PtInput.vue'
+import PtIcon from '@/common/PtIcon.vue'
+import PtInput from '@/common/input/PtInput.vue'
 
 describe('PtInput', () => {
   const label = 'Test Input'
