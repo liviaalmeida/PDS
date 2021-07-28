@@ -21,7 +21,7 @@ describe('PtButton', () => {
   })
 
   it('renders a button', () => {
-    expect(ptButton.find('button')).toBeDefined()
+    expect(ptButton.find('button').exists()).toBeDefined()
   })
 
   it('renders a label inside the button', () => {
@@ -30,7 +30,7 @@ describe('PtButton', () => {
 
   it('renders loading if loading is true', () => {
     loading = true
-    expect(ptButton.find('.pt-button-loading')).toBeDefined()
+    expect(ptButton.find('.pt-button-loading').exists()).toBeDefined()
   })
 
   it('renders a help text if provided', () => {

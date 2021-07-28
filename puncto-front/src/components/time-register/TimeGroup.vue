@@ -9,7 +9,7 @@
         }]"></div>
       </div>
     </div>
-    <TimeRegistry v-for="(punch) in data"
+    <TimeRegistry v-for="(punch) in model"
     :key="punch.id" :punch="punch"
     :on-save="validateSave"
     :can-edit="!editing"
@@ -55,7 +55,7 @@ export default Vue.extend({
   data() {
     return {
       duration: '',
-      data: [] as Punch[],
+      model: [] as Punch[],
     }
   },
   computed: {
@@ -72,7 +72,7 @@ export default Vue.extend({
   methods: {
     onDelete(id: string) {
       if (id === '0') {
-        this.data = this.data.slice(0, -1)
+        this.model = this.model.slice(0, -1)
         return
       }
 
@@ -82,8 +82,8 @@ export default Vue.extend({
       const newPunch = new Punch()
       newPunch.id = '0'
 
-      this.data = [
-        ...this.data,
+      this.model = [
+        ...this.model,
         newPunch,
       ]
     },
@@ -102,9 +102,9 @@ export default Vue.extend({
       else if (!this.todaySelected) this.duration = 'Ponto aberto'
       else this.duration = '8:00'
     },
-    updateData() {
-      this.data = this.punches.map(p => ({ ...p }))
-      this.data.sort(this.sortPunchs)
+    updateModel() {
+      this.model = this.punches.map(p => ({ ...p }))
+      this.model.sort(this.sortPunchs)
     },
     validateSave(punch: Punch) {
       if (this.pending && !punch.end) {
@@ -117,7 +117,7 @@ export default Vue.extend({
         return false
       }
 
-      const updated = this.simulatePunches(this.data, punch)
+      const updated = this.simulatePunches(this.model, punch)
       if (!this.validPunchesIntermediates(updated)) {
         window.alert('Apenas o último ponto do dia corrente pode ficar em aberto')
         return false
@@ -158,11 +158,11 @@ export default Vue.extend({
       this.updateDuration()
     },
     punches() {
-      this.updateData()
+      this.updateModel()
     },
   },
   mounted() {
-    this.updateData()
+    this.updateModel()
     this.updateDuration()
   },
 })

@@ -32,6 +32,6 @@ describe('Cliente service', () => {
     await clienteService.find(userEmail);
 
     expect(mockClienteRepository.find).toHaveBeenCalledTimes(1);
-    expect(mockClienteRepository.find).toHaveBeenCalledWith(userEmail);
+    expect(mockClienteRepository.find).toHaveBeenCalledWith(userEmail, undefined);
   });
 });

@@ -30,16 +30,16 @@ describe('PtMenu', () => {
   })
 
   it('renders the menu element', () => {
-    expect(ptMenu.find('.menu')).toBeDefined()
+    expect(ptMenu.find('.menu').exists()).toBeDefined()
   })
 
   it('renders the menu closed', () => {
-    expect(ptMenu.find('.double-chevron-right')).toBeDefined()
+    expect(ptMenu.find('.double-chevron-right').exists()).toBeDefined()
   })
 
   it('opens the menu on button click', () => {
     const button = ptMenu.find('button')
     button.trigger('click')
-    expect(ptMenu.find('.double-chevron-left')).toBeDefined()
+    expect(ptMenu.find('.double-chevron-left').exists()).toBeDefined()
   })
 })

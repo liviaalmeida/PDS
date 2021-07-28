@@ -7,7 +7,7 @@
     >
       <PtInput
         label="Nome"
-        v-model="form.name"
+        v-model="user.name"
         icon="profile"
         required
         placeholder="Nome Completo"
@@ -16,7 +16,7 @@
         <PtInput
           class="registration-input"
           label="CNPJ"
-          v-model="form.cnpj"
+          v-model="user.cnpj"
           type="text"
           icon="profile"
           required
@@ -25,17 +25,18 @@
         <PtInput
           class="registration-input"
           label="Email"
-          v-model="form.email"
+          v-model="user.email"
           type="email"
           icon="email"
           required
           placeholder="Digite seu email"
+          disabled
         />
       </div>
       <div class="registration-address">Endereço</div>
       <PtInput
         label="Linha 1"
-        v-model="form.addres"
+        v-model="user.address.line1"
         type="text"
         icon="marker"
         required
@@ -43,7 +44,7 @@
       />
       <PtInput
         label="Linha 2"
-        v-model="form.addres"
+        v-model="user.address.line2"
         type="text"
         icon="marker"
         required
@@ -51,7 +52,7 @@
       />
       <PtInput
         label="Linha 3"
-        v-model="form.addres"
+        v-model="user.address.line3"
         type="text"
         icon="marker"
         required
@@ -68,24 +69,43 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      form: {
+      user: {
         name: '',
         cnpj: '',
         email: '',
-        address: [],
+        address: {
+          line1: '',
+          line2: '',
+          line3: '',
+        },
       },
     }
   },
   methods: {
     onSubmit(): void {
-      alert(JSON.stringify(this.form))
+      alert(JSON.stringify(this.user))
     },
     onReset(): void {
-      this.form.name = ''
-      this.form.cnpj = ''
-      this.form.email = ''
-      this.form.address = []
+      this.user.name = ''
+      this.user.cnpj = ''
+      this.user.email = ''
+      this.user.address = {
+        line1: '',
+        line2: '',
+        line3: '',
+      }
     },
+  },
+  async mounted() {
+    this.$store.dispatch('loadStart')
+    const user = await this.$api.fetch(this.$api.auth.userData)
+
+    this.user = {
+      ...this.user,
+      ...user,
+    }
+
+    this.$store.dispatch('loadStop')
   },
 })
 </script>
