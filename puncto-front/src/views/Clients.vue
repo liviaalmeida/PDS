@@ -1,7 +1,7 @@
 <template>
   <div class="clients d-flex flex-column align-items-center w-100">
     <form
-        @submit.prevent="onSubmit"
+        @submit.prevent="onQuery"
         @reset.prevent="onReset"
         class="clients-query w-100"
       >
@@ -13,7 +13,8 @@
         placeholder="Pesquisar pelo nome do cliente"
       />
     </form>
-    <ClientList :clients="clients" />
+    <ClientList :clients="clients"
+    :query="clientName" />
   </div>
 </template>
 
@@ -51,15 +52,15 @@ export default Vue.extend({
     }
   },
   methods: {
-    onSubmit(): void {
+    onAdd: function() {
+      alert('Adicionar um novo cliente')
+    },
+    onQuery(): void {
       alert(JSON.stringify(this.clientName))
     },
     onReset(): void {
       this.clientName = ''
     },
-    onAdd: function() {
-      alert('Adicionar um novo cliente')
-    }
   },
 })
 </script>
