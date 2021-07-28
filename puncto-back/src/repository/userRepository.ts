@@ -71,7 +71,8 @@ export class UserRepository {
     const user = await repository.findOne({ where: { email } });
     const updatedEntity = await repository.save({
       ...user,
-      ...payload
+      ...payload,
+      email,
     });
 
     return {
