@@ -16,5 +16,17 @@ describe('PtYears', () => {
   it('renders a year', () => {
     expect(ptYear.find('year')).toBeDefined()
   })
+  it('renders the class', () => {
+    expect(ptYear.find('.calendar-pick')).toBeDefined()
+  })
+  it('renders the button', () => {
+    expect(ptYear.find('button')).toBeDefined()
+  })
+  it('renders the button text correctly', () => {
+    expect(ptYear.find('button').text()).toBe('◄')
+  })
+  it('renders the button text correctly', () => {
+    expect(ptYear.find('tbody button').text()).toBe("2016")
+  })
 
 })

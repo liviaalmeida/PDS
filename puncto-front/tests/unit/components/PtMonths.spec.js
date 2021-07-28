@@ -8,7 +8,7 @@ describe('PtMonths', () => {
     beforeEach(() => {
         ptMonths = shallowMount(PtMonths, {
                 propsData: {
-                    months: months
+                    months
                 }
             })
         })
@@ -17,4 +17,11 @@ describe('PtMonths', () => {
         expect(ptMonths.find('months')).toBeDefined()
     })
 
+    it('renders css', () => {
+        expect(ptMonths.find('.calendar-pick')).toBeDefined()
+    })
+
+    it('show months', () => {
+        expect(ptMonths.find('button').text()).toBe("Jan")
+    })
 })
