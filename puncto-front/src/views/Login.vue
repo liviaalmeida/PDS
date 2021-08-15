@@ -32,12 +32,15 @@
           {{ button }}
         </PtButton>
       </form>
+      <PtModal v-model="error" title="Erro!"
+      type="error" :message="errorMessage" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { Endpoint } from '@/api'
 
 export default Vue.extend({
   data() {
@@ -46,6 +49,8 @@ export default Vue.extend({
         email: '',
         password: '',
       },
+      error: false,
+      errorMessage: '',
       loading: false,
       loginType: 'login',
       valid: false,
@@ -55,6 +60,9 @@ export default Vue.extend({
     button(): string {
       return this.loginType === 'login' ?
         'Login' : 'Sign Up'
+    },
+    endpoint(): Endpoint {
+      return this.loginType === 'login' ? this.$api.auth.login : this.$api.auth.signup
     },
     redirect(): string {
       return this.$route.query?.redirect as string || '/'
@@ -71,17 +79,21 @@ export default Vue.extend({
     async onSubmit() {
       this.$store.dispatch('loadStart')
       try {
-        const endpoint = this.loginType === 'login' ? this.$api.auth.login : this.$api.auth.signup
-        const { authToken } = await this.$api.fetch(endpoint, this.form)
+        const answer = await this.$api.fetch(this.endpoint, this.form)
+        const { authToken } = answer
         if (!authToken) {
-          throw new Error('No token returned')
+          throw new Error(answer)
         }
         this.$cookies.set('authToken', authToken)
         this.$api.setToken(authToken)
         this.$store.dispatch('login')
         this.$router.push(this.redirect)
-      } catch {
-        alert('Erro ao tentar logar')
+      } catch (err) {
+        this.errorMessage = (this.loginType === 'login' ?
+          'Erro ao logar no sistema' :
+          'Erro ao criar cadastro no sistema')
+          .concat(`: ${err.message}`)
+        this.error = true
       } finally {
         this.$store.dispatch('loadStop')
       }
