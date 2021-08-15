@@ -2,7 +2,7 @@
   <div class="registration d-flex justify-content-center align-items-center">
     <form
       @submit.prevent="onSubmit"
-      @reset.prevent="onReset"
+      @input="onInput($event.target.form)"
       class="registration-form w-100"
     >
       <PtInput
@@ -21,6 +21,7 @@
           icon="profile"
           required
           placeholder="Digite seu CNPJ"
+          mask="##.###.###/####-##"
         />
         <PtInput
           class="registration-input"
@@ -36,7 +37,7 @@
       <div class="registration-address">Endereço</div>
       <PtInput
         label="Linha 1"
-        v-model="user.address.line1"
+        v-model="user.address"
         type="text"
         icon="marker"
         required
@@ -44,7 +45,7 @@
       />
       <PtInput
         label="Linha 2"
-        v-model="user.address.line2"
+        v-model="user.addressTwo"
         type="text"
         icon="marker"
         required
@@ -52,14 +53,20 @@
       />
       <PtInput
         label="Linha 3"
-        v-model="user.address.line3"
+        v-model="user.addressThree"
         type="text"
         icon="marker"
         required
         placeholder="Digite seu endereço"
       />
-      <PtButton class="button"> Salvar </PtButton>
+      <PtButton class="button" :disabled="!valid">
+        Salvar
+      </PtButton>
     </form>
+    <PtModal v-model="error" title="Erro!"
+    type="error" :message="errorMessage" />
+    <PtModal v-model="success" title="Dados salvos!" type="success"
+    message="Dados pessoais atualizados com sucesso" />
   </div>
 </template>
 
@@ -73,39 +80,47 @@ export default Vue.extend({
         name: '',
         cnpj: '',
         email: '',
-        address: {
-          line1: '',
-          line2: '',
-          line3: '',
-        },
+        address: '',
+        addressTwo: '',
+        addressThree: '',
       },
+      error: false,
+      errorMessage: '',
+      success: false,
+      valid: false,
     }
   },
   methods: {
-    onSubmit(): void {
-      alert(JSON.stringify(this.user))
-    },
-    onReset(): void {
-      this.user.name = ''
-      this.user.cnpj = ''
-      this.user.email = ''
-      this.user.address = {
-        line1: '',
-        line2: '',
-        line3: '',
+    async loadUser(): Promise<void> {
+      this.$store.dispatch('loadStart')
+      const user = await this.$api.fetch(this.$api.user.get)
+
+      this.user = {
+        ...this.user,
+        ...user,
       }
+
+      this.$store.dispatch('loadStop')
+    },
+    onInput(form: HTMLFormElement) {
+      this.valid = form.checkValidity()
+    },
+    async onSubmit(): Promise<void> {
+      this.$store.dispatch('loadStart')
+      try {
+        const user = await this.$api.fetch(this.$api.user.update, this.user)
+        this.user = { ...this.user, ...user }
+        this.valid = false
+        this.success = true
+      } catch (err) {
+        this.errorMessage = `Erro ao atualizar cadastro! ${err}`
+        this.error = true
+      }
+      this.$store.dispatch('loadStop')
     },
   },
-  async mounted() {
-    this.$store.dispatch('loadStart')
-    const user = await this.$api.fetch(this.$api.auth.userData)
-
-    this.user = {
-      ...this.user,
-      ...user,
-    }
-
-    this.$store.dispatch('loadStop')
+  mounted() {
+    this.loadUser()
   },
 })
 </script>

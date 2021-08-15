@@ -3,9 +3,7 @@ export class Client {
 	cnpj = ''
 	email = ''
 	password = ''
-	address = {
-		line1: '',
-		line2: '',
-		line3: '',
-	}
+	adress = ''
+	adressTwo = ''
+	adressThree = ''
 }
