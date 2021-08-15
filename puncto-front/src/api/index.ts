@@ -1,21 +1,26 @@
 import * as auth from './auth'
+import * as punch from './punch'
+import * as user from './user'
 
 export type Endpoint = {
   url: string;
   options: {
-    method: 'GET' | 'POST';
+    method: 'GET' | 'POST' | 'PUT';
   };
 }
 export class API {
   token: string | null = null
   base = 'http://localhost:3000'
   auth = auth
+  punch = punch
+  user = user
 
   get headers(): { headers: Record<string, string> } {
     return {
       headers: {
         ...(this.token && {'Authorization': `Bearer ${this.token}`}),
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
       }
     }
   }
@@ -25,6 +30,7 @@ export class API {
   }
 
   async fetch({ url, options }: Endpoint, body: unknown): Promise<Response> {
+    console.log(JSON.stringify(body))
     const response = await fetch(
       `${this.base}${url}`,
       {

@@ -21,16 +21,8 @@ const signup: Endpoint = {
   },
 }
 
-const userData: Endpoint = {
-  url: '/user',
-  options: {
-    method: 'GET',
-  },
-}
-
 export {
   login,
   logout,
   signup,
-  userData,
 }
