@@ -28,13 +28,13 @@
       </div>
       <PtInput small icon="marker"
       label="Linha 1" :disabled="!editing"
-      v-model="model.address.line1" />
+      v-model="model.address" />
       <PtInput small icon="marker"
       label="Linha 2" :disabled="!editing"
-      v-model="model.address.line2" />
+      v-model="model.addressTwo" />
       <PtInput small icon="marker"
       label="Linha 3" :disabled="!editing"
-      v-model="model.address.line3" />
+      v-model="model.addressThree" />
     </div>
   </form>
 </template>

@@ -33,20 +33,16 @@ export default Vue.extend({
         {
           name: 'A Fantástica Fábrica de Chocolate',
           id: 'DE813189177',
-          address: {
-            line1: 'PSherman, 42',
-            line2: 'WallabyWay',
-            line3: 'Sidney'
-          },
+          address: 'PSherman, 42',
+          addressTwo: 'WallabyWay',
+          addressThree: 'Sydney',
         },
         {
           name: 'Teste 2',
           id: 'DE813189178',
-          address: {
-            line1: 'Rua Mauritânia, 385',
-            line2: 'Bairro Canaã',
-            line3: 'Belo Horizonte'
-          },
+          address: 'Rua Mauritânia, 385',
+          addressTwo: 'Bairro Canaã',
+          addressThree: 'Belo Horizonte'
         },
       ]
     }
