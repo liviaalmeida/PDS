@@ -30,7 +30,6 @@ export class API {
   }
 
   async fetch({ url, options }: Endpoint, body: unknown): Promise<Response> {
-    console.log(JSON.stringify(body))
     const response = await fetch(
       `${this.base}${url}`,
       {
