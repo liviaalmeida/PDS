@@ -13,6 +13,7 @@ import PtCalendar from '@/common/calendar/PtCalendar.vue'
 import PtIcon from '@/common/PtIcon.vue'
 import PtInput from '@/common/input/PtInput.vue'
 import PtLogo from '@/common/PtLogo.vue'
+import PtModal from '@/common/PtModal.vue'
 
 import { directive } from 'v-visible'
 
@@ -35,6 +36,7 @@ Vue.component('PtCalendar', PtCalendar)
 Vue.component('PtIcon', PtIcon)
 Vue.component('PtInput', PtInput)
 Vue.component('PtLogo', PtLogo)
+Vue.component('PtModal', PtModal)
 
 Vue.directive('visible', directive)
 
