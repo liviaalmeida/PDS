@@ -51,7 +51,7 @@ jobs:
           cd puncto-back
           yarn 
           yarn build
-          yarn test:integration          
+          yarn test:integration --watchAll=false --detectOpenHandles
   build-front-end:
     strategy:
       matrix:
