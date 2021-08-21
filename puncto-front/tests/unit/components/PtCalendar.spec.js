@@ -39,7 +39,7 @@ describe('PtCalendar', () => {
     expect(ptCalendar.find('button').text()).toBe("◄")
   })
   it('renders the button correct', () => {
-    expect(ptCalendar.find('.to-test button').text()).toBe("Julho")
+    expect(ptCalendar.find('.to-test button').text()).toBe("Agosto")
   })
 
 })

@@ -9,5 +9,13 @@ module.exports = {
       lines: 80,
     },
   },
-  preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel'
+  moduleNameMapper: {
+    '/^@\\/(.*)$/': 'C:\\Users\\leave\\Repos\\PDS\\puncto-front\\src\\$1',
+  },
+  preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel',
+  resolver: null,
+  testMatch: ['C:\\Users\\leave\\Repos\\PDS\\puncto-front\\tests\\**\\*.spec.js?(x)'],
+  transform: {
+    '^.+\\.svg$': 'C:\\Users\\leave\\Repos\\PDS\\puncto-front\\tests\\tools\\svgTransform.js',
+  },
 }
