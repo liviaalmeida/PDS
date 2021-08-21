@@ -48,14 +48,19 @@ export class PontoService {
         const pontosAbertos: Array<PontoAbertoDto> = new Array<PontoAbertoDto>()
 
         for (let dia = 1; dia <= numeroDias; dia++) {
+            let diaPossuiAlgumPonto = false
+
             const diaPossuiPontoAberto = pontos.some(it => {
                 const dataEntrada = new Date(it.timestampDateEntrada)
-                if (dataEntrada.getDate() == dia && (it.timestampDateSaida == undefined))
-                    return true
+                if (dataEntrada.getDate() == dia) {
+                    diaPossuiAlgumPonto = true
+                    if (it.timestampDateSaida == undefined)
+                        return true
+                }
 
                 return false
             })
-            pontosAbertos.push(new PontoAbertoDto(dia, diaPossuiPontoAberto))
+            pontosAbertos.push(new PontoAbertoDto(dia, diaPossuiPontoAberto, diaPossuiAlgumPonto))
         }
 
         return pontosAbertos
