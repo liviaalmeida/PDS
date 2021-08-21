@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection } from 'typeorm';
 import { connectionOptions } from '../config';
 import app from '../server';
 import { truncate } from '../test-utils/helpers';
@@ -20,6 +20,12 @@ describe('Users API', () => {
   beforeAll(async () => {
     await createConnection(connectionOptions);
     await truncate();
+  });
+
+  afterAll(async () => {
+    await truncate();
+    const conn = await getConnection();
+    await conn.close();
   });
 
   beforeEach(async () => {
