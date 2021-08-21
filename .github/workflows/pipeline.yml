@@ -30,6 +30,11 @@ jobs:
       matrix:
         node-version: [12.x]
     runs-on: ubuntu-latest
+    services:
+        mongodb:
+          image: mongo:3.4.23
+          ports:
+            - 27018:27017
     steps:
       - uses: actions/checkout@v2
       - name: Node.js
@@ -42,7 +47,6 @@ jobs:
           cd puncto-back
           yarn 
           yarn build
-          docker-compose up --exit-code-from-web
           yarn test:integration          
   build-front-end:
     strategy:
