@@ -66,7 +66,7 @@ describe('Ponto service', () => {
         const absoluteEndTimestamp = date.getTime()
 
         expect(mockPontoRepository.find).toHaveBeenCalledTimes(1);
-        // expect(mockPontoRepository.find).toHaveBeenCalledWith(userEmail, absoluteInitialTimestamp, absoluteEndTimestamp);
+        expect(mockPontoRepository.find).toHaveBeenCalledWith(userEmail, absoluteInitialTimestamp, absoluteEndTimestamp);
     });
 
     it('Should call delete at pontoRepository', async () => {
