@@ -35,6 +35,10 @@ jobs:
           image: mongo:3.4.23
           ports:
             - 27018:27017
+          env:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: example
+
     steps:
       - uses: actions/checkout@v2
       - name: Node.js
@@ -42,7 +46,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install -g yarn    
-      - name: yarn install, build and test
+      - name: yarn install, build and run integration tests
         run: | 
           cd puncto-back
           yarn 
