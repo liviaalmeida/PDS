@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 const vueJest = require('vue-jest/lib/template-compiler')
 
 module.exports = {
