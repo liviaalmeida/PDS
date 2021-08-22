@@ -22,6 +22,7 @@ jobs:
       - name: yarn install, build and test
         run: | 
           cd puncto-back
+          yarn lint
           yarn 
           yarn build
           yarn test
@@ -67,6 +68,7 @@ jobs:
       - name: yarn install, build and test
         run: | 
           cd puncto-front
+          yarn lint
           yarn 
           yarn build
           yarn test:unit
