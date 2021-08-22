@@ -6,6 +6,6 @@ declare module 'vue/types/vue' {
   }
 
   interface Vue {
-    $analytics: unknown
+    $analytics: Analytics
   }
 }
