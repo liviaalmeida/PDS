@@ -67,6 +67,9 @@
 import Vue from 'vue'
 
 export default Vue.extend({
+  created: function(){
+    this.$analytics.logEvent('registration_view')
+  },
   data() {
     return {
       user: {

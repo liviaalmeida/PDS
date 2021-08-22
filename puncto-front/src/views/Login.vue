@@ -40,6 +40,9 @@
 import Vue from 'vue'
 
 export default Vue.extend({
+  created: function(){
+    this.$analytics.logEvent('login_view')
+  },
   data() {
     return {
       form: {
