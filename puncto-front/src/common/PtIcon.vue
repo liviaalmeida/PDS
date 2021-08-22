@@ -16,7 +16,7 @@ export default Vue.extend({
   },
   computed: {
     iconLoader() {
-      return () => import(`@/assets/icons/${this.name}.svg`)
+      return () => import(`@/assets/icons/${this.name}.svg?inline`)
     },
   },
 })
