@@ -4,7 +4,8 @@
       <TimeCurrent class="home-header" />
       <div class="home-calendar">
         <PtCalendar v-model="daySelected"
-        :fullfilled="[]" :pending="[]" />
+        :fullfilled="fullfilledPunches"
+        :pending="pendingPunches" />
       </div>
     </div>
     <div class="flex-column justify-content-center">
@@ -32,7 +33,7 @@ import Vue from 'vue'
 import moment from 'moment'
 import TimeCurrent from '../components/time-register/TimeCurrent.vue'
 import TimeGroup from '../components/time-register/TimeGroup.vue'
-import { Punch } from '../domain/Punch'
+import { Month, Punch } from '../domain/Punch'
 
 export default Vue.extend({
   name: 'Home',
@@ -45,22 +46,9 @@ export default Vue.extend({
       daySelected: new Date(),
       duration: '',
       editing: false,
-      punches: [
-        {
-          id: '05102012',
-          start: '06:40',
-          end: '11:30',
-          client: 'A Fantástica Fábrica de Chocolate',
-          activity: 'Criação da receita secreta'
-        },
-        {
-          id: '05102013',
-          start: '12:30',
-          end: '14:30',
-          client: 'A Fantástica Fábrica de Chocolate',
-          activity: 'Teste da receita secreta'
-        }
-      ] as Punch[],
+      fullfilledPunches: [] as number[],
+      pendingPunches: [] as number[],
+      punches: [] as Punch[],
     }
   },
   computed: {
@@ -75,12 +63,30 @@ export default Vue.extend({
     onDelete(id: string) {
       window.alert(`delete ${id}`)
     },
+    async onMonthChange() {
+      const month: Month[] = await this.$api.fetch(this.$api.punch.month(this.daySelected.getMonth()))
+      this.fullfilledPunches = month.filter(m => m.possuiPonto).map(m => m.dia)
+      this.pendingPunches = month.filter(m => m.aberto).map(m => m.dia)
+    },
     onSave(punch: Punch) {
       window.alert(`save ${punch.id}`)
     },
     onRegister() {
-      window.alert(`register ${moment().format('LT')}`)
+      const now = moment().format('hh:mm')
+
+      if (this.pending) {
+        const last = this.punches.length - 1
+        this.punches[last].end = now
+        this.punches[last] = {
+          ...this.punches[last]
+        }
+      } else {
+        this.punches.push(new Punch(now))
+      }
     },
+  },
+  mounted() {
+    this.onMonthChange()
   },
 })
 </script>
