@@ -37,6 +37,9 @@ import { Month, Punch } from '../domain/Punch'
 
 export default Vue.extend({
   name: 'Home',
+  created: function(){
+    this.$analytics.logEvent('home_view')
+  },
   components: {
     TimeCurrent,
     TimeGroup,

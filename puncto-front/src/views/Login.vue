@@ -40,9 +40,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Endpoint } from '@/api'
+import { Endpoint } from '../api'
 
 export default Vue.extend({
+  created: function(){
+    this.$analytics.logEvent('login_view')
+  },
   data() {
     return {
       form: {
@@ -77,6 +80,7 @@ export default Vue.extend({
       this.form.password = ''
     },
     async onSubmit() {
+      this.$analytics.logEvent('usuario_login_tentativa', { user: this.form.email })
       this.$store.dispatch('loadStart')
       try {
         const answer = await this.$api.fetch(this.endpoint, this.form)
@@ -88,12 +92,14 @@ export default Vue.extend({
         this.$api.setToken(authToken)
         this.$store.dispatch('login')
         this.$router.push(this.redirect)
+        this.$analytics.logEvent('usuario_login_sucesso', { user: this.form.email })
       } catch (err) {
         this.errorMessage = (this.loginType === 'login' ?
           'Erro ao logar no sistema' :
           'Erro ao criar cadastro no sistema')
           .concat(`: ${err.message}`)
         this.error = true
+        this.$analytics.logEvent('usuario_login_erro', { user: this.form.email })
       } finally {
         this.$store.dispatch('loadStop')
       }

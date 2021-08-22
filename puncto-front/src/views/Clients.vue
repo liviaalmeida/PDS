@@ -23,6 +23,9 @@ import Vue from 'vue'
 import ClientList from '../components/clients/ClientList.vue'
 
 export default Vue.extend({
+  created: function(){
+    this.$analytics.logEvent('clients_view')
+  },
   components: {
     ClientList
   },

@@ -72,18 +72,15 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { User } from '../domain/User'
 
 export default Vue.extend({
+  created: function(){
+    this.$analytics.logEvent('registration_view')
+  },
   data() {
     return {
-      user: {
-        name: '',
-        cnpj: '',
-        email: '',
-        address: '',
-        addressTwo: '',
-        addressThree: '',
-      },
+      user: new User(),
       error: false,
       errorMessage: '',
       success: false,

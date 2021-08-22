@@ -1,20 +1,9 @@
-import { UserRepository } from './userRepository';
-
 jest.mock('bcrypt', () => ({
     compareSync: jest.fn(() => false),
   }));
 
 describe('Auth service', () => {
-  let mockClienteRepository;
-
   let userRepository;
-  beforeAll(() => {
-    // userRepository = new UserRepository();
-    mockClienteRepository = {
-        save: jest.fn(),
-        find: jest.fn()
-      };
-  });
 
   it('should call save with correct params', async () => {
     await userRepository.createUser({
