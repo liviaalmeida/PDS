@@ -7,9 +7,9 @@ describe('PtYears', () => {
 
   beforeEach(() => {
     ptYear = shallowMount(PtYears, {
-        propsData: {
-            year
-        }
+      propsData: {
+        year
+      }
     })
   })
 
@@ -26,7 +26,7 @@ describe('PtYears', () => {
     expect(ptYear.find('button').text()).toBe('◄')
   })
   it('renders the button text correctly', () => {
-    expect(ptYear.find('tbody button').text()).toBe("2016")
+    expect(ptYear.find('tbody button').text()).toBe('2016')
   })
 
 })

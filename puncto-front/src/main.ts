@@ -16,6 +16,22 @@ import PtLogo from '@/common/PtLogo.vue'
 
 import { directive } from 'v-visible'
 
+import * as firebase from 'firebase/app'
+import 'firebase/analytics'
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyDJW0GIJEyD4ZvhTr-TayYRav0Nqb9fM5g',
+  authDomain: 'puncto-d17e1.firebaseapp.com',
+  projectId: 'puncto-d17e1',
+  storageBucket: 'puncto-d17e1.appspot.com',
+  messagingSenderId: '398909104009',
+  appId: '1:398909104009:web:430ff1b7dbe7caaac04b58',
+  measurementId: 'G-GZZL8FXY6R'
+}
+
+firebase.default.initializeApp(firebaseConfig)
+firebase.default.analytics()
+
 Vue.use(VueCookies)
 Vue.use(pluginAPI)
 Vue.use(BootstrapVue)
