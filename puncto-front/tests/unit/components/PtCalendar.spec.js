@@ -36,10 +36,10 @@ describe('PtCalendar', () => {
     expect(ptCalendar.find('.calendar-header')).toBeDefined()
   })
   it('renders the button correct', () => {
-    expect(ptCalendar.find('button').text()).toBe("◄")
+    expect(ptCalendar.find('button').text()).toBe('◄')
   })
   it('renders the button correct', () => {
-    expect(ptCalendar.find('.to-test button').text()).toBe("Agosto")
+    expect(ptCalendar.find('.to-test button').text()).toBe('Agosto')
   })
 
 })
