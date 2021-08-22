@@ -48,11 +48,22 @@ describe('Ponto service', () => {
 
     it('Should call find at pontoRepository', async () => {
         const userEmail = "teste@email.com"
-        const timestampDate = 1626728432575
+        const timestampDate = Date.now()
         await pontoService.find(userEmail, timestampDate);
 
-        const absoluteInitialTimestamp = 1626663600000
-        const absoluteEndTimestamp = 1626749999999
+
+        let date = new Date(timestampDate)
+        date.setHours(0)
+        date.setMinutes(0)
+        date.setSeconds(0)
+        date.setMilliseconds(0)
+        const absoluteInitialTimestamp:number = date.getTime()
+
+        date.setHours(23)
+        date.setMinutes(59)
+        date.setSeconds(59)
+        date.setMilliseconds(999)
+        const absoluteEndTimestamp = date.getTime()
 
         expect(mockPontoRepository.find).toHaveBeenCalledTimes(1);
         expect(mockPontoRepository.find).toHaveBeenCalledWith(userEmail, absoluteInitialTimestamp, absoluteEndTimestamp);
