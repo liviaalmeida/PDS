@@ -8,7 +8,7 @@ export class PersonalDataDto {
   cnpj: string;
 
   @Length(5, 100)
-  @ValidateIf(o => false)
+  @ValidateIf(o => false) // eslint-disable-line
   email?: string;
 
   @Length(5, 100)

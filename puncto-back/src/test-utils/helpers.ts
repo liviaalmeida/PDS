@@ -1,6 +1,6 @@
 import { getConnection } from "typeorm";
 
-export async function truncate() {
+export async function truncate(): Promise<void> {
     const connection = await getConnection();
     const entities = connection.entityMetadatas;
 

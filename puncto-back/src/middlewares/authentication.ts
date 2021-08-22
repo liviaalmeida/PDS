@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import { AuthInfo, AuthService } from '../service/authService'
 import { container } from '../inversify.config';
@@ -7,7 +7,7 @@ const authService = container.get(AuthService);
 
 // esse middleware decodifica o JWT recebido no header da requisicao e injeta
 // o email do usuario no objeto Request
-export const authMiddleware = (req: Request, res, next) => {
+export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   if (!req.headers.authorization) {
     res.status(401).json('Missing authentication token');
   }

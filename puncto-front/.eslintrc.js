@@ -19,6 +19,7 @@ module.exports = {
     'quotes': [2, 'single', { 'avoidEscape': true }],
     'no-multiple-empty-lines': ['error', { 'max': 1 }],
     'eol-last': ['error', 'always'],
+    '@typescript-eslint/no-var-requires': 0,
   },
   overrides: [
     {
