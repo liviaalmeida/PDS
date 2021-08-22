@@ -157,8 +157,11 @@ export default Vue.extend({
     pending() {
       this.updateDuration()
     },
-    punches() {
-      this.updateModel()
+    punches: {
+      deep: true,
+      handler: function() {
+        this.updateModel()
+      },
     },
   },
   mounted() {
