@@ -52,7 +52,7 @@ describe('Ponto service', () => {
         await pontoService.find(userEmail, timestampDate);
 
 
-        let date = new Date(timestampDate)
+        const date = new Date(timestampDate)
         date.setHours(0)
         date.setMinutes(0)
         date.setSeconds(0)
