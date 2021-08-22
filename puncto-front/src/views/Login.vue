@@ -69,6 +69,7 @@ export default Vue.extend({
       this.form.password = ''
     },
     async onSubmit() {
+      this.$analytics.logEvent('usuario_login_tentativa', { user: this.form.email })
       this.$store.dispatch('loadStart')
       try {
         const endpoint = this.loginType === 'login' ? this.$api.auth.login : this.$api.auth.signup
@@ -80,8 +81,10 @@ export default Vue.extend({
         this.$api.setToken(authToken)
         this.$store.dispatch('login')
         this.$router.push(this.redirect)
+        this.$analytics.logEvent('usuario_login_sucesso', { user: this.form.email })
       } catch {
         alert('Erro ao tentar logar')
+        this.$analytics.logEvent('usuario_login_erro', { user: this.form.email })
       } finally {
         this.$store.dispatch('loadStop')
       }
