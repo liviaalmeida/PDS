@@ -1,8 +1,10 @@
 import { API } from '.'
 import _Vue from 'vue'
+import firebase from 'firebase'
 
 export default {
-  install (Vue: typeof _Vue): void {
+  install(Vue: typeof _Vue): void {
     Vue.prototype.$api = new API()
+    Vue.prototype.$analytics = firebase.analytics()
   }
 }
