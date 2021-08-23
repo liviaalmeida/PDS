@@ -8,17 +8,16 @@
       <PtIcon :name="icon" v-if="icon" />
       {{ label }}
     </label>
-    <textarea v-if="type === 'textarea'" :name="name"
-		:placeholder="placeholder" :required="required"
+    <textarea v-if="$attrs.type === 'textarea'"
+    :required="required"
     @blur="focus = false" @focus="focus = true"
     @input="$emit('input', $event.target.value)"
-    v-bind="inputAttrs" v-model="model"
+    v-bind="$attrs" v-model="model"
     :disabled="disabled" />
-    <input v-else :type="type" :name="name"
-		:placeholder="placeholder" :required="required"
+    <input v-else :required="required"
     @blur="focus = false" @focus="focus = true"
     @input="$emit('input', $event.target.value)"
-    v-bind="inputAttrs" v-mask="mask" v-model="model"
+    v-bind="$attrs" v-mask="mask" v-model="model"
     :disabled="disabled" >
   </div>
 </template>
@@ -38,10 +37,6 @@ export default Vue.extend({
     icon: {
       required: false,
       type: String,
-    },
-    'input-attrs': {
-      required: false,
-      type: Object,
     },
     label: {
       required: true,

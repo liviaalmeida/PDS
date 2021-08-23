@@ -27,7 +27,7 @@
         type="password" icon="lock" required
         class="login-input"
         placeholder="Digite sua senha"
-        :input-attrs="{ minLength: 6 }" />
+        minLength="6" />
         <PtButton :disabled="!valid">
           {{ button }}
         </PtButton>
