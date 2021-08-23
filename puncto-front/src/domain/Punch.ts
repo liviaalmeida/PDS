@@ -1,5 +1,5 @@
 export class Punch {
-  id = ''
+  id = '0'
   start = ''
   end? = ''
   client = ''

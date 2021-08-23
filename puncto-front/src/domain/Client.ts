@@ -1,7 +1,9 @@
 export class Client {
   name = ''
-  id = ''
-	adress = ''
-	adressTwo = ''
-	adressThree = ''
+  id = '0'
+	cnpj = ''
+	email = 'unused@mail.com'
+	address = ''
+	addressTwo = ''
+	addressThree = ''
 }
