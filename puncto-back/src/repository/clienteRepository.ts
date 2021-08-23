@@ -5,6 +5,7 @@ import { Cliente } from '../entity/Cliente';
 import { ClienteRequestDto } from '../dto/clienteRequestDto';
 import { DatabaseErrorException } from '../exceptions/DatabaseErrorException';
 import { ClienteDto } from '../dto/clienteDto';
+import { UpdateClienteRequestDto } from '../dto/updateClienteRequestDto';
 
 @injectable()
 export class ClienteRepository {
@@ -14,7 +15,7 @@ export class ClienteRepository {
     return connection.getRepository(Cliente);
   }
 
-  async save(userEmail: string, clienteDto: ClienteRequestDto): Promise<number> {
+  async save(userEmail: string, clienteDto: ClienteRequestDto): Promise<string> {
     const repository = this.getClienteRepository();
     const cliente = new Cliente();
     cliente.name = clienteDto.name;
@@ -26,6 +27,7 @@ export class ClienteRepository {
     cliente.userEmail = userEmail;
 
     const inserted = await repository.save(cliente);
+
     return inserted.id;
   }
 
@@ -49,6 +51,25 @@ export class ClienteRepository {
       await repository.delete(clienteId);
     } catch (error) {
       throw new DatabaseErrorException(`Error deleting the cliente ${clienteId} at the database`);
+    }
+  }
+
+  async update(clienteDto: UpdateClienteRequestDto): Promise<ClienteDto> {
+    const repository = this.getClienteRepository();
+    try {
+
+      const clienteToUpdate = await repository.findOne(clienteDto.id) as Cliente;
+      clienteToUpdate.address = clienteDto.address;
+      clienteToUpdate.email = clienteDto.email;
+      clienteToUpdate.name = clienteDto.name;
+      clienteToUpdate.cnpj = clienteDto.cnpj;
+      clienteToUpdate.addressTwo = clienteDto.addressTwo;
+      clienteToUpdate.addressThree = clienteDto.addressThree;
+
+
+      return await repository.save(clienteToUpdate) as ClienteDto
+    } catch (error) {
+      throw new DatabaseErrorException(`Error updating the cliente at the database`);
     }
   }
 }

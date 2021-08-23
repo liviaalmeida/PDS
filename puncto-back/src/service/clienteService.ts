@@ -3,6 +3,7 @@ import { injectable, inject } from 'inversify';
 import { ClienteRequestDto } from '../dto/clienteRequestDto';
 import { ClienteRepository } from '../repository/clienteRepository';
 import { ClienteDto } from '../dto/clienteDto';
+import { UpdateClienteRequestDto } from '../dto/updateClienteRequestDto';
 
 @injectable()
 export class ClienteService {
@@ -12,7 +13,7 @@ export class ClienteService {
   }
 
 
-  async save(userEmail: string, cliente: ClienteRequestDto): Promise<number> {
+  async save(userEmail: string, cliente: ClienteRequestDto): Promise<string> {
     return await this._clienteRepository.save(userEmail, cliente);
   }
 
@@ -22,5 +23,9 @@ export class ClienteService {
 
   async delete(clienteId: string): Promise<void> {
     return await this._clienteRepository.delete(clienteId);
+  }
+
+  async update(cliente: UpdateClienteRequestDto): Promise<ClienteDto> {
+    return await this._clienteRepository.update(cliente);
   }
 }

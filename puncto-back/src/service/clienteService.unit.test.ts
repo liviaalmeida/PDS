@@ -1,5 +1,6 @@
 import { ClienteService } from './clienteService';
 import { ClienteRequestDto } from '../dto/clienteRequestDto';
+import { ClienteDto } from '../dto/clienteDto';
 
 describe('Cliente service', () => {
   let clienteService;
@@ -8,7 +9,8 @@ describe('Cliente service', () => {
     mockClienteRepository = {
       save: jest.fn(),
       find: jest.fn(),
-      delete: jest.fn()
+      delete: jest.fn(),
+      update: jest.fn()
     };
     clienteService = new ClienteService(mockClienteRepository);
   });
@@ -42,5 +44,21 @@ describe('Cliente service', () => {
 
     expect(mockClienteRepository.delete).toHaveBeenCalledTimes(1);
     expect(mockClienteRepository.delete).toHaveBeenCalledWith(clienteId);
+  });
+
+  it('Should call update at clienteRepository ', async () => {
+    const cliente = new ClienteDto()
+    cliente.id = '1';
+    cliente.name = "nome cliente";
+    cliente.address = "address 1";
+    cliente.addressTwo = "address 2";
+    cliente.addressThree = "address 3";
+    cliente.cnpj = "123456789";
+    cliente.email = "emailcliente@gmail.com";
+
+    await clienteService.update(cliente);
+
+    expect(mockClienteRepository.update).toHaveBeenCalledTimes(1);
+    expect(mockClienteRepository.update).toHaveBeenCalledWith(cliente);
   });
 });
