@@ -27,3 +27,90 @@ Informações úteis sobre o backend do projeto
 ## MongoDB
 
 - Caso você não tenha contato com NOSQL, de uma olhada em https://docs.mongodb.com/manual/introduction/
+
+
+
+## Endpoints
+
+### /Ponto
+
+--------
+
+Consulte a pasta collections para achar exemplos das requisições ja prontas.
+
+----------------------------------------
+Endpoint: /ponto
+
+Método: POST
+
+Descrição: Endpoint utilizado para criar o registro inicial de um ponto.
+
+Exemplo de body:
+{
+	"clienteId": "60f88ca02f14b87ad79fabaf",
+	"timestampDateEntrada": 1626728432590,
+	"descricaoAtividade": "dançando"
+}
+
+Exemplo da url: http://localhost:3000/ponto.
+
+------
+Endpoint: /ponto
+
+Método: PUT
+
+Descrição: Endpoint utilizado para atualizar o registro de um ponto que ja foi criado.
+
+Exemplo de body:
+{
+	"id": "61205254d56dd04a76ef7e40",
+	"timestampDateEntrada": 1626728432590,
+	"timestampDateSaida": 1626728432592,
+	"descricaoAtividade": "dançando muito",
+	"clienteId": "60f88ca02f14b87ad79fabaf"
+}
+
+Exemplo da url: http://localhost:3000/ponto
+
+Detalhes: O parâmetro id deve ser o id do ponto, que é retornado quando um ponto é criado. 
+
+------
+Endpoint: /ponto/:idDoPonto
+
+Método: DELETE
+
+Descrição: Endpoint utilizado para deletar o registro de um ponto que ja foi criado.
+
+Exemplo de body: Não possui body.
+
+Exemplo da url: http://localhost:3000/ponto/60fa2276ce7613cd8ca04277
+
+Detalhes: O query parameter :idDoPonto deve ser trocado pelo id do ponto que você deseja excluir.
+
+------
+Endpoint: /ponto/:idDoPonto
+
+Método: GET
+
+Descrição: Endpoint utilizado para buscar o registro de um ponto específico que ja foi criado.
+
+Exemplo de body: Não possui body.
+
+Exemplo da url: http://localhost:3000/ponto/60fa2276ce7613cd8ca04277
+
+Detalhes: O query parameter :idDoPonto deve ser trocado pelo id do ponto que você deseja buscar.
+
+------
+Endpoint: /ponto/mes/:numeroDoMes
+
+Método: GET
+
+Descrição: Endpoint utilizado para buscar todos os registros de pontos de um mês específico.
+
+Exemplo de body: Não possui body.
+
+Exemplo da url: http://localhost:3000/ponto/mes/7
+
+Detalhes: O query parameter *:numeroDoMes* deve ser trocado pelo numero que representa o mês que você deseja (Janeiro=0, Fevereiro=1,Março=2....).
+
+------
