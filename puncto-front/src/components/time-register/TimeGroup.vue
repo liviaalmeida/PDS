@@ -10,13 +10,15 @@
       </div>
     </div>
     <TimeRegistry v-for="(punch) in model"
-    :key="punch.id" :punch="punch"
+    :key="punch.id"
+    :punch="punch"
+    :day="day"
     :on-save="validateSave"
     :can-edit="!editing"
     @edit="$emit('edit', $event)"
     @delete="onDelete" />
-    <PtButton round @click="addPunch"
-    :disabled="editing">
+    <PtButton round @click="onAdd"
+    :disabled="editing || pending">
       +
     </PtButton>
   </div>
@@ -63,39 +65,32 @@ export default Vue.extend({
       return moment(this.day).format('LL').toLowerCase()
     },
     sortPunchs(): (pc1: Punch, pc2: Punch) => number {
-      return (pc1: Punch, pc2: Punch) => pc1.start < pc2.start ? -1 : 1
+      return (pc1: Punch, pc2: Punch) =>
+        pc1.timestampDateEntrada &&
+        pc2.timestampDateEntrada &&
+        pc1.timestampDateEntrada < pc2.timestampDateEntrada ?
+          -1 : 1
     },
     todaySelected(): boolean {
       return moment(this.day).isSame(moment(), 'day')
     },
   },
   methods: {
+    onAdd() {
+      this.$emit('add')
+    },
     onDelete(id: string) {
-      if (id === '0') {
-        this.model = this.model.slice(0, -1)
-        return
-      }
-
       this.$emit('delete', id)
     },
-    addPunch() {
-      const newPunch = new Punch()
-      newPunch.id = '0'
-
-      this.model = [
-        ...this.model,
-        newPunch,
-      ]
-    },
-    simulatePunches(punches: Punch[], punch: Punch): Punch[] {
-      const index = punches.findIndex(pc => pc.id === punch.id)
-      const updated = punches.map((pc, i) => i === index ? { ...punch } : { ...pc})
+    simulatePunches(punch: Punch): Punch[] {
+      const updated = this.punches.map(
+        pc => pc.id === punch.id ? { ...punch } : { ...pc}
+      )
       updated.sort(this.sortPunchs)
       return updated
     },
-    timeToMoment(time: string) {
-      const [ hour, minute ] = time.split(':').map(num => Number(num))
-      return moment(this.day).hour(hour).minute(minute)
+    timeToMoment(time: number) {
+      return moment(time)
     },
     updateDuration() {
       if (!this.pending) this.duration = '8:00'
@@ -107,17 +102,18 @@ export default Vue.extend({
       this.model.sort(this.sortPunchs)
     },
     validateSave(punch: Punch) {
-      if (this.pending && !punch.end) {
+      if (this.pending && !punch.timestampDateSaida) {
         window.alert('Não é possível deixar mais de um ponto aberto')
         return false
       }
 
-      if (punch.end && !this.validInterval(punch.start, punch.end)) {
+      if (punch.timestampDateSaida &&
+        !this.validInterval(punch.timestampDateEntrada, punch.timestampDateSaida)) {
         window.alert('Hora de saída não pode ser menor que hora de entrada')
         return false
       }
 
-      const updated = this.simulatePunches(this.model, punch)
+      const updated = this.simulatePunches(punch)
       if (!this.validPunchesIntermediates(updated)) {
         window.alert('Apenas o último ponto do dia corrente pode ficar em aberto')
         return false
@@ -128,25 +124,28 @@ export default Vue.extend({
       }
 
       if (punch.id === '0') {
-        const newPunch = { ...punch }
-        delete newPunch.id
-        this.$emit('add', newPunch)
+        delete punch.id
+        this.$emit('create', punch)
         return true
       }
 
       this.$emit('save', punch)
       return true
     },
-    validInterval(start: string, end: string): boolean {
-      return this.timeToMoment(start).isBefore(this.timeToMoment(end))
+    validInterval(start?: number, end?: number): boolean {
+      return !!start && !!end && this.timeToMoment(start).isBefore(this.timeToMoment(end))
     },
     validPunchesIntermediates(punches: Punch[]) {
       const checkablePunches = this.todaySelected ? punches.slice(0, -1) : punches
-      return checkablePunches.every(punch => !!punch.end)
+      return checkablePunches.every(punch => !!punch.timestampDateSaida)
     },
     validPunchesOrder(punches: Punch[]) {
       return punches.slice(0, -1).every(
-        (punch, index) => punch.end && this.validInterval(punch.end, punches[index+1].start)
+        (punch, index) => punch.timestampDateSaida &&
+          this.validInterval(
+            punch.timestampDateSaida,
+            punches[index+1].timestampDateEntrada,
+          )
       )
     },
   },

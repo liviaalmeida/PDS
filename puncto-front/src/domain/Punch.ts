@@ -1,12 +1,12 @@
 export class Punch {
   id = '0'
-  start = ''
-  end? = ''
-  client = ''
-  activity? = ''
+  timestampDateEntrada? = 0
+  timestampDateSaida? = 0
+  clientId = ''
+  descricaoAtividade? = ''
 
-  constructor(start = '') {
-    this.start = start
+  constructor(start?: number) {
+    if (start) this.timestampDateEntrada = start
   }
 }
 
