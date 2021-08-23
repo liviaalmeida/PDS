@@ -11,7 +11,7 @@
     <div class="flex-column justify-content-center">
       <div class="home-header">
         <PtButton class="home-button" :disabled="editing"
-        @click="onRegister">
+        @click="onAdd(true)">
           Registrar Ponto
         </PtButton>
       </div>
@@ -21,16 +21,16 @@
       :pending="pending"
       class="home-punches"
       @add="onAdd"
+      @create="onCreate"
       @delete="onDelete"
-      @edit="editing = $event"
-      @save="onSave" />
+      @save="onSave"
+      @edit="editing = $event" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import moment from 'moment'
 import TimeCurrent from '../components/time-register/TimeCurrent.vue'
 import TimeGroup from '../components/time-register/TimeGroup.vue'
 import { Month, Punch } from '../domain/Punch'
@@ -56,15 +56,37 @@ export default Vue.extend({
   },
   computed: {
     pending(): boolean {
-      return !this.editing && !this.punches.every((punch: Punch) => !!punch.end)
+      return !this.editing && !this.punches.every((punch: Punch) => !!punch.timestampDateSaida)
     },
   },
   methods: {
-    onAdd(punch: Punch) {
-      window.alert(`add ${punch.start} ${punch.end}`)
+    onAdd(now = false) {
+      if (!now) {
+        this.punches.push(new Punch())
+        return
+      }
+
+      const current = new Date().getTime()
+
+      if (this.pending) {
+        const last = this.punches.length - 1
+        this.punches[last].timestampDateSaida = current
+        this.punches[last] = {
+          ...this.punches[last]
+        }
+      } else {
+        this.punches.push(new Punch(current))
+      }
+    },
+    onCreate(punch: Punch) {
+      window.alert(`create ${punch.timestampDateEntrada} ${punch.timestampDateSaida} ${punch.descricaoAtividade} ${punch.clientId}`)
     },
     onDelete(id: string) {
-      window.alert(`delete ${id}`)
+      if (id === '0') {
+        this.punches = this.punches.filter(pc => pc.id !== id)
+        return
+      }
+      alert(`delete ${id}`)
     },
     async onMonthChange() {
       const month: Month[] = await this.$api.fetch(this.$api.punch.month(this.daySelected.getMonth()))
@@ -73,19 +95,6 @@ export default Vue.extend({
     },
     onSave(punch: Punch) {
       window.alert(`save ${punch.id}`)
-    },
-    onRegister() {
-      const now = moment().format('hh:mm')
-
-      if (this.pending) {
-        const last = this.punches.length - 1
-        this.punches[last].end = now
-        this.punches[last] = {
-          ...this.punches[last]
-        }
-      } else {
-        this.punches.push(new Punch(now))
-      }
     },
   },
   mounted() {
