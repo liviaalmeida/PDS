@@ -37,10 +37,11 @@
     </div>
     <PtSelect small label="Cliente"
     :options="clients" icon="clients"
-    required name="client" v-model="model.clientId"
+    required name="client" v-model="model.clienteId"
     :disabled="!editing" />
     <PtInput small label="Atividade" :disabled="!editing"
-    name="activity" v-model="model.descricaoAtividade" />
+    name="activity" v-model="model.descricaoAtividade"
+    required />
   </form>
 </template>
 

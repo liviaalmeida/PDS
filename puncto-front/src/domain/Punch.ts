@@ -2,8 +2,8 @@ export class Punch {
   id = '0'
   timestampDateEntrada? = 0
   timestampDateSaida? = 0
-  clientId = ''
-  descricaoAtividade? = ''
+  clienteId = ''
+  descricaoAtividade = ''
 
   constructor(start?: number) {
     if (start) this.timestampDateEntrada = start
