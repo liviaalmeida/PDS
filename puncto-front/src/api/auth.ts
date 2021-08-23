@@ -2,23 +2,17 @@ import { Endpoint } from '.'
 
 const login: Endpoint = {
   url: '/login',
-  options: {
-    method: 'POST',
-  },
+  method: 'POST',
 }
 
 const logout: Endpoint = {
   url: '/logout',
-  options: {
-    method: 'POST',
-  },
+  method: 'POST',
 }
 
 const signup: Endpoint = {
   url: '/signup',
-  options: {
-    method: 'POST',
-  },
+  method: 'POST',
 }
 
 export {

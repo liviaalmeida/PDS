@@ -4,10 +4,8 @@ import * as punch from './punch'
 import * as user from './user'
 
 export type Endpoint = {
-  url: string;
-  options: {
-    method: 'GET' | 'POST' | 'PUT';
-  };
+  url: string
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE'
 }
 export class API {
   token: string | null = null
@@ -31,13 +29,13 @@ export class API {
     this.token = token
   }
 
-  async fetch({ url, options }: Endpoint, body: unknown): Promise<Response> {
+  async fetch({ url, method }: Endpoint, body: unknown): Promise<Response> {
     const response = await fetch(
       `${this.base}${url}`,
       {
+        method,
         ...this.headers,
         ...(body !== undefined && { body: JSON.stringify(body) }),
-        ...options,
       }
     )
     return await response.json()

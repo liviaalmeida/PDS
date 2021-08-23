@@ -2,16 +2,12 @@ import { Endpoint } from '.'
 
 const create: Endpoint = {
   url: '/cliente',
-  options: {
-    method: 'POST',
-  },
+  method: 'POST',
 }
 
 const get: Endpoint = {
   url: '/cliente',
-  options: {
-    method: 'GET',
-  },
+  method: 'GET',
 }
 
 export {
