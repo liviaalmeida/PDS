@@ -19,4 +19,8 @@ export class ClienteService {
   async find(userEmail: string, query?: string): Promise<Array<ClienteDto>> {
     return await this._clienteRepository.find(userEmail, query);
   }
+
+  async delete(clienteId: string): Promise<void> {
+    return await this._clienteRepository.delete(clienteId);
+  }
 }

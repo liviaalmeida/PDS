@@ -34,11 +34,21 @@ export class ClienteRepository {
 
     try {
       const whereClause = query ? { where: { userEmail, name: new RegExp(`^${query}`) } } : { where: { userEmail } };
-      
+
       const allClientes = (await repository.find(whereClause)) as ClienteDto[];
       return allClientes;
     } catch (error) {
       throw new DatabaseErrorException('Error finding all clientes in database.');
+    }
+  }
+
+  async delete(clienteId: string): Promise<void> {
+    const repository = this.getClienteRepository();
+
+    try {
+      await repository.delete(clienteId);
+    } catch (error) {
+      throw new DatabaseErrorException(`Error deleting the cliente ${clienteId} at the database`);
     }
   }
 }

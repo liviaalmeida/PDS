@@ -7,7 +7,8 @@ describe('Cliente service', () => {
   beforeAll(() => {
     mockClienteRepository = {
       save: jest.fn(),
-      find: jest.fn()
+      find: jest.fn(),
+      delete: jest.fn()
     };
     clienteService = new ClienteService(mockClienteRepository);
   });
@@ -33,5 +34,13 @@ describe('Cliente service', () => {
 
     expect(mockClienteRepository.find).toHaveBeenCalledTimes(1);
     expect(mockClienteRepository.find).toHaveBeenCalledWith(userEmail, undefined);
+  });
+
+  it('Should call delete at clienteRepository ', async () => {
+    const clienteId = "1"
+    await clienteService.delete(clienteId);
+
+    expect(mockClienteRepository.delete).toHaveBeenCalledTimes(1);
+    expect(mockClienteRepository.delete).toHaveBeenCalledWith(clienteId);
   });
 });

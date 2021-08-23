@@ -9,7 +9,7 @@ import InvalidClienteRequestError from '../exceptions/InvalidClienteRequestError
 
 interface ClientRequest extends Request {
   query: {
-    search? :string
+    search?: string
   }
 }
 
@@ -43,6 +43,16 @@ router.get('/', async (req: ClientRequest, res: Response) => {
     if (err instanceof InvalidClienteRequestError) return res.status(err.statusCode).json(err.message);
 
     return res.status(500).json('Some unexpected error happened while finding a client.');
+  }
+});
+
+router.delete('/:clienteId', async (req: Request, res: Response) => {
+  try {
+    const clienteId = req.params.clienteId;
+    await clienteService.delete(clienteId);
+    res.status(204).send();
+  } catch (err) {
+    return res.status(500).json('Some unexpected error happened while deleting the cliente.');
   }
 });
 
