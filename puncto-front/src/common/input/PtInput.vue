@@ -11,13 +11,15 @@
     <textarea v-if="$attrs.type === 'textarea'"
     :required="required"
     @blur="focus = false" @focus="focus = true"
-    @input="$emit('input', $event.target.value)"
-    v-bind="$attrs" v-model="model"
+    @input="$emit('model', $event.target.value)"
+    v-bind="$attrs" v-on="$listeners"
+    v-model="model"
     :disabled="disabled" />
     <input v-else :required="required"
     @blur="focus = false" @focus="focus = true"
-    @input="$emit('input', $event.target.value)"
-    v-bind="$attrs" v-mask="mask" v-model="model"
+    @input="$emit('model', $event.target.value)"
+    v-bind="$attrs" v-on="$listeners"
+    v-mask="mask" v-model="model"
     :disabled="disabled" >
   </div>
 </template>
@@ -27,7 +29,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   model: {
-    event: 'input',
+    event: 'model',
   },
   props: {
     disabled: {
