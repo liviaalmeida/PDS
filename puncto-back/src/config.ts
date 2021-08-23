@@ -8,6 +8,7 @@ interface Config {
   /** The port that the express server should bind to. */
   port: string;
 
+  mongoSsl: boolean;
   mongoDbPort: number;
   mongoDbName: string;
   mongoDbHost: string;
@@ -25,6 +26,7 @@ const config: Config = {
   mongoDbDatabase: nodeConfig.get<string>('mongoDbDatabase'),
   mongoDbUser: nodeConfig.get<string>('mongoDbUser'),
   mongoDbPwd: nodeConfig.get<string>('mongoDbPwd'),
+  mongoSsl: nodeConfig.get<string>('mongoSsl'),
 };
 
 export const auth = {
@@ -43,6 +45,8 @@ export const connectionOptions: ConnectionOptions = {
   database: config.mongoDbDatabase,
   password: config.mongoDbPwd,
   entities: [__dirname + '/entity/*{.ts,.js}'],
+  ssl: config.mongoSsl,
+  authSource: 'admin'
 };
 
 export default config;
