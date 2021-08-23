@@ -1,0 +1,166 @@
+{
+	"info": {
+		"_postman_id": "3b81f691-0e32-4a33-a7d1-dc61cc18afc5",
+		"name": "Puncto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "registrarPonto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"clienteId\": \"60f88ca02f14b87ad79fabaf\",\n\t\"timestampDateEntrada\": 1626728432590,\n\t\"descricaoAtividade\": \"dançando\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/ponto",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"ponto"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findPonto",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/ponto/1626728432500",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"ponto",
+						"1626728432500"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findPontosDoMes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/ponto/mes/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"ponto",
+						"mes",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deletePonto",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/ponto/60fa2276ce7613cd8ca04277",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"ponto",
+						"60fa2276ce7613cd8ca04277"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updatePonto",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"61205254d56dd04a76ef7e40\",\n\t\"timestampDateEntrada\": 1626728432590,\n\t\"timestampDateSaida\": 1626728432592,\n\t\"descricaoAtividade\": \"dançando muito\",\n\t\"clienteId\": \"60f88ca02f14b87ad79fabaf\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/ponto",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"ponto"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
