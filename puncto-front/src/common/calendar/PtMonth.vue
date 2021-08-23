@@ -44,11 +44,11 @@ export default Vue.extend({
     },
     fullfilled: {
       required: false,
-      type: Array as () => Array<Date>,
+      type: Array as () => Array<number>,
     },
     pending: {
       required: false,
-      type: Array as () => Array<Date>,
+      type: Array as () => Array<number>,
     },
     value: {
       required: false,
@@ -65,9 +65,9 @@ export default Vue.extend({
         (_, index) => this.week(start.add(index, 'week').toDate())
       )
     },
-    enabledDayIsSame(): (day: Date, arr: Array<Date>) => boolean {
+    enabledDayIsSame(): (day: Date, arr: Array<number>) => boolean {
       return (day, arr) => !this.dayDisabled(day) &&
-        arr.some(date => dayjs(date).isSame(day, 'day'))
+        arr.some(date => date === day.getDate())
     },
     weekdays(): string[] {
       return ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
