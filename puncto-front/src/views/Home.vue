@@ -2,7 +2,7 @@
   <div class="home d-flex flex justify-content-center">
     <div class="flex-column justify-content-center">
       <TimeCurrent class="home-header" />
-      <div class="home-calendar">
+      <div class="home-calendar" v-if="ready">
         <PtCalendar v-model="daySelected"
         :fullfilled="fullfilledPunches"
         :pending="pendingPunches" />
@@ -101,7 +101,7 @@ export default Vue.extend({
     },
     async onMonthChange() {
       const month: Month[] = await this.$api.fetch(this.$api.punch.month(this.daySelected.getMonth()))
-      this.fullfilledPunches = month.filter(m => m.possuiPonto).map(m => m.dia)
+      this.fullfilledPunches = month.filter(m => m.possuiPonto && !m.aberto).map(m => m.dia)
       this.pendingPunches = month.filter(m => m.aberto).map(m => m.dia)
     },
     onSave(punch: Punch) {
