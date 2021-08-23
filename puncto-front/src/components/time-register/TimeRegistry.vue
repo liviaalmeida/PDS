@@ -35,7 +35,8 @@
         @click="$emit('delete', punch.id)" />
       </div>
     </div>
-    <PtInput small label="Cliente" icon="clients"
+    <PtSelect small label="Cliente"
+    :options="clients" icon="clients"
     required name="client" v-model="model.clientId"
     :disabled="!editing" />
     <PtInput small label="Atividade" :disabled="!editing"
@@ -47,12 +48,17 @@
 import Vue from 'vue'
 import moment from 'moment'
 import { Punch } from '../../domain/Punch'
+import { Client } from '../../domain/Client'
 
 export default Vue.extend({
   props: {
     canEdit: {
       required: false,
       type: Boolean,
+    },
+    clients: {
+      required: true,
+      type: Array as () => Array<Client>,
     },
     day: {
       required: true,

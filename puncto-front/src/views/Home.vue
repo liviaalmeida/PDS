@@ -15,7 +15,9 @@
           Registrar Ponto
         </PtButton>
       </div>
-      <TimeGroup :punches="punches"
+      <TimeGroup v-if="ready"
+      :punches="punches"
+      :clients="clients"
       :day="daySelected"
       :editing="editing"
       :pending="pending"
@@ -33,7 +35,9 @@
 import Vue from 'vue'
 import TimeCurrent from '../components/time-register/TimeCurrent.vue'
 import TimeGroup from '../components/time-register/TimeGroup.vue'
+import { Option } from '../common/input/PtSelect.vue'
 import { Month, Punch } from '../domain/Punch'
+import { Client } from '../domain/Client'
 
 export default Vue.extend({
   name: 'Home',
@@ -46,12 +50,14 @@ export default Vue.extend({
   },
   data() {
     return {
+      clients: [] as Option[],
       daySelected: new Date(),
       duration: '',
       editing: false,
       fullfilledPunches: [] as number[],
       pendingPunches: [] as number[],
       punches: [] as Punch[],
+      ready: false,
     }
   },
   computed: {
@@ -97,8 +103,12 @@ export default Vue.extend({
       window.alert(`save ${punch.id}`)
     },
   },
-  mounted() {
-    this.onMonthChange()
+  async mounted() {
+    await this.onMonthChange()
+    this.clients = (await this.$api.fetch(this.$api.client.get))
+      .map((cl: Client) => ({ payload: cl.id, text: cl.name }))
+    this.clients.sort((a, b) => a.text < b.text ? -1 : 1)
+    this.ready = true
   },
 })
 </script>

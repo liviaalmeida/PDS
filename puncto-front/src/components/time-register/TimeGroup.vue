@@ -11,6 +11,7 @@
     </div>
     <TimeRegistry v-for="(punch) in model"
     :key="punch.id"
+    :clients="clients"
     :punch="punch"
     :day="day"
     :on-save="validateSave"
@@ -29,6 +30,7 @@ import Vue from 'vue'
 import moment from 'moment'
 import TimeRegistry from './TimeRegistry.vue'
 import { Punch } from '../../domain/Punch'
+import { Client } from '../../domain/Client'
 
 moment.locale('pt-br')
 
@@ -37,6 +39,10 @@ export default Vue.extend({
     TimeRegistry,
   },
   props: {
+    clients: {
+      required: true,
+      type: Array as () => Array<Client>,
+    },
     day: {
       required: true,
       type: Date,
