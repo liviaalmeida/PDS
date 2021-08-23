@@ -66,6 +66,9 @@ export default Vue.extend({
     },
   },
   methods: {
+    async getPunches() {
+      this.punches = await this.$api.fetch(this.$api.punch.day(this.daySelected.getTime()))
+    },
     onAdd(now = false) {
       if (!now) {
         this.punches.push(new Punch())
@@ -84,8 +87,10 @@ export default Vue.extend({
         this.punches.push(new Punch(current))
       }
     },
-    onCreate(punch: Punch) {
-      window.alert(`create ${punch.timestampDateEntrada} ${punch.timestampDateSaida} ${punch.descricaoAtividade} ${punch.clientId}`)
+    async onCreate(punch: Punch) {
+      delete punch.id
+      await this.$api.fetch(this.$api.punch.create, punch)
+      await this.getPunches()
     },
     onDelete(id: string) {
       if (id === '0') {
@@ -105,6 +110,7 @@ export default Vue.extend({
   },
   async mounted() {
     await this.onMonthChange()
+    await this.getPunches()
     this.clients = (await this.$api.fetch(this.$api.client.get))
       .map((cl: Client) => ({ payload: cl.id, text: cl.name }))
     this.clients.sort((a, b) => a.text < b.text ? -1 : 1)
