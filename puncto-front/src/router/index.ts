@@ -43,6 +43,14 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/invoices/setting',
+    name: 'Invoices - Configuração',
+    component: () => import('@/views/Setting.vue'),
+    meta: {
+      auth: true,
+    },
+  },
+  {
     path: '/invoices/new',
     name: 'Novo Invoice',
     component: () => import('@/views/Invoice.vue'),

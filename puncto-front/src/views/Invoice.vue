@@ -159,9 +159,9 @@ export default Vue.extend({
     }
   },
   methods: {
-    onSubmit() {
-      alert(JSON.stringify(this.user))
-    },
+    onCreate() {
+      alert(JSON.stringify(this.invoice))
+    }
   },
 })
 </script>
