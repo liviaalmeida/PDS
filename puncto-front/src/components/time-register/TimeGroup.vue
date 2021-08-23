@@ -22,6 +22,8 @@
     :disabled="editing || pending">
       +
     </PtButton>
+    <PtModal v-model="error" title="Erro!"
+    type="error" :message="errorMessage" />
   </div>
 </template>
 
@@ -63,6 +65,8 @@ export default Vue.extend({
   data() {
     return {
       duration: '',
+      error: false,
+      errorMessage: '',
       model: [] as Punch[],
     }
   },
@@ -95,6 +99,10 @@ export default Vue.extend({
       updated.sort(this.sortPunchs)
       return updated
     },
+    showError(message: string) {
+      this.errorMessage = message
+      this.error = true
+    },
     timeToMoment(time: number) {
       return moment(time)
     },
@@ -109,23 +117,23 @@ export default Vue.extend({
     },
     validateSave(punch: Punch) {
       if (this.pending && !punch.timestampDateSaida) {
-        window.alert('Não é possível deixar mais de um ponto aberto')
+        this.showError('Não é possível deixar mais de um ponto aberto')
         return false
       }
 
       if (punch.timestampDateSaida &&
         !this.validInterval(punch.timestampDateEntrada, punch.timestampDateSaida)) {
-        window.alert('Hora de saída não pode ser menor que hora de entrada')
+        this.showError('Hora de saída não pode ser menor que hora de entrada')
         return false
       }
 
       const updated = this.simulatePunches(punch)
       if (!this.validPunchesIntermediates(updated)) {
-        window.alert('Apenas o último ponto do dia corrente pode ficar em aberto')
+        this.showError('Apenas o último ponto do dia corrente pode ficar em aberto')
         return false
       }
       if (!this.validPunchesOrder(updated)) {
-        window.alert('Você não pode ter uma hora de saída maior que a hora de entrada seguinte')
+        this.showError('Você não pode ter uma hora de saída maior que a hora de entrada seguinte')
         return false
       }
 
