@@ -1,44 +1,44 @@
 <template>
-    <div class="invoice d-flex flex-column align-items-center">
-        <PtInput class="invoice-input"
+    <div class="invoices d-flex flex-column align-items-center">
+        <PtInput class="invoices-input"
             label="Títulos de prestação"
-            v-model="invoice.constractorTitle"
+            v-model="invoices.constractorTitle"
             type="text"
             icon="clients"
         />
-        <PtInput class="invoice-input"
+        <PtInput class="invoices-input"
             label="Títulos do cliente"
-            v-model="invoice.clientTitle"
+            v-model="invoices.clientTitle"
             type="text"
             icon="clients"
         />
-        <PtInput class="invoice-input"
+        <PtInput class="invoices-input"
             label="Saudações"
-            v-model="invoice.greeting"
+            v-model="invoices.greeting"
             type="text"
             icon="clients"
         />
-        <PtInput class="invoice-input"
+        <PtInput class="invoices-input"
             label="Termos de Pagamento"
-            v-model="invoice.paymentTerms"
+            v-model="invoices.paymentTerms"
             type="text"
             icon="clients"
         />
-        <PtInput class="invoice-input"
+        <PtInput class="invoices-input"
             label="Instruções de pagamento"
-            v-model="invoice.paymentInstructions"
+            v-model="invoices.paymentInstructions"
             type="text"
             icon="clients"
         />
-        <PtInput class="invoice-input"
+        <PtInput class="invoices-input"
             label="Agradecimentos"
-            v-model="invoice.thankYouText"
+            v-model="invoices.thankYouText"
             type="textarea"
             icon="clients"
         />
-        <PtInput class="invoice-input"
+        <PtInput class="invoices-input"
             label="Assinaturas"
-            v-model="invoice.signature"
+            v-model="invoices.signature"
             type="text"
             icon="clients"
         />
@@ -66,7 +66,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.invoice {
+.invoices {
     background: rgba(237, 237, 237, 0.5);
     border-radius: 5px;
     &-input {
