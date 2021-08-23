@@ -6,7 +6,18 @@ import { connectionOptions } from './config';
 
 const port = config.port;
 
-createConnection(connectionOptions);
+if (process.env.NODE_ENV === 'production') {
+  // use connection string for prod env
+  const { mongoDbUser, mongoDbPwd, mongoDbHost, mongoDbDatabase } = config;
+  createConnection({
+    type: "mongodb",
+    url: `mongodb+srv://${mongoDbUser}:${mongoDbPwd}@${mongoDbHost}/${mongoDbDatabase}?retryWrites=true&w=majority`,
+    useNewUrlParser: true,
+    entities: [__dirname + '/entity/*{.ts,.js}'],
+  });
+} else {
+  createConnection(connectionOptions);
+}
 
 app.listen(port, async () => {
   console.log(`Running on ${process.env.NODE_ENV} environment`);
