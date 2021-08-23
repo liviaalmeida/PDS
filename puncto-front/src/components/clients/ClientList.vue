@@ -20,6 +20,7 @@
 import Vue from 'vue'
 import ClientRegistry from './ClientRegistry.vue'
 import { Client } from '../../domain/Client'
+import { Utils } from '../../domain/Utils'
 
 export default Vue.extend({
   components: {
@@ -41,17 +42,12 @@ export default Vue.extend({
       model: this.clients.map(c => ({ ...c })) || [],
     }
   },
-  computed: {
-    normalize(): (str: string) => string {
-      return (str: string) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    },
-  },
   watch: {
     clients() {
       this.model = this.clients.map(c => ({ ...c }))
     },
     query() {
-      const norm = this.normalize
+      const norm = Utils.normalize
 
       this.model = this.clients
         .filter(client => norm(client.name).includes(norm(this.query)))
