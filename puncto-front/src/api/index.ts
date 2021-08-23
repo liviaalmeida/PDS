@@ -1,4 +1,5 @@
 import * as auth from './auth'
+import * as client from './client'
 import * as punch from './punch'
 import * as user from './user'
 
@@ -12,6 +13,7 @@ export class API {
   token: string | null = null
   base = 'http://localhost:3000'
   auth = auth
+  client = client
   punch = punch
   user = user
 
