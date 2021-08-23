@@ -13,7 +13,12 @@
         placeholder="Pesquisar pelo nome do cliente"
       />
     </form>
-    <ClientList :clients="clients"
+    <ClientList
+    @add="onAdd"
+    @create="onCreate"
+    @delete="onDelete"
+    @save="onSave"
+    :clients="clients"
     :query="clientName" />
   </div>
 </template>
@@ -21,6 +26,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import ClientList from '../components/clients/ClientList.vue'
+import { Client } from '../domain/Client'
 
 export default Vue.extend({
   created: function(){
@@ -32,27 +38,40 @@ export default Vue.extend({
   data() {
     return {
       clientName: '',
-      clients: [
-        {
-          name: 'A Fantástica Fábrica de Chocolate',
-          id: 'DE813189177',
-          address: 'PSherman, 42',
-          addressTwo: 'WallabyWay',
-          addressThree: 'Sydney',
-        },
-        {
-          name: 'Teste 2',
-          id: 'DE813189178',
-          address: 'Rua Mauritânia, 385',
-          addressTwo: 'Bairro Canaã',
-          addressThree: 'Belo Horizonte'
-        },
-      ]
+      clients: [] as Client[],
     }
   },
   methods: {
-    onAdd: function() {
-      alert('Adicionar um novo cliente')
+    async getClients() {
+      this.clients = await this.$api.fetch(this.$api.client.get)
+      this.clients.sort((a, b) => a.name < b.name ? -1: 1)
+    },
+    onAdd(): void {
+      this.clients = [
+        new Client(),
+        ...this.clients,
+      ]
+    },
+    async onCreate(client: Client): Promise<void> {
+      delete client.id
+      try {
+        await this.$api.fetch(this.$api.client.create, client)
+        this.clients = []
+        await this.getClients()
+      } catch {
+        alert('Erro ao criar cliente')
+      }
+    },
+    onDelete(id: string): void {
+      if (id === '0') {
+        this.clients = this.clients.filter(c => c.id !== id)
+        return
+      }
+      alert(`delete ${id}`)
+    },
+    onSave(client: Client): void {
+      alert('save')
+      console.log(client)
     },
     onQuery(): void {
       alert(JSON.stringify(this.clientName))
@@ -60,6 +79,9 @@ export default Vue.extend({
     onReset(): void {
       this.clientName = ''
     },
+  },
+  mounted() {
+    this.getClients()
   },
 })
 </script>

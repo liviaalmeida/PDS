@@ -1,10 +1,18 @@
 <template>
   <div class="client-list d-flex flex-column w-100">
-    <PtButton round @click="onAdd">
+    <PtButton round
+    @click="$emit('add')"
+    :disabled="editing">
       +
     </PtButton>
-    <ClientRegistry v-for="client in model"
-    :key="client.id" :client="client" />
+    <ClientRegistry
+    v-for="client in model"
+    :key="client.id"
+    :client="client"
+    @create="$emit('create', $event)"
+    @delete="$emit('delete', $event)"
+    @save="$emit('save', $event)"
+    @edit="editing = $event" />
   </div>
 </template>
 
@@ -29,21 +37,13 @@ export default Vue.extend({
   },
   data() {
     return {
+      editing: false,
       model: this.clients.map(c => ({ ...c })) || [],
     }
   },
   computed: {
     normalize(): (str: string) => string {
       return (str: string) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    },
-  },
-  methods: {
-    onAdd() {
-      const client = new Client()
-      this.model = [
-        client,
-        ...this.model,
-      ]
     },
   },
   watch: {
