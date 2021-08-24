@@ -1,10 +1,19 @@
 <template>
   <div class="client-list d-flex flex-column w-100">
-    <PtButton round @click="onAdd">
+    <PtButton round
+    v-if="!query.length"
+    @click="$emit('add')"
+    :disabled="editing">
       +
     </PtButton>
-    <ClientRegistry v-for="client in model"
-    :key="client.id" :client="client" />
+    <ClientRegistry
+    v-for="client in model"
+    :key="client.id"
+    :client="client"
+    @create="$emit('create', $event)"
+    @delete="$emit('delete', $event)"
+    @save="$emit('save', $event)"
+    @edit="onEdit" />
   </div>
 </template>
 
@@ -12,6 +21,7 @@
 import Vue from 'vue'
 import ClientRegistry from './ClientRegistry.vue'
 import { Client } from '../../domain/Client'
+import { Utils } from '../../domain/Utils'
 
 export default Vue.extend({
   components: {
@@ -29,35 +39,28 @@ export default Vue.extend({
   },
   data() {
     return {
+      editing: false,
       model: this.clients.map(c => ({ ...c })) || [],
     }
-  },
-  computed: {
-    normalize(): (str: string) => string {
-      return (str: string) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    },
-  },
-  methods: {
-    onAdd() {
-      const client = new Client()
-      this.model = [
-        client,
-        ...this.model,
-      ]
-    },
   },
   watch: {
     clients() {
       this.model = this.clients.map(c => ({ ...c }))
     },
     query() {
-      const norm = this.normalize
+      const norm = Utils.normalize
 
       this.model = this.clients
         .filter(client => norm(client.name).includes(norm(this.query)))
         .map(c => ({ ...c }))
     },
   },
+  methods: {
+    onEdit(editing: boolean) {
+      this.editing = editing
+      this.$emit('edit', editing)
+    },
+  }
 })
 </script>
 

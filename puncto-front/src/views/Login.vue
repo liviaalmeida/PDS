@@ -27,17 +27,20 @@
         type="password" icon="lock" required
         class="login-input"
         placeholder="Digite sua senha"
-        :input-attrs="{ minLength: 6 }" />
+        minLength="6" />
         <PtButton :disabled="!valid">
           {{ button }}
         </PtButton>
       </form>
+      <PtModal v-model="error" :feedback="feedback" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { Feedback, LoginFeedback } from '../domain/Feedback'
+import { Endpoint } from '../api'
 
 export default Vue.extend({
   created: function(){
@@ -45,10 +48,12 @@ export default Vue.extend({
   },
   data() {
     return {
+      feedback: new Feedback(),
       form: {
         email: '',
         password: '',
       },
+      error: false,
       loading: false,
       loginType: 'login',
       valid: false,
@@ -58,6 +63,9 @@ export default Vue.extend({
     button(): string {
       return this.loginType === 'login' ?
         'Login' : 'Sign Up'
+    },
+    endpoint(): Endpoint {
+      return this.loginType === 'login' ? this.$api.auth.login : this.$api.auth.signup
     },
     redirect(): string {
       return this.$route.query?.redirect as string || '/'
@@ -75,18 +83,21 @@ export default Vue.extend({
       this.$analytics.logEvent('usuario_login_tentativa', { user: this.form.email })
       this.$store.dispatch('loadStart')
       try {
-        const endpoint = this.loginType === 'login' ? this.$api.auth.login : this.$api.auth.signup
-        const { authToken } = await this.$api.fetch(endpoint, this.form)
+        const answer = await this.$api.fetch(this.endpoint, this.form)
+        const { authToken } = answer
         if (!authToken) {
-          throw new Error('No token returned')
+          throw new Error(answer)
         }
         this.$cookies.set('authToken', authToken)
         this.$api.setToken(authToken)
         this.$store.dispatch('login')
         this.$router.push(this.redirect)
         this.$analytics.logEvent('usuario_login_sucesso', { user: this.form.email })
-      } catch {
-        alert('Erro ao tentar logar')
+      } catch (err) {
+        this.feedback = this.loginType === 'login' ?
+          LoginFeedback.LoginError(err.message) :
+          LoginFeedback.SignupError(err.message)
+        this.error = true
         this.$analytics.logEvent('usuario_login_erro', { user: this.form.email })
       } finally {
         this.$store.dispatch('loadStop')

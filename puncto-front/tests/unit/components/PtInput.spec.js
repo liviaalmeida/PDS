@@ -9,7 +9,6 @@ localVue.use(VueMask)
 
 describe('PtInput', () => {
   const label = 'Test Input'
-  const type = 'number'
   let ptInput, input
 
   beforeEach(() => {
@@ -17,7 +16,6 @@ describe('PtInput', () => {
       localVue,
       propsData: {
         label,
-        type,
       },
       components: {
         PtIcon,
@@ -30,19 +28,14 @@ describe('PtInput', () => {
     expect(input.exists()).toBeDefined()
   })
 
-  it('renders the input with type', () => {
-    const inputType = input.attributes('type')
-    expect(inputType).toBe(type)
-  })
-
   it('renders the input label with text', () => {
     const labelWrapper = ptInput.find('label')
     expect(labelWrapper.text()).toBe(label)
   })
 
-  it('emits an input event on input input', () => {
+  it('emits an model event on input input', () => {
     input.trigger('input')
-    expect(ptInput.emitted().input?.length).toBe(1)
+    expect(ptInput.emitted().model?.length).toBe(1)
   })
 
   it('disables input on disabled property', async () => {

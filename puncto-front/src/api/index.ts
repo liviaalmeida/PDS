@@ -1,21 +1,26 @@
 import * as auth from './auth'
+import * as client from './client'
+import * as punch from './punch'
+import * as user from './user'
 
 export type Endpoint = {
-  url: string;
-  options: {
-    method: 'GET' | 'POST';
-  };
+  url: string
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE'
 }
 export class API {
   token: string | null = null
   base = process.env.NODE_ENV === 'production' ? 'https://puncto-backend.ue.r.appspot.com' : 'http://localhost:3000';
   auth = auth
+  client = client
+  punch = punch
+  user = user
 
   get headers(): { headers: Record<string, string> } {
     return {
       headers: {
         ...(this.token && {'Authorization': `Bearer ${this.token}`}),
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
       }
     }
   }
@@ -24,13 +29,13 @@ export class API {
     this.token = token
   }
 
-  async fetch({ url, options }: Endpoint, body: unknown): Promise<Response> {
+  async fetch({ url, method }: Endpoint, body: unknown): Promise<Response> {
     const response = await fetch(
       `${this.base}${url}`,
       {
+        method,
         ...this.headers,
         ...(body !== undefined && { body: JSON.stringify(body) }),
-        ...options,
       }
     )
     return await response.json()

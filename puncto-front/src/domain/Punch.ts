@@ -1,7 +1,17 @@
 export class Punch {
-	id = ''
-	start = ''
-	end? = ''
-	client = ''
-	activity? = ''
+  id = '0'
+  timestampDateEntrada? = 0
+  timestampDateSaida? = 0
+  clienteId = ''
+  descricaoAtividade = ''
+
+  constructor(start?: number) {
+    if (start) this.timestampDateEntrada = start
+  }
+}
+
+export interface Month {
+  aberto: boolean
+  possuiPonto: boolean
+  dia: number
 }

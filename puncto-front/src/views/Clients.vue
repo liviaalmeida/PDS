@@ -11,52 +11,87 @@
         icon="clients"
         required
         placeholder="Pesquisar pelo nome do cliente"
+        :disabled="editing"
       />
     </form>
-    <ClientList :clients="clients"
+    <ClientList
+    @add="onAdd"
+    @create="onCreate"
+    @delete="onDelete"
+    @save="onSave"
+    @edit="editing = $event"
+    :clients="clients"
     :query="clientName" />
+    <PtModal v-model="modal" :feedback="feedback" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import ClientList from '../components/clients/ClientList.vue'
+import { Client } from '../domain/Client'
+import { ClientFeedback, Feedback } from '../domain/Feedback'
 
 export default Vue.extend({
   created: function(){
     this.$analytics.logEvent('clients_view')
   },
   components: {
-    ClientList
+    ClientList,
   },
   data() {
     return {
       clientName: '',
-      clients: [
-        {
-          name: 'A Fantástica Fábrica de Chocolate',
-          id: 'DE813189177',
-          address: {
-            line1: 'PSherman, 42',
-            line2: 'WallabyWay',
-            line3: 'Sidney'
-          },
-        },
-        {
-          name: 'Teste 2',
-          id: 'DE813189178',
-          address: {
-            line1: 'Rua Mauritânia, 385',
-            line2: 'Bairro Canaã',
-            line3: 'Belo Horizonte'
-          },
-        },
-      ]
+      clients: [] as Client[],
+      editing: false,
+      feedback: new Feedback(),
+      modal: false,
     }
   },
   methods: {
-    onAdd: function() {
-      alert('Adicionar um novo cliente')
+    async getClients() {
+      this.clients = []
+      this.clients = await this.$api.fetch(this.$api.client.get)
+      this.clients.sort((a, b) => a.name < b.name ? -1: 1)
+    },
+    onAdd(): void {
+      this.clients = [
+        new Client(),
+        ...this.clients,
+      ]
+    },
+    async onCreate(client: Client): Promise<void> {
+      delete client.id
+      try {
+        await this.$api.fetch(this.$api.client.create, client)
+        await this.getClients()
+        this.showModal(ClientFeedback.CreateSuccess)
+      } catch (err) {
+        this.showModal(ClientFeedback.CreateError(err.message))
+      }
+    },
+    async onDelete(id: string): Promise<void> {
+      if (id === '0') {
+        this.clients = this.clients.filter(c => c.id !== id)
+        return
+      }
+
+      try {
+        await this.$api.fetch(this.$api.client.remove(id))
+        await this.getClients()
+        this.showModal(ClientFeedback.DeleteSuccess)
+      } catch (err) {
+        this.showModal(ClientFeedback.DeleteError(err.message))
+      }
+    },
+    async onSave(client: Client): Promise<void> {
+      try {
+        await this.$api.fetch(this.$api.client.update, client)
+        await this.getClients()
+        this.showModal(ClientFeedback.SaveSuccess)
+      } catch (err) {
+        this.showModal(ClientFeedback.SaveError(err.message))
+      }
     },
     onQuery(): void {
       alert(JSON.stringify(this.clientName))
@@ -64,6 +99,13 @@ export default Vue.extend({
     onReset(): void {
       this.clientName = ''
     },
+    showModal(feedback: Feedback) {
+      this.feedback = feedback
+      this.modal = true
+    },
+  },
+  mounted() {
+    this.getClients()
   },
 })
 </script>

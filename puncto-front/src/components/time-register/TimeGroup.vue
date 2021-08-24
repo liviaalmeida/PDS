@@ -9,16 +9,20 @@
         }]"></div>
       </div>
     </div>
-    <TimeRegistry v-for="(punch) in model"
-    :key="punch.id" :punch="punch"
+    <TimeRegistry v-for="(punch) in punches"
+    :key="punch.id"
+    :clients="clients"
+    :punch="punch"
+    :day="day"
     :on-save="validateSave"
     :can-edit="!editing"
     @edit="$emit('edit', $event)"
     @delete="onDelete" />
-    <PtButton round @click="addPunch"
-    :disabled="editing">
+    <PtButton round @click="onAdd"
+    :disabled="editing || pending">
       +
     </PtButton>
+    <PtModal v-model="error" :feedback="feedback" />
   </div>
 </template>
 
@@ -27,6 +31,8 @@ import Vue from 'vue'
 import moment from 'moment'
 import TimeRegistry from './TimeRegistry.vue'
 import { Punch } from '../../domain/Punch'
+import { Client } from '../../domain/Client'
+import { Feedback, PunchFeedback } from '../../domain/Feedback'
 
 moment.locale('pt-br')
 
@@ -35,6 +41,10 @@ export default Vue.extend({
     TimeRegistry,
   },
   props: {
+    clients: {
+      required: true,
+      type: Array as () => Array<Client>,
+    },
     day: {
       required: true,
       type: Date,
@@ -55,7 +65,8 @@ export default Vue.extend({
   data() {
     return {
       duration: '',
-      model: [] as Punch[],
+      error: false,
+      feedback: new Feedback(),
     }
   },
   computed: {
@@ -63,91 +74,99 @@ export default Vue.extend({
       return moment(this.day).format('LL').toLowerCase()
     },
     sortPunchs(): (pc1: Punch, pc2: Punch) => number {
-      return (pc1: Punch, pc2: Punch) => pc1.start < pc2.start ? -1 : 1
+      return (pc1: Punch, pc2: Punch) =>
+        pc1.timestampDateEntrada &&
+        pc2.timestampDateEntrada &&
+        pc1.timestampDateEntrada < pc2.timestampDateEntrada ?
+          -1 : 1
     },
     todaySelected(): boolean {
       return moment(this.day).isSame(moment(), 'day')
     },
   },
   methods: {
+    onAdd() {
+      this.$emit('add')
+    },
     onDelete(id: string) {
-      if (id === '0') {
-        this.model = this.model.slice(0, -1)
-        return
-      }
-
       this.$emit('delete', id)
     },
-    addPunch() {
-      const newPunch = new Punch()
-      newPunch.id = '0'
-
-      this.model = [
-        ...this.model,
-        newPunch,
-      ]
-    },
-    simulatePunches(punches: Punch[], punch: Punch): Punch[] {
-      const index = punches.findIndex(pc => pc.id === punch.id)
-      const updated = punches.map((pc, i) => i === index ? { ...punch } : { ...pc})
+    simulatePunches(punch: Punch): Punch[] {
+      const updated = this.punches.map(
+        pc => pc.id === punch.id ? { ...punch } : { ...pc}
+      )
       updated.sort(this.sortPunchs)
       return updated
     },
-    timeToMoment(time: string) {
-      const [ hour, minute ] = time.split(':').map(num => Number(num))
-      return moment(this.day).hour(hour).minute(minute)
+    showError(feedback: Feedback): void {
+      this.feedback = feedback
+      this.error = true
     },
-    updateDuration() {
+    timeToMoment(time: number): moment.Moment {
+      return moment(time)
+    },
+    updateDuration(): void {
       if (!this.pending) this.duration = '8:00'
       else if (!this.todaySelected) this.duration = 'Ponto aberto'
       else this.duration = '8:00'
     },
-    updateModel() {
-      this.model = this.punches.map(p => ({ ...p }))
-      this.model.sort(this.sortPunchs)
-    },
     validateSave(punch: Punch) {
-      if (this.pending && !punch.end) {
-        window.alert('Não é possível deixar mais de um ponto aberto')
+      if (this.pending && !punch.timestampDateSaida) {
+        this.showError(PunchFeedback.MultiplePendenciesError)
         return false
       }
 
-      if (punch.end && !this.validInterval(punch.start, punch.end)) {
-        window.alert('Hora de saída não pode ser menor que hora de entrada')
+      if (punch.timestampDateSaida &&
+        !this.validInterval(punch.timestampDateEntrada, punch.timestampDateSaida)) {
+        this.showError(PunchFeedback.IntervalError)
         return false
       }
 
-      const updated = this.simulatePunches(this.model, punch)
+      if ((punch.timestampDateEntrada && !this.validTime(punch.timestampDateEntrada)) ||
+        (punch.timestampDateSaida && !this.validTime(punch.timestampDateSaida))) {
+        this.showError(PunchFeedback.TimeTravelerError)
+        return false
+      }
+
+      const updated = this.simulatePunches(punch)
       if (!this.validPunchesIntermediates(updated)) {
-        window.alert('Apenas o último ponto do dia corrente pode ficar em aberto')
+        this.showError(PunchFeedback.PastPendencyError)
         return false
       }
+
       if (!this.validPunchesOrder(updated)) {
-        window.alert('Você não pode ter uma hora de saída maior que a hora de entrada seguinte')
+        this.showError(PunchFeedback.OverrideError)
         return false
       }
 
       if (punch.id === '0') {
-        const newPunch = { ...punch }
-        delete newPunch.id
-        this.$emit('add', newPunch)
+        delete punch.id
+        this.$emit('create', punch)
         return true
       }
 
       this.$emit('save', punch)
       return true
     },
-    validInterval(start: string, end: string): boolean {
-      return this.timeToMoment(start).isBefore(this.timeToMoment(end))
+    validInterval(start?: number, end?: number): boolean {
+      return !!start && !!end && this.timeToMoment(start).isBefore(this.timeToMoment(end))
     },
     validPunchesIntermediates(punches: Punch[]) {
       const checkablePunches = this.todaySelected ? punches.slice(0, -1) : punches
-      return checkablePunches.every(punch => !!punch.end)
+      return checkablePunches.every(punch => !!punch.timestampDateSaida)
     },
     validPunchesOrder(punches: Punch[]) {
       return punches.slice(0, -1).every(
-        (punch, index) => punch.end && this.validInterval(punch.end, punches[index+1].start)
+        (punch, index) => punch.timestampDateSaida &&
+          this.validInterval(
+            punch.timestampDateSaida,
+            punches[index+1].timestampDateEntrada,
+          )
       )
+    },
+    validTime(time: number): boolean {
+      const now = new Date()
+      return this.timeToMoment(time).isSameOrBefore(now)
     },
   },
   watch: {
@@ -157,12 +176,8 @@ export default Vue.extend({
     pending() {
       this.updateDuration()
     },
-    punches() {
-      this.updateModel()
-    },
   },
   mounted() {
-    this.updateModel()
     this.updateDuration()
   },
 })

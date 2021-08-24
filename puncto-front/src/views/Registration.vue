@@ -2,7 +2,7 @@
   <div class="registration d-flex justify-content-center align-items-center">
     <form
       @submit.prevent="onSubmit"
-      @reset.prevent="onReset"
+      @input="onInput($event.target.form)"
       class="registration-form w-100"
     >
       <PtInput
@@ -21,6 +21,7 @@
           icon="profile"
           required
           placeholder="Digite seu CNPJ"
+          mask="##.###.###/####-##"
         />
         <PtInput
           class="registration-input"
@@ -36,7 +37,7 @@
       <div class="registration-address">Endereço</div>
       <PtInput
         label="Linha 1"
-        v-model="user.address.line1"
+        v-model="user.address"
         type="text"
         icon="marker"
         required
@@ -44,7 +45,7 @@
       />
       <PtInput
         label="Linha 2"
-        v-model="user.address.line2"
+        v-model="user.addressTwo"
         type="text"
         icon="marker"
         required
@@ -52,19 +53,24 @@
       />
       <PtInput
         label="Linha 3"
-        v-model="user.address.line3"
+        v-model="user.addressThree"
         type="text"
         icon="marker"
         required
         placeholder="Digite seu endereço"
       />
-      <PtButton class="button"> Salvar </PtButton>
+      <PtButton class="button" :disabled="!valid">
+        Salvar
+      </PtButton>
     </form>
+    <PtModal v-model="modal" :feedback="feedback" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { Feedback, UserFeedback } from '../domain/Feedback'
+import { User } from '../domain/User'
 
 export default Vue.extend({
   created: function(){
@@ -72,43 +78,43 @@ export default Vue.extend({
   },
   data() {
     return {
-      user: {
-        name: '',
-        cnpj: '',
-        email: '',
-        address: {
-          line1: '',
-          line2: '',
-          line3: '',
-        },
-      },
+      feedback: new Feedback(),
+      modal: false,
+      user: new User(),
+      valid: false,
     }
   },
   methods: {
-    onSubmit(): void {
-      alert(JSON.stringify(this.user))
-    },
-    onReset(): void {
-      this.user.name = ''
-      this.user.cnpj = ''
-      this.user.email = ''
-      this.user.address = {
-        line1: '',
-        line2: '',
-        line3: '',
+    async loadUser(): Promise<void> {
+      this.$store.dispatch('loadStart')
+      const user = await this.$api.fetch(this.$api.user.get)
+
+      this.user = {
+        ...this.user,
+        ...user,
       }
+
+      this.$store.dispatch('loadStop')
+    },
+    onInput(form: HTMLFormElement) {
+      this.valid = form.checkValidity()
+    },
+    async onSubmit(): Promise<void> {
+      this.$store.dispatch('loadStart')
+      try {
+        const user = await this.$api.fetch(this.$api.user.update, this.user)
+        this.user = { ...this.user, ...user }
+        this.valid = false
+        this.feedback = UserFeedback.SaveSuccess
+      } catch (err) {
+        this.feedback = UserFeedback.CustomError(err)
+      }
+      this.modal = true
+      this.$store.dispatch('loadStop')
     },
   },
-  async mounted() {
-    this.$store.dispatch('loadStart')
-    const user = await this.$api.fetch(this.$api.auth.userData)
-
-    this.user = {
-      ...this.user,
-      ...user,
-    }
-
-    this.$store.dispatch('loadStop')
+  mounted() {
+    this.loadUser()
   },
 })
 </script>

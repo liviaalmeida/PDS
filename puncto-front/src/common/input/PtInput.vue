@@ -8,17 +8,18 @@
       <PtIcon :name="icon" v-if="icon" />
       {{ label }}
     </label>
-    <textarea v-if="type === 'textarea'" :name="name"
-		:placeholder="placeholder" :required="required"
+    <textarea v-if="$attrs.type === 'textarea'"
+    :required="required"
     @blur="focus = false" @focus="focus = true"
-    @input="$emit('input', $event.target.value)"
-    v-bind="inputAttrs" v-model="model"
+    @input="$emit('model', $event.target.value)"
+    v-bind="$attrs" v-on="$listeners"
+    v-model="model"
     :disabled="disabled" />
-    <input v-else :type="type" :name="name"
-		:placeholder="placeholder" :required="required"
+    <input v-else :required="required"
     @blur="focus = false" @focus="focus = true"
-    @input="$emit('input', $event.target.value)"
-    v-bind="inputAttrs" v-mask="mask" v-model="model"
+    @input="$emit('model', $event.target.value)"
+    v-bind="$attrs" v-on="$listeners"
+    v-mask="mask" v-model="model"
     :disabled="disabled" >
   </div>
 </template>
@@ -28,7 +29,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   model: {
-    event: 'input',
+    event: 'model',
   },
   props: {
     disabled: {
@@ -38,10 +39,6 @@ export default Vue.extend({
     icon: {
       required: false,
       type: String,
-    },
-    'input-attrs': {
-      required: false,
-      type: Object,
     },
     label: {
       required: true,
@@ -66,11 +63,6 @@ export default Vue.extend({
     small: {
       required: false,
       type: Boolean,
-    },
-    type: {
-      default: 'text',
-      required: false,
-      type: String,
     },
     value: {
       required: false,

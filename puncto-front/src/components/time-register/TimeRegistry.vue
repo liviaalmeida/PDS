@@ -7,15 +7,17 @@
         <PtInput small label="Entrada"
         name="start"
         placeholder="HH:MM"
+        pattern="\d\d:\d\d"
         :mask="'##:##'"
-        v-model="model.start"
+        v-model="lt.start"
         :disabled="!editing"
         required />
         <PtInput small label="Saída"
         name="end"
         placeholder="HH:MM"
+        pattern="\d\d:\d\d"
         :mask="'##:##'"
-        v-model="model.end"
+        v-model="lt.end"
         :disabled="!editing" />
       </div>
       <div class="time-registry-header-icons"
@@ -33,23 +35,35 @@
         @click="$emit('delete', punch.id)" />
       </div>
     </div>
-    <PtInput small label="Cliente" icon="clients"
-    required name="client" v-model="model.client"
+    <PtSelect small label="Cliente"
+    :options="clients" icon="clients"
+    required name="client" v-model="model.clienteId"
     :disabled="!editing" />
     <PtInput small label="Atividade" :disabled="!editing"
-    name="activity" v-model="model.activity" />
+    name="activity" v-model="model.descricaoAtividade"
+    minLength="4" required />
   </form>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import moment from 'moment'
 import { Punch } from '../../domain/Punch'
+import { Client } from '../../domain/Client'
 
 export default Vue.extend({
   props: {
     canEdit: {
       required: false,
       type: Boolean,
+    },
+    clients: {
+      required: true,
+      type: Array as () => Array<Client>,
+    },
+    day: {
+      required: true,
+      type: Date,
     },
     onSave: {
       required: true,
@@ -66,7 +80,23 @@ export default Vue.extend({
       model: {
         ...this.punch,
       },
+      lt: {
+        start: '',
+        end: '',
+      },
     }
+  },
+  computed: {
+    timestampLT(): (ts: number) => string {
+      return (ts) => ts !== 0 ? moment(ts).format('LT') : ''
+    },
+    LTtimestamp(): (lt: string) => number | undefined {
+      return (lt) => {
+        if (lt === '') return
+        const [ hour, minute ] = lt.split(':').map(num => Number(num))
+        return new Date(new Date(this.day).setHours(hour)).setMinutes(minute)
+      }
+    },
   },
   methods: {
     emitEditing() {
@@ -84,14 +114,24 @@ export default Vue.extend({
       this.model = {
         ...this.punch,
       }
+      this.updateLTs()
     },
     confirmEditing() {
+      this.updateTimestamps()
       this.editing = !this.onSave(this.model)
       this.emitEditing()
     },
     onEdit() {
       this.editing = true
       this.emitEditing()
+    },
+    updateLTs() {
+      this.lt.start = this.timestampLT(this.punch.timestampDateEntrada || 0)
+      this.lt.end = this.timestampLT(this.punch.timestampDateSaida || 0)
+    },
+    updateTimestamps() {
+      this.model.timestampDateEntrada = this.LTtimestamp(this.lt.start)
+      this.model.timestampDateSaida = this.LTtimestamp(this.lt.end)
     },
   },
   watch: {
@@ -105,6 +145,7 @@ export default Vue.extend({
     },
   },
   mounted() {
+    this.updateLTs()
     this.emitEditing()
   },
 })
