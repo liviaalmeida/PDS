@@ -14,12 +14,12 @@ if (process.env.NODE_ENV === 'production') {
     url: `mongodb+srv://${mongoDbUser}:${mongoDbPwd}@${mongoDbHost}/${mongoDbDatabase}?retryWrites=true&w=majority`,
     useNewUrlParser: true,
     entities: [__dirname + '/entity/*{.ts,.js}'],
-  });
+  }).then(() => listen());
 } else {
-  createConnection(connectionOptions);
+  createConnection(connectionOptions).then(() => listen());
 }
 
-app.listen(port, async () => {
+const listen = () => app.listen(port, async () => {
   console.log(`Running on ${process.env.NODE_ENV} environment`);
 
   console.log(`Server listening at http://localhost:${port}`);

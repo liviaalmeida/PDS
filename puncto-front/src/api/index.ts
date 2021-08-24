@@ -9,7 +9,7 @@ export type Endpoint = {
 }
 export class API {
   token: string | null = null
-  base = 'http://localhost:3000'
+  base = process.env.NODE_ENV === 'production' ? 'https://puncto-backend.ue.r.appspot.com' : 'http://localhost:3000';
   auth = auth
   client = client
   punch = punch
