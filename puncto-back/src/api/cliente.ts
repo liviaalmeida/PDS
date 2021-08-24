@@ -51,7 +51,7 @@ router.delete('/:clienteId', async (req: Request, res: Response) => {
   try {
     const clienteId = req.params.clienteId;
     await clienteService.delete(clienteId);
-    res.status(204).send();
+    res.status(204).send({ id: clienteId });
   } catch (err) {
     return res.status(500).json('Some unexpected error happened while deleting the cliente.');
   }
