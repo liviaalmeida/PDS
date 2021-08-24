@@ -63,15 +63,13 @@
         Salvar
       </PtButton>
     </form>
-    <PtModal v-model="error" title="Erro!"
-    type="error" :message="errorMessage" />
-    <PtModal v-model="success" title="Dados salvos!" type="success"
-    message="Dados pessoais atualizados com sucesso" />
+    <PtModal v-model="modal" :feedback="feedback" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { Feedback, UserFeedback } from '../domain/Feedback'
 import { User } from '../domain/User'
 
 export default Vue.extend({
@@ -80,10 +78,9 @@ export default Vue.extend({
   },
   data() {
     return {
+      feedback: new Feedback(),
+      modal: false,
       user: new User(),
-      error: false,
-      errorMessage: '',
-      success: false,
       valid: false,
     }
   },
@@ -108,11 +105,11 @@ export default Vue.extend({
         const user = await this.$api.fetch(this.$api.user.update, this.user)
         this.user = { ...this.user, ...user }
         this.valid = false
-        this.success = true
+        this.feedback = UserFeedback.Saved
       } catch (err) {
-        this.errorMessage = `Erro ao atualizar cadastro! ${err}`
-        this.error = true
+        this.feedback = UserFeedback.CustomError(err)
       }
+      this.modal = true
       this.$store.dispatch('loadStop')
     },
   },

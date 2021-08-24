@@ -32,14 +32,14 @@
           {{ button }}
         </PtButton>
       </form>
-      <PtModal v-model="error" title="Erro!"
-      type="error" :message="errorMessage" />
+      <PtModal v-model="error" :feedback="feedback" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { Feedback, LoginFeedback } from '../domain/Feedback'
 import { Endpoint } from '../api'
 
 export default Vue.extend({
@@ -48,12 +48,12 @@ export default Vue.extend({
   },
   data() {
     return {
+      feedback: new Feedback(),
       form: {
         email: '',
         password: '',
       },
       error: false,
-      errorMessage: '',
       loading: false,
       loginType: 'login',
       valid: false,
@@ -94,10 +94,9 @@ export default Vue.extend({
         this.$router.push(this.redirect)
         this.$analytics.logEvent('usuario_login_sucesso', { user: this.form.email })
       } catch (err) {
-        this.errorMessage = (this.loginType === 'login' ?
-          'Erro ao logar no sistema' :
-          'Erro ao criar cadastro no sistema')
-          .concat(`: ${err.message}`)
+        this.feedback = this.loginType === 'login' ?
+          LoginFeedback.LoginError(err.message) :
+          LoginFeedback.SignupError(err.message)
         this.error = true
         this.$analytics.logEvent('usuario_login_erro', { user: this.form.email })
       } finally {

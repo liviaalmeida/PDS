@@ -9,7 +9,7 @@
         }]"></div>
       </div>
     </div>
-    <TimeRegistry v-for="(punch) in model"
+    <TimeRegistry v-for="(punch) in punches"
     :key="punch.id"
     :clients="clients"
     :punch="punch"
@@ -22,8 +22,7 @@
     :disabled="editing || pending">
       +
     </PtButton>
-    <PtModal v-model="error" title="Erro!"
-    type="error" :message="errorMessage" />
+    <PtModal v-model="error" :feedback="feedback" />
   </div>
 </template>
 
@@ -33,6 +32,7 @@ import moment from 'moment'
 import TimeRegistry from './TimeRegistry.vue'
 import { Punch } from '../../domain/Punch'
 import { Client } from '../../domain/Client'
+import { Feedback, PunchFeedback } from '../../domain/Feedback'
 
 moment.locale('pt-br')
 
@@ -66,8 +66,7 @@ export default Vue.extend({
     return {
       duration: '',
       error: false,
-      errorMessage: '',
-      model: [] as Punch[],
+      feedback: new Feedback(),
     }
   },
   computed: {
@@ -99,41 +98,44 @@ export default Vue.extend({
       updated.sort(this.sortPunchs)
       return updated
     },
-    showError(message: string) {
-      this.errorMessage = message
+    showError(feedback: Feedback): void {
+      this.feedback = feedback
       this.error = true
     },
-    timeToMoment(time: number) {
+    timeToMoment(time: number): moment.Moment {
       return moment(time)
     },
-    updateDuration() {
+    updateDuration(): void {
       if (!this.pending) this.duration = '8:00'
       else if (!this.todaySelected) this.duration = 'Ponto aberto'
       else this.duration = '8:00'
     },
-    updateModel() {
-      this.model = this.punches.map(p => ({ ...p }))
-      this.model.sort(this.sortPunchs)
-    },
     validateSave(punch: Punch) {
       if (this.pending && !punch.timestampDateSaida) {
-        this.showError('Não é possível deixar mais de um ponto aberto')
+        this.showError(PunchFeedback.MultiplePendenciesError)
         return false
       }
 
       if (punch.timestampDateSaida &&
         !this.validInterval(punch.timestampDateEntrada, punch.timestampDateSaida)) {
-        this.showError('Hora de saída não pode ser menor que hora de entrada')
+        this.showError(PunchFeedback.IntervalError)
+        return false
+      }
+
+      if ((punch.timestampDateEntrada && !this.validTime(punch.timestampDateEntrada)) ||
+        (punch.timestampDateSaida && !this.validTime(punch.timestampDateSaida))) {
+        this.showError(PunchFeedback.TimeTravelerError)
         return false
       }
 
       const updated = this.simulatePunches(punch)
       if (!this.validPunchesIntermediates(updated)) {
-        this.showError('Apenas o último ponto do dia corrente pode ficar em aberto')
+        this.showError(PunchFeedback.PastPendencyError)
         return false
       }
+
       if (!this.validPunchesOrder(updated)) {
-        this.showError('Você não pode ter uma hora de saída maior que a hora de entrada seguinte')
+        this.showError(PunchFeedback.OverrideError)
         return false
       }
 
@@ -162,6 +164,10 @@ export default Vue.extend({
           )
       )
     },
+    validTime(time: number): boolean {
+      const now = new Date()
+      return this.timeToMoment(time).isSameOrBefore(now)
+    },
   },
   watch: {
     daySelected() {
@@ -170,15 +176,8 @@ export default Vue.extend({
     pending() {
       this.updateDuration()
     },
-    punches: {
-      deep: true,
-      handler: function() {
-        this.updateModel()
-      },
-    },
   },
   mounted() {
-    this.updateModel()
     this.updateDuration()
   },
 })

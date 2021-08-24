@@ -3,10 +3,10 @@
     <div class="pt-modal-wrapper" v-if="value">
       <div class="pt-modal">
         <div class="pt-modal-content">
-          <PtIcon :name="type"
+          <PtIcon :name="feedback.type"
           class="pt-modal-icon" />
-          <p class="pt-modal-title">{{ title }}</p>
-          <p class="pt-modal-message">{{ message }}</p>
+          <p class="pt-modal-title">{{ feedback.title }}</p>
+          <p class="pt-modal-message">{{ feedback.message }}</p>
         </div>
         <button class="pt-modal-close"
         @click="$emit('close', false)">
@@ -19,28 +19,29 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { Feedback } from '../domain/Feedback'
 
 export default Vue.extend({
   model: {
     event: 'close',
   },
   props: {
-    message: {
+    feedback: {
       required: true,
-      type: String,
-    },
-    title: {
-      required: true,
-      type: String,
-    },
-    type: {
-      default: 'info',
-      required: false,
-      type: String as () => 'info' | 'success' | 'error',
+      type: Object as () => Feedback,
     },
     value: {
       required: true,
       type: Boolean,
+    },
+  },
+  watch: {
+    value() {
+      if (!this.value) return
+      this.$nextTick(() => {
+        const button = this.$el.querySelector('.pt-modal-close') as HTMLButtonElement
+        button.focus()
+      })
     },
   },
 })
