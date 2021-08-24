@@ -1,6 +1,6 @@
 export class ClienteDto {
 
-    id: number;
+    id: string;
     name: string;
     cnpj: string;
     email: string;
@@ -9,7 +9,7 @@ export class ClienteDto {
     addressThree: string;
 
     public constructor() {
-        this.id = 0;
+        this.id = '';
         this.name = '';
         this.cnpj = '';
         this.email = '';
