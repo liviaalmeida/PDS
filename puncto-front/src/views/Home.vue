@@ -76,8 +76,6 @@ export default Vue.extend({
       this.punches = await this.$api.fetch(this.$api.punch.day(this.daySelected.getTime()))
     },
     async onAdd(now = false) {
-      console.log('on add now', this.punches)
-
       if (!now) {
         this.punches.push(new Punch())
         return
