@@ -9,7 +9,6 @@ localVue.use(VueMask)
 
 describe('PtInput', () => {
   const label = 'Test Input'
-  const type = 'number'
   let ptInput, input
 
   beforeEach(() => {
