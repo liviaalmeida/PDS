@@ -4,30 +4,18 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
-// import { logout } from '../api'
+import { mapActions } from 'vuex'
 
 export default Vue.extend({
-  computed: {
-    ...mapGetters({
-      logged: 'logged',
+  methods: {
+    ...mapActions({
+      logout: 'logout',
     })
   },
   async created() {
-    if (!this.logged) {
-      this.$router.push('/login')
-      return
-    }
-    // this.$store.dispatch('loadStart')
-    // await logout()
-    //   .then(async () => {
-    //     await this.$store.dispatch('logout')
-    //     this.$store.dispatch('loadStop')
-    //     this.$router.push('/login')
-    //   })
-    //   .catch(() => {
-    //     this.$store.dispatch('loadStop')
-    //   })
+    this.logout()
+    this.$cookies.remove('authToken')
+    this.$router.replace('/login')
   },
 })
 </script>
