@@ -64,11 +64,6 @@ export default Vue.extend({
       required: false,
       type: Boolean,
     },
-    type: {
-      default: 'text',
-      required: false,
-      type: String,
-    },
     value: {
       required: false,
       type: String,
