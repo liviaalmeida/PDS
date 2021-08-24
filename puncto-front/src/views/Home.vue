@@ -66,10 +66,18 @@ export default Vue.extend({
     },
   },
   methods: {
+    async getClients() {
+      this.clients = (await this.$api.fetch(this.$api.client.get))
+        .map((cl: Client) => ({ payload: cl.id, text: cl.name }))
+      this.clients.sort((a, b) => a.text < b.text ? -1 : 1)
+    },
     async getPunches() {
+      this.punches = []
       this.punches = await this.$api.fetch(this.$api.punch.day(this.daySelected.getTime()))
     },
-    onAdd(now = false) {
+    async onAdd(now = false) {
+      console.log('on add now', this.punches)
+
       if (!now) {
         this.punches.push(new Punch())
         return
@@ -78,11 +86,12 @@ export default Vue.extend({
       const current = new Date().getTime()
 
       if (this.pending) {
-        const last = this.punches.length - 1
-        this.punches[last].timestampDateSaida = current
-        this.punches[last] = {
-          ...this.punches[last]
-        }
+        const pendingPunch = {
+          ...this.punches.find(p => !p.timestampDateSaida)
+        } as Punch
+
+        pendingPunch.timestampDateSaida = current
+        await this.onSave(pendingPunch)
       } else {
         this.punches.push(new Punch(current))
       }
@@ -92,28 +101,28 @@ export default Vue.extend({
       await this.$api.fetch(this.$api.punch.create, punch)
       await this.getPunches()
     },
-    onDelete(id: string) {
+    async onDelete(id: string) {
       if (id === '0') {
         this.punches = this.punches.filter(pc => pc.id !== id)
         return
       }
-      alert(`delete ${id}`)
+      await this.$api.fetch(this.$api.punch.remove(id))
+      await this.getPunches()
     },
     async onMonthChange() {
       const month: Month[] = await this.$api.fetch(this.$api.punch.month(this.daySelected.getMonth()))
       this.fullfilledPunches = month.filter(m => m.possuiPonto && !m.aberto).map(m => m.dia)
       this.pendingPunches = month.filter(m => m.aberto).map(m => m.dia)
     },
-    onSave(punch: Punch) {
-      window.alert(`save ${punch.id}`)
+    async onSave(punch: Punch) {
+      await this.$api.fetch(this.$api.punch.save, punch)
+      await this.getPunches()
     },
   },
   async mounted() {
     await this.onMonthChange()
     await this.getPunches()
-    this.clients = (await this.$api.fetch(this.$api.client.get))
-      .map((cl: Client) => ({ payload: cl.id, text: cl.name }))
-    this.clients.sort((a, b) => a.text < b.text ? -1 : 1)
+    await this.getClients()
     this.ready = true
   },
 })

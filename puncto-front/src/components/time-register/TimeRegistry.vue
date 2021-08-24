@@ -41,7 +41,7 @@
     :disabled="!editing" />
     <PtInput small label="Atividade" :disabled="!editing"
     name="activity" v-model="model.descricaoAtividade"
-    required />
+    minLength="4" required />
   </form>
 </template>
 
