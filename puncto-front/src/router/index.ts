@@ -35,9 +35,25 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/ajuda',
-    name: 'Ajuda',
-    component: () => import('@/views/Help.vue'),
+    path: '/invoices',
+    name: 'Invoices',
+    component: () => import('@/views/Invoices.vue'),
+    meta: {
+      auth: true,
+    },
+  },
+  {
+    path: '/invoices/setting',
+    name: 'Invoices - Configuração',
+    component: () => import('@/views/Setting.vue'),
+    meta: {
+      auth: true,
+    },
+  },
+  {
+    path: '/invoices/new',
+    name: 'Novo Invoice',
+    component: () => import('@/views/Invoice.vue'),
     meta: {
       auth: true,
     },
