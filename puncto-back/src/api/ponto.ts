@@ -62,7 +62,7 @@ router.delete('/:pontoId', async (req: Request, res: Response) => {
         const pontoService = container.get(PontoService);
 
         await pontoService.delete(pontoId);
-        res.status(204).send({ id: pontoId });
+        res.status(200).send({ id: pontoId });
     } catch (err) {
         return res.status(500).json('Some unexpected error happened while deleting the ponto.');
     }
