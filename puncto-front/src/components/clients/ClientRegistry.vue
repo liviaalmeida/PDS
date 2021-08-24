@@ -11,7 +11,7 @@
     <div class="client-registry-header"
     v-else key="icons-disabled">
       <PtButtonIcon icon="edit" type="button"
-      @click="editing = true" />
+      @click="edit" />
       <PtButtonIcon icon="delete" type="button"
       @click="deleteClient" />
     </div>

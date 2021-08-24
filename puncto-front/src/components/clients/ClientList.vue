@@ -1,6 +1,7 @@
 <template>
   <div class="client-list d-flex flex-column w-100">
     <PtButton round
+    v-if="!query.length"
     @click="$emit('add')"
     :disabled="editing">
       +
@@ -12,7 +13,7 @@
     @create="$emit('create', $event)"
     @delete="$emit('delete', $event)"
     @save="$emit('save', $event)"
-    @edit="editing = $event" />
+    @edit="onEdit" />
   </div>
 </template>
 
@@ -54,6 +55,12 @@ export default Vue.extend({
         .map(c => ({ ...c }))
     },
   },
+  methods: {
+    onEdit(editing: boolean) {
+      this.editing = editing
+      this.$emit('edit', editing)
+    },
+  }
 })
 </script>
 
