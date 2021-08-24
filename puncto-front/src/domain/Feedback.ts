@@ -1,7 +1,45 @@
 export class Feedback {
-  title = ''
   message = ''
+  title = ''
   type: 'error' | 'info' | 'success' = 'info'
+}
+
+export class ClientFeedback {
+  static CreateError: (err: string) => Feedback = (err) => ({
+    message: `Erro ao criar cliente! ${err}`,
+    title: 'Erro!',
+    type: 'error',
+  })
+
+  static CreateSuccess: Feedback = {
+    message: 'Cliente criado com sucesso',
+    title: 'Dados salvos!',
+    type: 'success',
+  }
+
+  static DeleteError: (err: string) => Feedback = (err) => ({
+    message: `Erro ao remover cliente! ${err}`,
+    title: 'Erro!',
+    type: 'error',
+  })
+
+  static DeleteSuccess: Feedback = {
+    message: 'Cliente removido com sucesso',
+    title: 'Dados salvos!',
+    type: 'success',
+  }
+
+  static SaveError: (err: string) => Feedback = (err) => ({
+    message: `Erro ao salvar dados do cliente! ${err}`,
+    title: 'Erro!',
+    type: 'error',
+  })
+
+  static SaveSuccess: Feedback = {
+    message: 'Dados do cliente salvos com sucesso',
+    title: 'Dados salvos!',
+    type: 'success',
+  }
 }
 
 export class LoginFeedback {
@@ -51,15 +89,15 @@ export class PunchFeedback {
 }
 
 export class UserFeedback {
-  static Saved: Feedback = {
-    message: 'Dados pessoais atualizados com sucesso',
-    title: 'Dados salvos!',
-    type: 'success',
-  }
-
   static CustomError: (err: string) => Feedback = (err) => ({
     message: `Erro ao atualizar cadastro! ${err}`,
     title: 'Erro!',
     type: 'error',
   })
+
+  static SaveSuccess: Feedback = {
+    message: 'Dados pessoais atualizados com sucesso',
+    title: 'Dados salvos!',
+    type: 'success',
+  }
 }

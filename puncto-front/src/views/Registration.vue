@@ -105,7 +105,7 @@ export default Vue.extend({
         const user = await this.$api.fetch(this.$api.user.update, this.user)
         this.user = { ...this.user, ...user }
         this.valid = false
-        this.feedback = UserFeedback.Saved
+        this.feedback = UserFeedback.SaveSuccess
       } catch (err) {
         this.feedback = UserFeedback.CustomError(err)
       }

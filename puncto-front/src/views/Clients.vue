@@ -11,6 +11,7 @@
         icon="clients"
         required
         placeholder="Pesquisar pelo nome do cliente"
+        :disabled="editing"
       />
     </form>
     <ClientList
@@ -18,8 +19,10 @@
     @create="onCreate"
     @delete="onDelete"
     @save="onSave"
+    @edit="editing = $event"
     :clients="clients"
     :query="clientName" />
+    <PtModal v-model="modal" :feedback="feedback" />
   </div>
 </template>
 
@@ -27,6 +30,7 @@
 import Vue from 'vue'
 import ClientList from '../components/clients/ClientList.vue'
 import { Client } from '../domain/Client'
+import { ClientFeedback, Feedback } from '../domain/Feedback'
 
 export default Vue.extend({
   created: function(){
@@ -39,6 +43,9 @@ export default Vue.extend({
     return {
       clientName: '',
       clients: [] as Client[],
+      editing: false,
+      feedback: new Feedback(),
+      modal: false,
     }
   },
   methods: {
@@ -58,8 +65,9 @@ export default Vue.extend({
       try {
         await this.$api.fetch(this.$api.client.create, client)
         await this.getClients()
-      } catch {
-        alert('Erro ao criar cliente')
+        this.showModal(ClientFeedback.CreateSuccess)
+      } catch (err) {
+        this.showModal(ClientFeedback.CreateError(err.message))
       }
     },
     async onDelete(id: string): Promise<void> {
@@ -67,18 +75,33 @@ export default Vue.extend({
         this.clients = this.clients.filter(c => c.id !== id)
         return
       }
-      await this.$api.fetch(this.$api.client.remove(id))
-      await this.getClients()
+
+      try {
+        await this.$api.fetch(this.$api.client.remove(id))
+        await this.getClients()
+        this.showModal(ClientFeedback.DeleteSuccess)
+      } catch (err) {
+        this.showModal(ClientFeedback.DeleteError(err.message))
+      }
     },
     async onSave(client: Client): Promise<void> {
-      await this.$api.fetch(this.$api.client.update, client)
-      await this.getClients()
+      try {
+        await this.$api.fetch(this.$api.client.update, client)
+        await this.getClients()
+        this.showModal(ClientFeedback.SaveSuccess)
+      } catch (err) {
+        this.showModal(ClientFeedback.SaveError(err.message))
+      }
     },
     onQuery(): void {
       alert(JSON.stringify(this.clientName))
     },
     onReset(): void {
       this.clientName = ''
+    },
+    showModal(feedback: Feedback) {
+      this.feedback = feedback
+      this.modal = true
     },
   },
   mounted() {
