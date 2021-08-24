@@ -33,7 +33,7 @@ export default Vue.extend({
     this.$analytics.logEvent('clients_view')
   },
   components: {
-    ClientList
+    ClientList,
   },
   data() {
     return {
@@ -43,6 +43,7 @@ export default Vue.extend({
   },
   methods: {
     async getClients() {
+      this.clients = []
       this.clients = await this.$api.fetch(this.$api.client.get)
       this.clients.sort((a, b) => a.name < b.name ? -1: 1)
     },
@@ -56,22 +57,22 @@ export default Vue.extend({
       delete client.id
       try {
         await this.$api.fetch(this.$api.client.create, client)
-        this.clients = []
         await this.getClients()
       } catch {
         alert('Erro ao criar cliente')
       }
     },
-    onDelete(id: string): void {
+    async onDelete(id: string): Promise<void> {
       if (id === '0') {
         this.clients = this.clients.filter(c => c.id !== id)
         return
       }
-      alert(`delete ${id}`)
+      await this.$api.fetch(this.$api.client.remove(id))
+      await this.getClients()
     },
-    onSave(client: Client): void {
-      alert('save')
-      console.log(client)
+    async onSave(client: Client): Promise<void> {
+      await this.$api.fetch(this.$api.client.update, client)
+      await this.getClients()
     },
     onQuery(): void {
       alert(JSON.stringify(this.clientName))

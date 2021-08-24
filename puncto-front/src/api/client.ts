@@ -10,7 +10,19 @@ const get: Endpoint = {
   method: 'GET',
 }
 
+const remove: (id: string) => Endpoint = (id) => ({
+  url: `/cliente/${id}`,
+  method: 'DELETE',
+})
+
+const update: Endpoint = {
+  url: '/cliente',
+  method: 'PUT',
+}
+
 export {
   create,
   get,
+  remove,
+  update,
 }
