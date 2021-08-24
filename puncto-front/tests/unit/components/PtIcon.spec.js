@@ -10,6 +10,11 @@ describe('PtIcon', () => {
       propsData: {
         name,
       },
+      computed: {
+        iconLoader() {
+          return { template: '<svg />' }
+        },
+      },
     })
   })
 
