@@ -51,22 +51,8 @@ describe('Ponto service', () => {
         const timestampDate = Date.now()
         await pontoService.find(userEmail, timestampDate);
 
-
-        const date = new Date(timestampDate)
-        date.setHours(0)
-        date.setMinutes(0)
-        date.setSeconds(0)
-        date.setMilliseconds(0)
-        const absoluteInitialTimestamp:number = date.getTime()
-
-        date.setHours(23)
-        date.setMinutes(59)
-        date.setSeconds(59)
-        date.setMilliseconds(999)
-        const absoluteEndTimestamp = date.getTime()
-
         expect(mockPontoRepository.find).toHaveBeenCalledTimes(1);
-        expect(mockPontoRepository.find).toHaveBeenCalledWith(userEmail, absoluteInitialTimestamp, absoluteEndTimestamp);
+        expect(mockPontoRepository.find).toHaveBeenCalledWith(userEmail, timestampDate);
     });
 
     it('Should call delete at pontoRepository', async () => {

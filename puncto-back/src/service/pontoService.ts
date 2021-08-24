@@ -13,26 +13,6 @@ export class PontoService {
         this._pontoRepository = pontoRepository;
     }
 
-    private createAbsoluteInitialTimestamp(timestampDate: number): number {
-        const date = new Date(timestampDate)
-        date.setHours(0)
-        date.setMinutes(0)
-        date.setSeconds(0)
-        date.setMilliseconds(0)
-
-        return date.getTime()
-    }
-
-    private createAbsoluteEndTimestamp(absoluteInitialTimestamp: number): number {
-        const date = new Date(absoluteInitialTimestamp)
-        date.setHours(23)
-        date.setMinutes(59)
-        date.setSeconds(59)
-        date.setMilliseconds(999)
-
-        return date.getTime()
-    }
-
     private createTimestampInicioMes(mes: number): number {
         const dataAtual = new Date()
         return new Date(dataAtual.getFullYear(), mes, 1).getTime();
@@ -76,10 +56,7 @@ export class PontoService {
     }
 
     async find(userEmail: string, timestampDate: number): Promise<Array<PontoDto>> {
-        const absoluteInitialTimestamp = this.createAbsoluteInitialTimestamp(timestampDate)
-        const absoluteEndTimestamp = this.createAbsoluteEndTimestamp(absoluteInitialTimestamp)
-
-        return await this._pontoRepository.find(userEmail, absoluteInitialTimestamp, absoluteEndTimestamp);
+        return await this._pontoRepository.find(userEmail, (timestampDate));
     }
 
     async delete(pontoId: string): Promise<void> {

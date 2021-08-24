@@ -33,24 +33,32 @@ export class PontoRepository {
         return await repository.save({ id: pontoToUpdate.id, timestampDateEntrada: pontoRequest.timestampDateEntrada, timestampDateSaida: pontoRequest.timestampDateSaida, clienteId: pontoRequest.clienteId, descricaoAtividade: pontoRequest.descricaoAtividade }) as PontoDto
     }
 
-    async find(userEmail: string, absoluteInitialTimestamp: number, absoluteEndTimestamp: number): Promise<Array<PontoDto>> {
+    async find(userEmail: string, timestamp: number): Promise<Array<PontoDto>> {
         const repository = this.getPontoRepository();
 
         const allPontos = await repository.find({
             where: {
                 userEmail: userEmail,
-                timestampDateEntrada: {
-                    $gte: absoluteInitialTimestamp
-                },
-                $or: [{
-                    timestampDateSaida: {
-                        $lte: absoluteEndTimestamp,
-                    }
-                }, { timestampDateSaida: null }]
             },
         }) as PontoDto[]
 
-        return allPontos;
+        const pontos = allPontos.filter(it => {
+            const dataABuscar = new Date(timestamp * 1000);
+            const diaABuscar = dataABuscar.getDate();
+
+            const pontoDataEntrada = new Date(it.timestampDateEntrada * 1000);
+            const pontoDataSaida = new Date(it.timestampDateSaida * 1000);
+
+            const pontoDiaEntrada = pontoDataEntrada.getDate();
+            const pontoDiaSaida = pontoDataSaida.getDate();
+
+            if (pontoDiaEntrada == diaABuscar && pontoDiaSaida == diaABuscar)
+                return it;
+            else if (pontoDiaEntrada == diaABuscar && !pontoDiaSaida)
+                return it;
+        })
+
+        return pontos;
     }
 
     async delete(pontoId: string): Promise<void> {
