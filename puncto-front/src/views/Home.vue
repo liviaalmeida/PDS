@@ -65,11 +65,20 @@ export default Vue.extend({
       return !this.editing && !this.punches.every((punch: Punch) => !!punch.timestampDateSaida)
     },
   },
+  watch: {
+    async daySelected() {
+      await this.getPunches()
+    },
+  },
   methods: {
     async getClients() {
       this.clients = (await this.$api.fetch(this.$api.client.get))
         .map((cl: Client) => ({ payload: cl.id, text: cl.name }))
       this.clients.sort((a, b) => a.text < b.text ? -1 : 1)
+    },
+    async getData() {
+      this.getPunches()
+      this.onMonthChange()
     },
     async getPunches() {
       this.punches = []
@@ -97,7 +106,7 @@ export default Vue.extend({
     async onCreate(punch: Punch) {
       delete punch.id
       await this.$api.fetch(this.$api.punch.create, punch)
-      await this.getPunches()
+      await this.getData()
     },
     async onDelete(id: string) {
       if (id === '0') {
@@ -105,7 +114,7 @@ export default Vue.extend({
         return
       }
       await this.$api.fetch(this.$api.punch.remove(id))
-      await this.getPunches()
+      await this.getData()
     },
     async onMonthChange() {
       const month: Month[] = await this.$api.fetch(this.$api.punch.month(this.daySelected.getMonth()))
@@ -114,12 +123,11 @@ export default Vue.extend({
     },
     async onSave(punch: Punch) {
       await this.$api.fetch(this.$api.punch.save, punch)
-      await this.getPunches()
+      await this.getData()
     },
   },
   async mounted() {
-    await this.onMonthChange()
-    await this.getPunches()
+    await this.getData()
     await this.getClients()
     this.ready = true
   },
