@@ -3,7 +3,7 @@ import { Entity, ObjectIdColumn, Column, BaseEntity } from 'typeorm';
 @Entity()
 export class Cliente extends BaseEntity {
   @ObjectIdColumn()
-  id: number;
+  id: string;
 
   @Column()
   name: string;

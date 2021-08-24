@@ -6,6 +6,167 @@
 	},
 	"item": [
 		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Inserir Cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"gabriel padaria\",\n\t\"cnpj\": \"12345690\",\n\t\"email\": \"gabrielbum@gmail.com\",\n\t\"address\": \"Rua das acacias\",\n\t\"addressTwo\": \"Rua das acacias\",\n\t\"addressThree\": \"Rua das acacias\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cliente",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"gabriel padaria\",\n\t\"cnpj\": \"12345690\",\n\t\"email\": \"gabrielbum@gmail.com\",\n\t\"address\": \"Rua das acacias\",\n\t\"addressTwo\": \"Rua das acacias\",\n\t\"addressThree\": \"Rua das acacias\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"61241a8d4bec74a837be891d\",\n\t\"name\": \"gabriel jornaleiro\",\n\t\"cnpj\": \"12345690\",\n\t\"email\": \"gabrielbum@gmail.com\",\n\t\"address\": \"Rua das acacias\",\n\t\"addressTwo\": \"Rua das acacias\",\n\t\"addressThree\": \"Rua das acacias\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"gabriel padaria\",\n\t\"cnpj\": \"12345690\",\n\t\"email\": \"gabrielbum@gmail.com\",\n\t\"address\": \"Rua das acacias\",\n\t\"addressTwo\": \"Rua das acacias\",\n\t\"addressThree\": \"Rua das acacias\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cliente/612402d62356b09d7b4bbc2f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente",
+								"612402d62356b09d7b4bbc2f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "registrarPonto",
 			"request": {
 				"method": "POST",

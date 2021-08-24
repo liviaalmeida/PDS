@@ -6,10 +6,11 @@ import { validate } from '../middlewares/validation';
 import { authMiddleware } from '../middlewares/authentication';
 import { ClienteRequestDto } from '../dto/clienteRequestDto';
 import InvalidClienteRequestError from '../exceptions/InvalidClienteRequestError';
+import { UpdateClienteRequestDto } from '../dto/updateClienteRequestDto';
 
 interface ClientRequest extends Request {
   query: {
-    search? :string
+    search?: string
   }
 }
 
@@ -43,6 +44,29 @@ router.get('/', async (req: ClientRequest, res: Response) => {
     if (err instanceof InvalidClienteRequestError) return res.status(err.statusCode).json(err.message);
 
     return res.status(500).json('Some unexpected error happened while finding a client.');
+  }
+});
+
+router.delete('/:clienteId', async (req: Request, res: Response) => {
+  try {
+    const clienteId = req.params.clienteId;
+    await clienteService.delete(clienteId);
+    res.status(204).send();
+  } catch (err) {
+    return res.status(500).json('Some unexpected error happened while deleting the cliente.');
+  }
+});
+
+router.put('/', validate(UpdateClienteRequestDto), async (req: Request, res: Response) => {
+  try {
+    const clienteRequest = req.body as UpdateClienteRequestDto;
+
+    const clienteService = container.get(ClienteService);
+    const cliente = await clienteService.update(clienteRequest);
+
+    res.status(201).send(cliente);
+  } catch (err) {
+    return res.status(500).json('Some unexpected error happened while updating the ponto.');
   }
 });
 
