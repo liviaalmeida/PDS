@@ -20,6 +20,7 @@ module.exports = {
     'no-multiple-empty-lines': ['error', { 'max': 1 }],
     'eol-last': ['error', 'always'],
     '@typescript-eslint/no-var-requires': 0,
+    "no-mixed-spaces-and-tabs": 0,
   },
   overrides: [
     {
