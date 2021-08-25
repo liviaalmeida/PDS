@@ -6,6 +6,7 @@
         <div class="time-group-day">{{ duration }} </div>
         <div :class="['time-group-tag', {
           'time-group-tag--pending': pending,
+          'time-group-tag--empty': !punches.length,
         }]"></div>
       </div>
     </div>
@@ -106,7 +107,7 @@ export default Vue.extend({
       return moment(time)
     },
     updateDuration(): void {
-      if (!this.pending) this.duration = '8:00'
+      if (!this.pending) this.duration = Punch.totalDuration(this.punches) || ''
       else if (!this.todaySelected) this.duration = 'Ponto aberto'
       else this.duration = '8:00'
     },
@@ -173,9 +174,9 @@ export default Vue.extend({
     daySelected() {
       this.updateDuration()
     },
-    pending() {
+    punches() {
       this.updateDuration()
-    },
+    }
   },
   mounted() {
     this.updateDuration()
@@ -198,13 +199,19 @@ export default Vue.extend({
 
   &-tag {
     background-color: $pt-sapphire;
+    border: 1px solid $pt-sapphire;
     border-radius: 50%;
     height: 20px;
     width: 20px;
     margin-left: 10px;
 
+    &--empty {
+      background-color: transparent;
+    }
+
     &--pending {
       background-color: $pt-ruby;
+      border-color: $pt-ruby;
     }
   }
 }
