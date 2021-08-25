@@ -3,6 +3,7 @@
     <div :class="['pt-input', {
       'pt-input--disabled': disabled,
       'pt-input--focused': focus,
+      'pt-input--hidden': $attrs.type === 'hidden',
       'pt-input--input': $attrs.type !== 'textarea',
       'pt-input--small': small,
     }]">
@@ -28,13 +29,8 @@
       v-mask="mask" v-model="model"
       :disabled="disabled" >
     </div>
-    <div class="pt-input-help"
-    v-if="help">
-      <PtIcon name="info"
-      class="pt-input-help-icon"
-      />
-      {{ help }}
-    </div>
+    <PtHelp class="pt-input-help"
+    v-if="help" :text="help" />
   </div>
 </template>
 
@@ -80,7 +76,7 @@ export default Vue.extend({
     },
     value: {
       required: false,
-      type: String,
+      type: [String, Number],
     },
   },
   data() {
@@ -146,21 +142,8 @@ export default Vue.extend({
   }
 
   &-help {
-    color: $pt-coal;
-    display: flex;
-    font-size: 9px;
-    line-height: 12px;
-    text-align: justify;
     margin-left: 15px;
     max-width: 200px;
-  
-    &-icon {
-      fill: $pt-coal;
-      height: 18px;
-      margin-right: 5px;
-      min-width: 18px;
-      transform: translateY(-2px);
-    }
   }
 
   &--disabled {
@@ -226,6 +209,10 @@ export default Vue.extend({
     input, textarea {
       font-size: 13px;
     }
+  }
+
+  &--hidden {
+    display: none;
   }
 }
 </style>

@@ -10,6 +10,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import PtButton from '@/common/input/PtButton.vue'
 import PtButtonIcon from '@/common/input/PtButtonIcon.vue'
 import PtCalendar from '@/common/calendar/PtCalendar.vue'
+import PtHelp from '@/common/PtHelp.vue'
 import PtIcon from '@/common/PtIcon.vue'
 import PtInput from '@/common/input/PtInput.vue'
 import PtLogo from '@/common/PtLogo.vue'
@@ -50,6 +51,7 @@ Vue.config.productionTip = false
 Vue.component('PtButton', PtButton)
 Vue.component('PtButtonIcon', PtButtonIcon)
 Vue.component('PtCalendar', PtCalendar)
+Vue.component('PtHelp', PtHelp)
 Vue.component('PtIcon', PtIcon)
 Vue.component('PtInput', PtInput)
 Vue.component('PtLogo', PtLogo)
