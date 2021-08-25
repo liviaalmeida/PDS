@@ -30,6 +30,8 @@ export class InvoiceRepository {
     invoice.bankInfo = invoiceDto.bankInfo;
     invoice.thankYouText = invoiceDto.thankYouText;
     invoice.signature = invoiceDto.signature;
+    invoice.totalHours = invoiceDto.totalHours;
+    invoice.createdAt = invoiceDto.createdAt;
 
     const inserted = await repository.save(invoice);
     return inserted.id;

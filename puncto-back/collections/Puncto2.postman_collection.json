@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "4797893a-b93f-4a34-8a96-bafdc1a3600d",
 		"name": "Puncto",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
@@ -10,27 +10,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyNzQ5NjkxMSwiZXhwIjoxNjI4MTAxNzExfQ.2NmI_xyThDXG6vK5XEbgM6KgbzYchYhW18nNJbJCbIA",
-							"type": "string"
-						}
-					]
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyNzQ5NjkxMSwiZXhwIjoxNjI4MTAxNzExfQ.2NmI_xyThDXG6vK5XEbgM6KgbzYchYhW18nNJbJCbIA"
+					}
 				},
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/user",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"user"
-					]
-				}
+				"url": "http://localhost:3000/user"
 			},
 			"response": []
 		},
@@ -39,13 +25,9 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhb    if (err instanceof InvalidClienteRequestError) return res.status(err.statusCode).json(err.message);\nGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlNUBnbWFpbC5jb20iLCJpYXQiOjE2MjczNDIzNzQsImV4cCI6MTYyNzk0NzE3NH0.fpfAEVrxxra5QY2F-TSJZla63fjLNIEPz63Pz4Af2cs",
-							"type": "string"
-						}
-					]
+					"bearer": {
+						"token": "eyJhb    if (err instanceof InvalidClienteRequestError) return res.status(err.statusCode).json(err.message);\nGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlNUBnbWFpbC5jb20iLCJpYXQiOjE2MjczNDIzNzQsImV4cCI6MTYyNzk0NzE3NH0.fpfAEVrxxra5QY2F-TSJZla63fjLNIEPz63Pz4Af2cs"
+					}
 				},
 				"method": "GET",
 				"header": [],
@@ -70,31 +52,32 @@
 			"response": []
 		},
 		{
+			"name": "DELETE client",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyOTU4MjA2MiwiZXhwIjoxNjMwMTg2ODYyfQ.RpVnY9gYhXK3i8I6feYEFYFy7w-JbeU8vYatG7ArxIo"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:3000/cliente/6121748f46dba89e5dfac772"
+			},
+			"response": []
+		},
+		{
 			"name": "Get All Invoices",
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyOTU4MjA2MiwiZXhwIjoxNjMwMTg2ODYyfQ.RpVnY9gYhXK3i8I6feYEFYFy7w-JbeU8vYatG7ArxIo",
-							"type": "string"
-						}
-					]
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyOTU4MjA2MiwiZXhwIjoxNjMwMTg2ODYyfQ.RpVnY9gYhXK3i8I6feYEFYFy7w-JbeU8vYatG7ArxIo"
+					}
 				},
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/invoices",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"invoices"
-					]
-				}
+				"url": "http://localhost:3000/invoices"
 			},
 			"response": []
 		},
@@ -103,29 +86,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyOTU4MjA2MiwiZXhwIjoxNjMwMTg2ODYyfQ.RpVnY9gYhXK3i8I6feYEFYFy7w-JbeU8vYatG7ArxIo",
-							"type": "string"
-						}
-					]
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyOTU4MjA2MiwiZXhwIjoxNjMwMTg2ODYyfQ.RpVnY9gYhXK3i8I6feYEFYFy7w-JbeU8vYatG7ArxIo"
+					}
 				},
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/invoice/id/612178d727565a9f10eedcd0",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"invoice",
-						"id",
-						"612178d727565a9f10eedcd0"
-					]
-				}
+				"url": "http://localhost:3000/invoice/id/612178d727565a9f10eedcd0"
 			},
 			"response": []
 		},
@@ -134,13 +101,9 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyOTU4MjA2MiwiZXhwIjoxNjMwMTg2ODYyfQ.RpVnY9gYhXK3i8I6feYEFYFy7w-JbeU8vYatG7ArxIo",
-							"type": "string"
-						}
-					]
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyOTU4MjA2MiwiZXhwIjoxNjMwMTg2ODYyfQ.RpVnY9gYhXK3i8I6feYEFYFy7w-JbeU8vYatG7ArxIo"
+					}
 				},
 				"method": "POST",
 				"header": [],
@@ -153,17 +116,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3000/cliente",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"cliente"
-					]
-				}
+				"url": "http://localhost:3000/cliente"
 			},
 			"response": []
 		},
@@ -172,36 +125,22 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyOTU4MjA2MiwiZXhwIjoxNjMwMTg2ODYyfQ.RpVnY9gYhXK3i8I6feYEFYFy7w-JbeU8vYatG7ArxIo",
-							"type": "string"
-						}
-					]
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyOTU4MjA2MiwiZXhwIjoxNjMwMTg2ODYyfQ.RpVnY9gYhXK3i8I6feYEFYFy7w-JbeU8vYatG7ArxIo"
+					}
 				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"invoiceNumber\": \"1\",\n    \"contractorTitle\": \"Prestador de servico\",\n    \"clientTitle\": \"Empresa que me paga\",\n    \"clientId\": \"6121748f46dba89e5dfac772\",\n    \"greeting\": \"Cara empresa que me paga\",\n    \"motivation\": \"Atividades de desenvolvimento durante o mes de agosto\",\n    \"hourlyRate\": \"50\",\n    \"currency\": \"USD\",\n    \"paymentTerms\": \"Pagar em ate sete dias uteis\",\n    \"paymentInstructions\": \"Depositar na conta bancaria: \",\n    \"bankInfo\": \"Banco Digital, Conta 111111, AG 2\",\n    \"thankYouText\": \"Obrigado!\",\n    \"signature\": \"Philipe Atela\"\n}",
+					"raw": "{\n    \"invoiceNumber\": \"1\",\n    \"contractorTitle\": \"Prestador de servico\",\n    \"clientTitle\": \"Empresa que me paga\",\n    \"clientId\": \"6121748f46dba89e5dfac772\",\n    \"greeting\": \"Cara empresa que me paga\",\n    \"motivation\": \"Atividades de desenvolvimento durante o mes de agosto\",\n    \"hourlyRate\": \"50\",\n    \"currency\": \"USD\",\n    \"paymentTerms\": \"Pagar em ate sete dias uteis\",\n    \"paymentInstructions\": \"Depositar na conta bancaria: \",\n    \"bankInfo\": \"Banco Digital, Conta 111111, AG 2\",\n    \"thankYouText\": \"Obrigado!\",\n    \"signature\": \"Philipe Atela\",\n    \"totalHours\": 30,\n    \"createdAt\": \"1629903007\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3000/invoice",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"invoice"
-					]
-				}
+				"url": "http://localhost:3000/invoice"
 			},
 			"response": []
 		},
@@ -210,13 +149,9 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyNzQ5NjkxMSwiZXhwIjoxNjI4MTAxNzExfQ.2NmI_xyThDXG6vK5XEbgM6KgbzYchYhW18nNJbJCbIA",
-							"type": "string"
-						}
-					]
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJwaGlsaXBlK3Rlc3RlQGdtYWlsLmNvbSIsImlhdCI6MTYyNzQ5NjkxMSwiZXhwIjoxNjI4MTAxNzExfQ.2NmI_xyThDXG6vK5XEbgM6KgbzYchYhW18nNJbJCbIA"
+					}
 				},
 				"method": "PUT",
 				"header": [],
@@ -229,17 +164,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3000/user",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"user"
-					]
-				}
+				"url": "http://localhost:3000/user"
 			},
 			"response": []
 		},
@@ -257,17 +182,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3000/signup",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"signup"
-					]
-				}
+				"url": "http://localhost:3000/signup"
 			},
 			"response": []
 		},
@@ -276,13 +191,9 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU3MDdjYTkwLWM3Y2UtMTFlYi1hNDQ3LTlkNGIzNmY3ZjY5YiIsImZpcnN0TmFtZSI6IlBoaWxpcGUiLCJsYXN0TmFtZSI6IkF0ZWxhIiwiZW1haWwiOiJwaGlsaXBlK2VudGVycHJpc2VAdmlkZW9wZWVsLmNvbSIsImVudGVycHJpc2UiOmZhbHNlLCJlbnRlcnByaXNlbW9udGhseWNvc3QiOiIwLjAwIiwiYXBpa2V5IjpudWxsLCJrbGF2aXlvQXBpS2V5IjpudWxsLCJzcGVjaWFsX3VzZXIiOjAsImNyZWF0ZWRBdCI6IjIwMjEtMDYtMDdUMjA6Mjg6MjEuMDAwWiIsImlzVGVybUFuZFBvbGljeUNoZWNrZWQiOnRydWUsInppcENvZGUiOiIxMTExMTExMSIsInBob25lTnVtYmVyIjoiMTExMTExMTEiLCJzb3VyY2UiOm51bGwsInJvbGUiOjIsInNob3BpZnlUb2tlbiI6bnVsbCwic2hvcGlmeVN0b3JlIjpudWxsLCJpc1Nob3BpZnlVc2VyIjpmYWxzZSwic2FsZXNPZmZlclN0YXR1cyI6IlNFTEZfU0VSVklDRSIsImpvYlRpdGxlIjoiRGV2ZWxvcGVyIiwic2VsZWN0ZWRPcmdhbml6YXRpb25JZCI6bnVsbCwic2NvcGUiOiJjbGllbnQiLCJpYXQiOjE2MjQwMjYzNjcsImV4cCI6MTYyNDYzMTE2N30.M7VqTN7HTH1KFgXYF479K4zoQEVYL5bLctboX1TkWgM",
-							"type": "string"
-						}
-					]
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU3MDdjYTkwLWM3Y2UtMTFlYi1hNDQ3LTlkNGIzNmY3ZjY5YiIsImZpcnN0TmFtZSI6IlBoaWxpcGUiLCJsYXN0TmFtZSI6IkF0ZWxhIiwiZW1haWwiOiJwaGlsaXBlK2VudGVycHJpc2VAdmlkZW9wZWVsLmNvbSIsImVudGVycHJpc2UiOmZhbHNlLCJlbnRlcnByaXNlbW9udGhseWNvc3QiOiIwLjAwIiwiYXBpa2V5IjpudWxsLCJrbGF2aXlvQXBpS2V5IjpudWxsLCJzcGVjaWFsX3VzZXIiOjAsImNyZWF0ZWRBdCI6IjIwMjEtMDYtMDdUMjA6Mjg6MjEuMDAwWiIsImlzVGVybUFuZFBvbGljeUNoZWNrZWQiOnRydWUsInppcENvZGUiOiIxMTExMTExMSIsInBob25lTnVtYmVyIjoiMTExMTExMTEiLCJzb3VyY2UiOm51bGwsInJvbGUiOjIsInNob3BpZnlUb2tlbiI6bnVsbCwic2hvcGlmeVN0b3JlIjpudWxsLCJpc1Nob3BpZnlVc2VyIjpmYWxzZSwic2FsZXNPZmZlclN0YXR1cyI6IlNFTEZfU0VSVklDRSIsImpvYlRpdGxlIjoiRGV2ZWxvcGVyIiwic2VsZWN0ZWRPcmdhbml6YXRpb25JZCI6bnVsbCwic2NvcGUiOiJjbGllbnQiLCJpYXQiOjE2MjQwMjYzNjcsImV4cCI6MTYyNDYzMTE2N30.M7VqTN7HTH1KFgXYF479K4zoQEVYL5bLctboX1TkWgM"
+					}
 				},
 				"method": "POST",
 				"header": [],
@@ -295,17 +206,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3000/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"login"
-					]
-				}
+				"url": "http://localhost:3000/login"
 			},
 			"response": []
 		}

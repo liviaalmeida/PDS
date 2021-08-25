@@ -9,12 +9,24 @@ name: Deploy to Firebase Hosting on merge
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./puncto-front
     steps:
       - uses: actions/checkout@v2
-      - run: cd puncto-front && NODE_ENV=production && npm ci && npm run build
+      - name: Build & deploy
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g yarn
+      - name: yarn install, build and test
+        run: | 
+          yarn 
+          NODE_ENV=production && yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PUNCTO_D17E1 }}'
           channelId: live
           projectId: puncto-d17e1
+          entryPoint: ./puncto-front
