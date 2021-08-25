@@ -15,12 +15,16 @@ jobs:
         working-directory: ./puncto-front
     steps:
       - uses: actions/checkout@v2
-      - uses: borales/actions-yarn@v2.3.0
+      - name: Build & deploy
+        uses: actions/setup-node@v1
         with:
-          cmd: install # will run `yarn install` command
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: cd puncto-front && NODE_ENV=production && build # will run `yarn build` command
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g yarn
+      - name: yarn install, build and test
+        run: | 
+          cd puncto-front
+          yarn 
+          NODE_ENV=production && yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
