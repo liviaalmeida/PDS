@@ -22,7 +22,7 @@
       </div>
       <div class="time-registry-header-icons"
       v-if="editing" key="icons-editing">
-        <PtButtonIcon icon="check" />
+        <PtButtonIcon icon="check" class="time-registry-save" />
         <PtButtonIcon icon="close" type="button"
         @click="cancelEditing" />
       </div>

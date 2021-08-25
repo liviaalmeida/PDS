@@ -6,6 +6,7 @@
         class="clients-query w-100"
       >
       <PtInput
+        name="query"
         label="Pesquisar"
         v-model="clientName"
         icon="clients"
