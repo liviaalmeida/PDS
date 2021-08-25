@@ -3,9 +3,7 @@
     <div class="flex-column justify-content-center">
       <TimeCurrent class="home-header" />
       <div class="home-calendar" v-if="ready">
-        <PtCalendar v-model="daySelected"
-        :fullfilled="fullfilledPunches"
-        :pending="pendingPunches" />
+        <PtCalendar v-model="dateSelected" />
       </div>
     </div>
     <div class="flex-column justify-content-center">
@@ -18,7 +16,7 @@
       <TimeGroup v-if="ready"
       :punches="punches"
       :clients="clients"
-      :day="daySelected"
+      :day="dateSelected.start"
       :editing="editing"
       :pending="pending"
       class="home-punches"
@@ -36,7 +34,8 @@ import Vue from 'vue'
 import TimeCurrent from '../components/time-register/TimeCurrent.vue'
 import TimeGroup from '../components/time-register/TimeGroup.vue'
 import { Option } from '../common/input/PtSelect.vue'
-import { Month, Punch } from '../domain/Punch'
+import { CalendarDate } from '../common/calendar/PtCalendar.vue'
+import { Punch } from '../domain/Punch'
 import { Client } from '../domain/Client'
 
 export default Vue.extend({
@@ -51,11 +50,12 @@ export default Vue.extend({
   data() {
     return {
       clients: [] as Option[],
-      daySelected: new Date(),
+      dateSelected: {
+        start: new Date(),
+        end: null,
+      } as CalendarDate,
       duration: '',
       editing: false,
-      fullfilledPunches: [] as number[],
-      pendingPunches: [] as number[],
       punches: [] as Punch[],
       ready: false,
     }
@@ -66,9 +66,12 @@ export default Vue.extend({
     },
   },
   watch: {
-    async daySelected() {
-      await this.getPunches()
-    },
+    dateSelected: {
+      deep: true,
+      handler: async function() {
+        await this.getPunches()
+      },
+    }
   },
   methods: {
     async getClients() {
@@ -78,11 +81,10 @@ export default Vue.extend({
     },
     async getData() {
       this.getPunches()
-      this.onMonthChange()
     },
     async getPunches() {
       this.punches = []
-      this.punches = await this.$api.fetch(this.$api.punch.day(this.daySelected.getTime()))
+      this.punches = await this.$api.fetch(this.$api.punch.day(this.dateSelected.start?.getTime()))
     },
     async onAdd(now = false) {
       if (!now) {
@@ -115,11 +117,6 @@ export default Vue.extend({
       }
       await this.$api.fetch(this.$api.punch.remove(id))
       await this.getData()
-    },
-    async onMonthChange() {
-      const month: Month[] = await this.$api.fetch(this.$api.punch.month(this.daySelected.getMonth()))
-      this.fullfilledPunches = month.filter(m => m.possuiPonto && !m.aberto).map(m => m.dia)
-      this.pendingPunches = month.filter(m => m.aberto).map(m => m.dia)
     },
     async onSave(punch: Punch) {
       await this.$api.fetch(this.$api.punch.save, punch)

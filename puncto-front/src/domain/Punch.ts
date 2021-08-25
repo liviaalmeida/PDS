@@ -64,9 +64,3 @@ export class Punch {
     if (start) this.timestampDateEntrada = start
   }
 }
-
-export interface Month {
-  aberto: boolean
-  possuiPonto: boolean
-  dia: number
-}

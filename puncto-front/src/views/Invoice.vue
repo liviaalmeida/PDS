@@ -34,14 +34,14 @@
         :placeholder="InvoicePlaceholder.clientId"
         :help="InvoiceHelp.clientId"
       />
-      <PtInput small
+      <PtInput small required
         label="Saudação"
         v-model="invoice.greeting"
         icon="clients"
         :placeholder="InvoicePlaceholder.greeting"
         :help="InvoiceHelp.greeting"
       />
-      <PtInput small
+      <PtInput small required
         label="Motivação"
         v-model="invoice.motivation"
         type="textarea"
@@ -50,13 +50,13 @@
         :help="InvoiceHelp.motivation"
       />
       <div class="invoice-rates">
-        <PtInput small
-          label="Valor da hora"
+        <PtInput small required
+          label="Valor da hora" type="number"
           v-model="invoice.hourlyRate"
           icon="clients"
           :placeholder="InvoicePlaceholder.hourlyRate"
         />
-        <PtInput small
+        <PtInput small required
           label="Moeda"
           v-model="invoice.currency"
           icon="clients"
@@ -68,60 +68,61 @@
         readonly
         style="width: 250px !important;"
         label="Total"
-        v-model="total"
+        :value="total"
         icon="clients"
       />
 
       <div class="d-flex flex-row justify-content-between">
         <div class="invoice-calendar">
-          <PtCalendar v-model="daySelected"
+          <PtCalendar v-model="dateSelected"
           :fullfilled="[]" :pending="[]" /> 
         </div>
         <div class="d-flex flex-column flex-fill invoice-dates">
-          <PtInput small
+          <PtInput small required
             label="Início"
-            v-model="date.start"
+            :value="date.start"
             icon="clients"
+            readonly
           />
-          <PtInput small
+          <PtInput small required
             label="Final"
-            v-model="date.end"
+            :value="date.end"
             icon="clients"
+            readonly
           />
+          <PtHelp :text="InvoiceHelp.period" />
         </div>
       </div>
-      <PtInput small
+      <PtInput small required
         label="Termos de pagamento"
         v-model="invoice.paymentTerms"
         icon="clients"
         :placeholder="InvoicePlaceholder.paymentTerms"
         :help="InvoiceHelp.paymentTerms"
       />
-      <PtInput small
+      <PtInput small required
         label="Instruções de pagamento"
         v-model="invoice.paymentInstructions"
         icon="clients"
-        required
         :placeholder="InvoicePlaceholder.paymentInstructions"
         :help="InvoiceHelp.paymentInstructions"
       />
-      <PtInput small
+      <PtInput small required
         label="Dados bancários"
         v-model="invoice.bankInfo"
         type="textarea"
         icon="clients"
-        required
         :placeholder="InvoicePlaceholder.bankInfo"
         :help="InvoiceHelp.bankInfo"
       />
-      <PtInput small
+      <PtInput small required
         label="Agradecimento"
         v-model="invoice.thankYouText"
         icon="clients"
         :placeholder="InvoicePlaceholder.thankYouText"
         :help="InvoiceHelp.thankYouText"
       />
-      <PtInput small
+      <PtInput small required
         label="Assinatura"
         v-model="invoice.signature"
         icon="clients"
@@ -137,8 +138,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import moment from 'moment'
+import { CalendarDate } from '../common/calendar/PtCalendar.vue'
+import { Option } from '../common/input/PtSelect.vue'
 import { Client } from '../domain/Client'
 import { InvoiceHelp, InvoicePlaceholder } from '../domain/Invoice'
+import { Utils } from '../domain/Utils'
 
 export default Vue.extend({
   created: function(){
@@ -146,8 +151,11 @@ export default Vue.extend({
   },
   data() {
     return {
-      total: '500.00',
-      daySelected: new Date(),
+      clients: [] as Option[],
+      dateSelected: {
+        start: new Date(),
+        end: new Date(),
+      } as CalendarDate,
       date: {
         start: '',
         end: '',
@@ -155,13 +163,14 @@ export default Vue.extend({
       invoice: {
         id: '',
         userEmail: '',
-        invoiceNumber: '',
+        invoiceNumber: 0,
         contractorTitle: '',
         clientTitle: '',
         clientId: '',
         greeting: '',
         motivation: '',
-        hourlyRate: '',
+        hourlyRate: 0,
+        totalHours: 0,
         currency: '',
         paymentTerms: '',
         paymentInstructions: '',
@@ -171,13 +180,40 @@ export default Vue.extend({
       },
       InvoiceHelp,
       InvoicePlaceholder,
-      clients: [] as Client[],
+      hourlyRate: '',
     }
   },
+  computed: {
+    total(): string {
+      const { currency, hourlyRate, totalHours } = this.invoice
+      if (!currency || !hourlyRate || !totalHours) return ''
+      return Utils.currency(hourlyRate * totalHours, currency)
+    },
+  },
+  watch: {
+    dateSelected: {
+      deep: true,
+      handler: function() {
+        const format = (date: Date) => moment(date).format('DD/MM/YYYY')
+        this.date = {
+          start: format(this.dateSelected.start),
+          end: this.dateSelected.end ? format(this.dateSelected.end) : '',
+        }
+      },
+    },
+  },
   methods: {
+    async getClients() {
+      this.clients = (await this.$api.fetch(this.$api.client.get))
+        .map((cl: Client) => ({ payload: cl.id, text: cl.name }))
+      this.clients.sort((a, b) => a.text < b.text ? -1 : 1)
+    },
     onCreate() {
       alert(JSON.stringify(this.invoice))
-    }
+    },
+  },
+  mounted() {
+    this.getClients()
   },
 })
 </script>

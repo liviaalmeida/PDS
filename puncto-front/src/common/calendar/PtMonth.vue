@@ -11,8 +11,8 @@
     <tbody>
       <tr v-for="(week, index) in days" :key="index">
         <td v-for="day in week" :key="dayKey(day)">
-          <input type="radio" name="month"
-          @input="$emit('select', day)"
+          <input type="checkbox" name="month"
+          @input="onSelect(day)"
           :checked="daySelected(day)"
           :disabled="dayDisabled(day)"
           :id="dayKey(day)">
@@ -32,6 +32,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import dayjs, { Dayjs } from 'dayjs'
+import moment from 'moment'
+import { CalendarDate } from './PtCalendar.vue'
 
 export default Vue.extend({
   model: {
@@ -52,7 +54,7 @@ export default Vue.extend({
     },
     value: {
       required: false,
-      type: Date,
+      type: Object as () => CalendarDate,
     },
   },
   computed: {
@@ -87,10 +89,28 @@ export default Vue.extend({
       return this.enabledDayIsSame(day, this.pending)
     },
     daySelected(day: Date) {
-      const selected = new Date(this.value)
-      return selected.getDate() === day.getDate() &&
-        selected.getMonth() === day.getMonth() &&
-        selected.getFullYear() === day.getFullYear()
+      if (this.value.end) {
+        return moment(day).isBetween(this.value.start, this.value.end, undefined, '[]')
+      }
+      return moment(day).isSame(this.value.start, 'day')
+    },
+    onSelect(day: Date) {
+      if (this.value.start && !this.value.end && this.value.end !== null) {
+        const start = moment(this.value.start).isBefore(day) ?
+          new Date(this.value.start) : new Date(day)
+        const end = moment(this.value.start).isBefore(day) ?
+          new Date(day) : new Date(this.value.start)
+
+        this.$emit('select', {
+          start,
+          end,
+        })
+        return
+      }
+      this.$emit('select', {
+        start: new Date(day),
+        end: this.value.end !== null ? undefined : null,
+      })
     },
     week(day: Date) {
       return Array.from(

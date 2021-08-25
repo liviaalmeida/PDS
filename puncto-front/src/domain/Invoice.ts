@@ -10,7 +10,8 @@ export enum InvoiceHelp {
   paymentInstructions = 'Como o pagamento será recebido. Por exemplo “Por favor deposite o total na conta bancária a seguir”.',
   bankInfo = 'São os dados que possibilitam execução das instruções de pagamento.',
   thankYouText = 'Um agradecimento ao cliente pela preferência.',
-  signature = 'Uma assinatura opcional que precede a assinatura da empresal. Por exemplo, a pessoa física que emite o documento.',
+  signature = 'Uma assinatura que precede a assinatura da empresal. Por exemplo, a pessoa física que emite o documento.',
+  period = 'Use o calendário para selecionar o período de abrangência do invoice',
 }
 
 export enum InvoicePlaceholder {
