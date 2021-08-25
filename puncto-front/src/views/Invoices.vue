@@ -10,14 +10,16 @@
     <div class="invoices">
       <div class="invoices-month"> 
         <div class="d-flex flex-wrap">
-          <div v-for="invoice in invoices" :key="invoice.id" class="invoices-item d-flex flex-row justify-content-start">
+          <a v-for="invoice in invoices" :key="invoice.id"
+          :href="`/invoice/${invoice.id}`"
+          class="invoices-item d-flex flex-row justify-content-start">
             <img class="invoices-icon" src="~@/assets/imgs/invoice.png">
             <div class="invoices-info d-flex flex-column justify-content-start align-items-start">
               <div> <b>#{{ invoice.invoiceNumber }}</b> {{ invoice.clientTitle }} </div>
               <div class="invoices-text">{{ invoiceDate(invoice) }} </div>
               <div class="invoices-text">{{ totalRate(invoice) }}</div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </div>
@@ -75,8 +77,10 @@ export default Vue.extend({
     width: 40px;
   }
 
-  &-item {
+  &-item, &-item:visited {
+    color: $pt-midnight;
     margin: 10px;
+    text-decoration: none;
   }
 
   &-text {

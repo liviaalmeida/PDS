@@ -155,30 +155,13 @@ export default Vue.extend({
   },
   data() {
     return {
+      id: '',
       clients: [] as Option[],
       dateSelected: {
         start: new Date(),
         end: undefined,
       } as CalendarDate,
-      invoice: {
-        id: '',
-        createdAt: '',
-        userEmail: '',
-        invoiceNumber: '',
-        contractorTitle: '',
-        clientTitle: '',
-        clientId: '',
-        greeting: '',
-        motivation: '',
-        hourlyRate: '',
-        totalHours: '',
-        currency: '',
-        paymentTerms: '',
-        paymentInstructions: '',
-        bankInfo: '',
-        thankYouText: '',
-        signature: '',
-      },
+      invoice: new Invoice(),
       InvoiceHelp,
       InvoicePlaceholder,
       feedback: new Feedback(),
@@ -224,7 +207,7 @@ export default Vue.extend({
     modal() {
       if (this.modal) return
       if (this.feedback.type !== 'success') return
-      this.$router.push('/invoices')
+      this.$router.push(`/invoice/${this.id}`)
     },
   },
   methods: {
@@ -238,7 +221,7 @@ export default Vue.extend({
       this.invoice.createdAt = new Date().getTime().toString()
       
       try {
-        await this.$api.fetch(this.$api.invoice.create, this.invoice)
+        this.id = await this.$api.fetch(this.$api.invoice.create, this.invoice)
         this.showModal(InvoiceFeedback.CreateSuccess)
       } catch (err) {
         this.showModal(InvoiceFeedback.CustomError(err.message))
