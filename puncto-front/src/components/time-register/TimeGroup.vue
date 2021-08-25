@@ -95,7 +95,7 @@ export default Vue.extend({
       this.$emit('delete', id)
     },
     onPending() {
-      if (!this.todaySelect) return
+      if (!this.todaySelected) return
       if (this.pending) this.interval = setInterval(() => this.updateDuration(), 5000)
       else if (this.interval !== -1) window.clearInterval(this.interval)
     },
