@@ -1,6 +1,7 @@
 <template>
   <div :class="['pt-button', {
     'pt-button--round': round,
+    'pt-button--small': small,
   }]">
     <button @click="$emit('click', $event)"
     :type="type" :disabled="disabled || loading">
@@ -38,6 +39,10 @@ export default Vue.extend({
       required: false,
       type: Boolean,
     },
+    small: {
+      required: false,
+      type: Boolean,
+    },
     type: {
       default: 'submit',
       required: false,
@@ -50,8 +55,6 @@ export default Vue.extend({
 <style lang="scss">
 .pt-button {
   text-align: center;
-  margin: 0 auto;
-  width: 100%;
 
   button {
     background-color: $pt-sapphire;
@@ -69,14 +72,8 @@ export default Vue.extend({
     }
   }
 
-  svg {
-    margin: 0 5px;
-    height: 14px;
-    width: 14px;
-
-    path {
-      fill: $pt-coconut;
-    }
+  svg path {
+    fill: $pt-coconut;
   }
 
   &-help {
@@ -102,6 +99,26 @@ export default Vue.extend({
       padding: 0;
       height: 35px;
       width: 35px;
+    }
+
+    svg {
+      margin: 0 5px;
+      height: 14px;
+      width: 14px;
+    }
+  }
+
+  &--small {
+    button {
+      padding: 0;
+      height: 50px;
+      width: 50px;
+    }
+
+    svg {
+      margin: 0 5px;
+      height: 25px;
+      width: 25px;
     }
   }
 }
