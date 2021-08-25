@@ -66,6 +66,11 @@ export default Vue.extend({
           link: '/clientes',
           title: 'Clientes',
         },
+        {
+          icon: 'invoices',
+          link: '/invoices',
+          title: 'Invoices',
+        },
       ]
     },
     secondary(): Item[] {
