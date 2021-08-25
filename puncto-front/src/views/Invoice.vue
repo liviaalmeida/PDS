@@ -1,135 +1,144 @@
 <template>
-    <div class="invoice d-flex flex-column align-items-center">
-        <PtInput class="invoice-input"
-            label="Número"
-            v-model="invoice.id"
-            type="text"
-            icon="clients"
-            placeholder="Número do invoice"
+  <div class="invoice d-flex flex-column align-items-center">
+    <form class="invoice-content d-flex flex-column"
+    @submit.prevent="onCreate">
+      <PtInput small
+        label="Número" type="number"
+        v-model="invoice.invoiceNumber"
+        icon="clients"
+        :placeholder="InvoicePlaceholder.invoiceNumber"
+        :help="InvoiceHelp.invoiceNumber"
+      />
+      <PtInput small
+        label="Título de prestação"
+        v-model="invoice.contractorTitle"
+        icon="clients"
+        required
+        :placeholder="InvoicePlaceholder.contractorTitle"
+        :help="InvoiceHelp.contractorTitle"
+      />
+      <PtInput small
+        label="Título do cliente"
+        v-model="invoice.clientTitle"
+        icon="clients"
+        required
+        :placeholder="InvoicePlaceholder.clientTitle"
+        :help="InvoiceHelp.clientTitle"
+      />
+      <PtSelect small
+        label="Cliente"
+        v-model="invoice.clientId"
+        :options="clients"
+        icon="clients"
+        required
+        :placeholder="InvoicePlaceholder.clientId"
+        :help="InvoiceHelp.clientId"
+      />
+      <PtInput small
+        label="Saudação"
+        v-model="invoice.greeting"
+        icon="clients"
+        :placeholder="InvoicePlaceholder.greeting"
+        :help="InvoiceHelp.greeting"
+      />
+      <PtInput small
+        label="Motivação"
+        v-model="invoice.motivation"
+        type="textarea"
+        icon="clients"
+        :placeholder="InvoicePlaceholder.motivation"
+        :help="InvoiceHelp.motivation"
+      />
+      <div class="invoice-rates">
+        <PtInput small
+          label="Valor da hora"
+          v-model="invoice.hourlyRate"
+          icon="clients"
+          :placeholder="InvoicePlaceholder.hourlyRate"
         />
-        <PtInput class="invoice-input"
-            label="Título de prestação"
-            v-model="invoice.contractorTitle"
-            type="text"
-            icon="clients"
-            required
-            placeholder="Por exemplo 'Prestador de serviço'"
+        <PtInput small
+          label="Moeda"
+          v-model="invoice.currency"
+          icon="clients"
+          :placeholder="InvoicePlaceholder.currency"
+          :help="InvoiceHelp.currency"
         />
-        <PtInput class="invoice-input"
-            label="Título do cliente"
-            v-model="invoice.clientTitle"
-            type="text"
-            icon="clients"
-            required
-            placeholder="Por exemplo 'Tomador de serviço'"
-        />
-        <PtInput class="invoice-input"
-            label="Cliente"
-            v-model="invoice.clientTitle"
-            type="text"
-            icon="clients"
-            required
-            placeholder="Nome do cliente"
-        />
-        <PtInput class="invoice-input"
-            label="Saudação"
-            v-model="invoice.greeting"
-            type="text"
-            icon="clients"
-            placeholder="Por exemplo 'Caros [NOME DO CLIENTE]"
-        />
-        <PtInput class="invoice-input"
-            label="Motivação"
-            v-model="invoice.motivation"
-            type="textarea"
-            icon="clients"
-            placeholder="Por exemplo 'Cobrança referente às atividades realizadas para clieten tal sobre textos sobre educação à distância no período do dia 14 de março de 2021 a 10 de abril de 2021'"
-        />
-        <div class="d-flex flex-row">
-            <PtInput class="invoice-input-hora"
-                label="Valor da hora"
-                v-model="invoice.hourlyRate"
-                type="text"
-                icon="clients"
-                placeholder="Digite o valor da hora"
-            />
-            <PtInput class="invoice-input-hora"
-                label="Moeda"
-                v-model="invoice.currency"
-                type="text"
-                icon="clients"
-                placeholder="Digite a unidade monetária"
-            />
-        </div>
-        <PtInput class="invoice-input"
-            label="Total"
-            v-model="total"
-            type="text"
-            icon="clients"
-        />
+      </div>
+      <PtInput small class="invoice-total"
+        readonly
+        style="width: 250px !important;"
+        label="Total"
+        v-model="total"
+        icon="clients"
+      />
 
-        <div class="d-flex flex-row">
-            <PtCalendar class="invoice-calendar" v-model="daySelected"
-            :fullfilled="[]" :pending="[]" /> 
-            <div class="d-flex flex-column">
-                <PtInput class="invoice-input-hora"
-                    label="Início"
-                    v-model="daySelected"
-                    type="text"
-                    icon="clients"
-                />
-                <PtInput class="invoice-input-hora"
-                    label="Moeda"
-                    v-model="invoice.currency"
-                    type="text"
-                    icon="clients"
-                />
-            </div>
+      <div class="d-flex flex-row justify-content-between">
+        <div class="invoice-calendar">
+          <PtCalendar v-model="daySelected"
+          :fullfilled="[]" :pending="[]" /> 
         </div>
-        <PtInput class="invoice-input"
-            label="Termos de pagamento"
-            v-model="invoice.paymentTerms"
-            type="text"
+        <div class="d-flex flex-column flex-fill invoice-dates">
+          <PtInput small
+            label="Início"
+            v-model="date.start"
             icon="clients"
-            placeholder="Por exemplo 'Termos de pagamento: pagar em até 5 dias úteis'"
-        />
-        <PtInput class="invoice-input"
-            label="Instruções de pagamento"
-            v-model="invoice.paymentInstructions"
-            type="text"
+          />
+          <PtInput small
+            label="Final"
+            v-model="date.end"
             icon="clients"
-            required
-            placeholder="Por exemplo 'Por favor deposite o total na conta bancária a seguir'"
-        />
-        <PtInput class="invoice-input"
-            label="Dados bancários"
-            v-model="invoice.bankInfo"
-            type="textarea"
-            icon="clients"
-            required
-            placeholder="Os dados bancários para recebimento. Por exemplo, o seu banco, conta e agência, ou ainda os dados de depósito de remessa, para o caso de clientes no exterior."
-        />
-        <PtInput class="invoice-input"
-            label="Agradecimento"
-            v-model="invoice.thankYouText"
-            type="text"
-            icon="clients"
-            placeholder="Por exemplo “Grata/Grato por trabalharem conosco”"
-        />
-        <PtInput class="invoice-input"
-            label="Assinatura"
-            v-model="invoice.signature"
-            type="text"
-            icon="clients"
-            placeholder="Por exemplo o seu nome físcio"
-        />
-        <PtButton @click="onCreate" class="button">Criar</PtButton>
-
-    </div>
+          />
+        </div>
+      </div>
+      <PtInput small
+        label="Termos de pagamento"
+        v-model="invoice.paymentTerms"
+        icon="clients"
+        :placeholder="InvoicePlaceholder.paymentTerms"
+        :help="InvoiceHelp.paymentTerms"
+      />
+      <PtInput small
+        label="Instruções de pagamento"
+        v-model="invoice.paymentInstructions"
+        icon="clients"
+        required
+        :placeholder="InvoicePlaceholder.paymentInstructions"
+        :help="InvoiceHelp.paymentInstructions"
+      />
+      <PtInput small
+        label="Dados bancários"
+        v-model="invoice.bankInfo"
+        type="textarea"
+        icon="clients"
+        required
+        :placeholder="InvoicePlaceholder.bankInfo"
+        :help="InvoiceHelp.bankInfo"
+      />
+      <PtInput small
+        label="Agradecimento"
+        v-model="invoice.thankYouText"
+        icon="clients"
+        :placeholder="InvoicePlaceholder.thankYouText"
+        :help="InvoiceHelp.thankYouText"
+      />
+      <PtInput small
+        label="Assinatura"
+        v-model="invoice.signature"
+        icon="clients"
+        :placeholder="InvoicePlaceholder.signature"
+        :help="InvoiceHelp.signature"
+      />
+      <PtButton class="invoice-button">
+        Criar
+      </PtButton>
+    </form>
+  </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
+import { Client } from '../domain/Client'
+import { InvoiceHelp, InvoicePlaceholder } from '../domain/Invoice'
 
 export default Vue.extend({
   created: function(){
@@ -138,7 +147,11 @@ export default Vue.extend({
   data() {
     return {
       total: '500.00',
-      daySelected: '',
+      daySelected: new Date(),
+      date: {
+        start: '',
+        end: '',
+      },
       invoice: {
         id: '',
         userEmail: '',
@@ -156,6 +169,9 @@ export default Vue.extend({
         thankYouText: '',
         signature: '',
       },
+      InvoiceHelp,
+      InvoicePlaceholder,
+      clients: [] as Client[],
     }
   },
   methods: {
@@ -168,26 +184,42 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .invoice {
-    background: rgba(237, 237, 237, 0.5);
+  background: rgba(237, 237, 237, 0.5);
+  border-radius: 5px;
+  padding: 25px;
+
+  &-content {
+    gap: 20px;
+    margin: 0 auto;
+    max-width: 800px;
+    width: 80%;
+  }
+
+  &-rates {
+    display: grid;
+    gap: 15px;
+    grid-auto-flow: column;
+  }
+
+  &-total {
+    border: 1px solid $pt-midnight;
     border-radius: 5px;
-    &-input {
-        width: 80%;
-        background-color: #FFF;
-        border-color: #FFF;
-        margin: 15px;
-    }
-    &-input-hora {
-        width: 242px;
-        background-color: #FFF;
-        border-color: #FFF;
-        margin: 15px;
-    }
-    &-calendar {
-        background-color: #FFF;
-        margin: 15px;
-    }
-}
-.button {
-    width: 30%;
+  }
+
+  &-calendar {
+    background-color: #FFF;
+    border-radius: 5px;
+    margin-right: 25px;
+    padding: 10px;
+  }
+
+  &-dates {
+    gap: 20px;
+  }
+
+  &-button {
+    margin: 0 auto;
+    width: 281px;
+  }
 }
 </style>
