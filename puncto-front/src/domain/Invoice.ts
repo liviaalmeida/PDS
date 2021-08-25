@@ -11,7 +11,7 @@ export enum InvoiceHelp {
   bankInfo = 'São os dados que possibilitam execução das instruções de pagamento.',
   thankYouText = 'Um agradecimento ao cliente pela preferência.',
   signature = 'Uma assinatura que precede a assinatura da empresal. Por exemplo, a pessoa física que emite o documento.',
-  period = 'Use o calendário para selecionar o período de abrangência do invoice',
+  period = 'Use o calendário para selecionar o período de abrangência do invoice. Os pontos abertos não serão considerados.',
 }
 
 export enum InvoicePlaceholder {
@@ -32,14 +32,14 @@ export enum InvoicePlaceholder {
 
 export class Invoice {
   id = ''
-  invoiceNumber = 0
+  invoiceNumber = ''
   contractorTitle = ''
   clientTitle = ''
   clientId = ''
   greeting = ''
   motivation = ''
-  hourlyRate = 0
-  totalHours = 0
+  hourlyRate = ''
+  totalHours = ''
   createdAt = ''
   currency = ''
   paymentTerms = ''

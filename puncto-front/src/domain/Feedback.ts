@@ -42,6 +42,20 @@ export class ClientFeedback {
   }
 }
 
+export class InvoiceFeedback {
+  static CreateSuccess: Feedback = {
+    message: 'Invoice criado com sucesso',
+    title: 'Invoice salvo!',
+    type: 'success',
+  }
+
+  static CustomError: (err: string) => Feedback = (err) => ({
+    message: `Erro ao atualizar cadastro! ${err}`,
+    title: 'Erro!',
+    type: 'error',
+  })
+}
+
 export class LoginFeedback {
   static LoginError: (err: string) => Feedback = (err) => ({
     message: `Erro ao logar no sistema: ${err}`,

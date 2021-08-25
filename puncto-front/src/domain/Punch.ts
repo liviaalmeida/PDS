@@ -1,5 +1,7 @@
 import moment from 'moment'
 
+moment.locale('pt-br')
+
 export interface Time {
   hours: number
   minutes: number
@@ -15,8 +17,9 @@ export class Punch {
     const startDate = moment(start)
     const endDate = moment(end)
 
-    const hours = endDate.diff(startDate, 'hours')
-    const minutes = endDate.diff(startDate, 'minutes')
+    const totalMinutes = endDate.diff(startDate, 'minutes')
+    const hours = Math.floor(totalMinutes / 60)
+    const minutes = totalMinutes % 60
 
     return {
       hours,
@@ -39,7 +42,7 @@ export class Punch {
     }
   }
 
-  static totalDuration(punches: Punch[]): string | undefined {
+  static totalDuration(punches: Punch[]): Time | undefined {
     if (!punches.length) return
 
     const closed = punches.every(p => !!p.timestampDateEntrada && !!p.timestampDateSaida)
@@ -57,7 +60,7 @@ export class Punch {
 
     const minutes = duration.minutes % 60
     const hours = duration.hours + Math.floor(duration.minutes / 60)
-    return moment().hours(hours).minutes(minutes).format('LT')
+    return { hours, minutes }
   }
 
   constructor(start?: number) {
