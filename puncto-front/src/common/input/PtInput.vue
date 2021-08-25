@@ -48,10 +48,6 @@ export default Vue.extend({
       required: false,
       type: String,
     },
-    name: {
-      required: false,
-      type: String,
-    },
     placeholder: {
       required: false,
       type: String,
