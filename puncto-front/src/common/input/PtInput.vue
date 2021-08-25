@@ -76,7 +76,7 @@ export default Vue.extend({
     },
     value: {
       required: false,
-      type: [String, Number],
+      type: String,
     },
   },
   data() {
