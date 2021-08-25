@@ -2,7 +2,8 @@
   <div>
     <div class="d-flex justify-content-between">
       <PtButton class="button" @click="$router.push('invoices/new')"> Novo Invoice</PtButton>
-      <PtButton small @click="$router.push('invoices/setting')">
+      <PtButton small @click="$router.push('invoices/setting')"
+      v-show="false">
         <PtIcon name="settings" />
       </PtButton>
     </div>
@@ -45,7 +46,7 @@ export default Vue.extend({
       return moment(Number(createdAt)).format('LL')
     },
     totalRate({ currency, totalHours, hourlyRate }: Invoice): string {
-      return Utils.currency(totalHours * hourlyRate, currency)
+      return Utils.currency(Number(totalHours) * Number(hourlyRate), currency)
     },
   },
   mounted() {
