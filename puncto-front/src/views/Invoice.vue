@@ -52,6 +52,7 @@
       <div class="invoice-rates">
         <PtInput small required
           label="Valor da hora" type="number"
+          min="0" step="0.01"
           v-model="invoice.hourlyRate"
           icon="clients"
           :placeholder="InvoicePlaceholder.hourlyRate"
@@ -133,6 +134,7 @@
         Criar
       </PtButton>
     </form>
+    <PtModal v-model="modal" :feedback="feedback" />
   </div>
 </template>
 
@@ -142,8 +144,10 @@ import moment from 'moment'
 import { CalendarDate } from '../common/calendar/PtCalendar.vue'
 import { Option } from '../common/input/PtSelect.vue'
 import { Client } from '../domain/Client'
-import { InvoiceHelp, InvoicePlaceholder } from '../domain/Invoice'
+import { Invoice, InvoiceHelp, InvoicePlaceholder } from '../domain/Invoice'
 import { Utils } from '../domain/Utils'
+import { Punch } from '../domain/Punch'
+import { Feedback, InvoiceFeedback } from '../domain/Feedback'
 
 export default Vue.extend({
   created: function(){
@@ -154,23 +158,20 @@ export default Vue.extend({
       clients: [] as Option[],
       dateSelected: {
         start: new Date(),
-        end: new Date(),
+        end: undefined,
       } as CalendarDate,
-      date: {
-        start: '',
-        end: '',
-      },
       invoice: {
         id: '',
+        createdAt: '',
         userEmail: '',
-        invoiceNumber: 0,
+        invoiceNumber: '',
         contractorTitle: '',
         clientTitle: '',
         clientId: '',
         greeting: '',
         motivation: '',
-        hourlyRate: 0,
-        totalHours: 0,
+        hourlyRate: '',
+        totalHours: '',
         currency: '',
         paymentTerms: '',
         paymentInstructions: '',
@@ -180,26 +181,50 @@ export default Vue.extend({
       },
       InvoiceHelp,
       InvoicePlaceholder,
-      hourlyRate: '',
+      feedback: new Feedback(),
+      modal: false,
     }
   },
   computed: {
+    date(): { start: string, end: string } {
+      const format = (date: Date) => moment(date).format('DD/MM/YYYY')
+
+      return {
+        start: format(this.dateSelected.start),
+        end: this.dateSelected.end ? format(this.dateSelected.end) : '',
+      }
+    },
+    days(): number[] {
+      const { start, end } = this.dateSelected
+      if (!end) return []
+      return Array.from(
+        { length: moment(end).diff(start, 'days') + 1 },
+        (_, index) => moment(start).add(index, 'days').toDate().getTime()
+      )
+    },
     total(): string {
       const { currency, hourlyRate, totalHours } = this.invoice
       if (!currency || !hourlyRate || !totalHours) return ''
-      return Utils.currency(hourlyRate * totalHours, currency)
+      return Utils.currency(Number(hourlyRate) * Number(totalHours), currency)
     },
   },
   watch: {
-    dateSelected: {
-      deep: true,
-      handler: function() {
-        const format = (date: Date) => moment(date).format('DD/MM/YYYY')
-        this.date = {
-          start: format(this.dateSelected.start),
-          end: this.dateSelected.end ? format(this.dateSelected.end) : '',
-        }
-      },
+    async days() {
+      const punches = (await Promise.all(
+        this.days
+          .map(async day => (await this.$api.fetch(this.$api.punch.day(day))) as Punch[])
+      ))
+        .filter((pcs: Punch[]) => pcs.length)
+        .reduce<Punch[]>((all, pc: Punch[]) => [ ...all, ...pc ], [])
+        .filter(pc => pc.timestampDateEntrada && pc.timestampDateSaida)
+
+      const { hours, minutes } = Punch.totalDuration(punches) || { hours: 0, minutes: 0 }
+      this.invoice.totalHours = (hours + (minutes / 60.0)).toString()
+    },
+    modal() {
+      if (this.modal) return
+      if (this.feedback.type !== 'success') return
+      this.$router.push('/invoices')
     },
   },
   methods: {
@@ -208,8 +233,29 @@ export default Vue.extend({
         .map((cl: Client) => ({ payload: cl.id, text: cl.name }))
       this.clients.sort((a, b) => a.text < b.text ? -1 : 1)
     },
-    onCreate() {
-      alert(JSON.stringify(this.invoice))
+    async onCreate() {
+      this.invoice.invoiceNumber = await this.validateNumber(this.invoice.invoiceNumber)
+      this.invoice.createdAt = new Date().getTime().toString()
+      
+      try {
+        await this.$api.fetch(this.$api.invoice.create, this.invoice)
+        this.showModal(InvoiceFeedback.CreateSuccess)
+      } catch (err) {
+        this.showModal(InvoiceFeedback.CustomError(err.message))
+      }
+    },
+    showModal(feedback: Feedback) {
+      this.feedback = feedback
+      this.modal = true
+    },
+    async validateNumber(num: string): Promise<string> {
+      const invoices = (await this.$api.fetch(this.$api.invoice.all)) as Invoice[]
+      const numbers = invoices.map(inv => Number(inv.invoiceNumber))
+      if (numbers.includes(Number(num))) {
+        const next = (Math.max(...numbers) + 1).toString()
+        return new Promise(resolve => resolve(next))
+      }
+      return new Promise(resolve => resolve(num))
     },
   },
   mounted() {
