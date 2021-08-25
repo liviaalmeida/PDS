@@ -1,26 +1,40 @@
 <template>
-  <div :class="['pt-input', {
-    'pt-input--disabled': disabled,
-    'pt-input--focused': focus,
-    'pt-input--small': small,
-  }]">
-    <label class="pt-input-label">
-      <PtIcon :name="icon" v-if="icon" />
-      {{ label }}
-    </label>
-    <textarea v-if="$attrs.type === 'textarea'"
-    :required="required"
-    @blur="focus = false" @focus="focus = true"
-    @input="$emit('model', $event.target.value)"
-    v-bind="$attrs" v-on="$listeners"
-    v-model="model"
-    :disabled="disabled" />
-    <input v-else :required="required"
-    @blur="focus = false" @focus="focus = true"
-    @input="$emit('model', $event.target.value)"
-    v-bind="$attrs" v-on="$listeners"
-    v-mask="mask" v-model="model"
-    :disabled="disabled" >
+  <div class="d-flex w-100">
+    <div :class="['pt-input', {
+      'pt-input--disabled': disabled,
+      'pt-input--focused': focus,
+      'pt-input--input': $attrs.type !== 'textarea',
+      'pt-input--small': small,
+    }]">
+      <label class="pt-input-label">
+        <PtIcon :name="icon" v-if="icon" />
+        {{ label }}
+        <span class="pt-input-label--required"
+        v-if="required">
+          *
+        </span>
+      </label>
+      <textarea v-if="$attrs.type === 'textarea'"
+      :required="required"
+      @blur="focus = false" @focus="focus = true"
+      @input="$emit('model', $event.target.value)"
+      v-bind="$attrs" v-on="$listeners"
+      v-model="model"
+      :disabled="disabled" />
+      <input v-else :required="required"
+      @blur="focus = false" @focus="focus = true"
+      @input="$emit('model', $event.target.value)"
+      v-bind="$attrs" v-on="$listeners"
+      v-mask="mask" v-model="model"
+      :disabled="disabled" >
+    </div>
+    <div class="pt-input-help"
+    v-if="help">
+      <PtIcon name="info"
+      class="pt-input-help-icon"
+      />
+      {{ help }}
+    </div>
   </div>
 </template>
 
@@ -36,6 +50,10 @@ export default Vue.extend({
       required: false,
       type: Boolean,
     },
+    help: {
+      required: false,
+      type: String,
+    },
     icon: {
       required: false,
       type: String,
@@ -49,10 +67,6 @@ export default Vue.extend({
       type: String,
     },
     name: {
-      required: false,
-      type: String,
-    },
-    placeholder: {
       required: false,
       type: String,
     },
@@ -94,8 +108,10 @@ export default Vue.extend({
   text-align: left;
   transition: border-color $time;
   min-height: 50px;
+  width: 100%;
 
   input, textarea {
+    background: transparent;
     border: none;
     outline: transparent;
     font-family: 'Roboto';
@@ -113,6 +129,10 @@ export default Vue.extend({
     transition: color $time;
     margin-bottom: 5px;
 
+    &--required {
+      color: $pt-ruby;
+    }
+
     svg {
       height: 10px;
       width: 10px;
@@ -122,6 +142,24 @@ export default Vue.extend({
 				fill: $pt-midnight;
 				transition: fill $time;
 			}
+    }
+  }
+
+  &-help {
+    color: $pt-coal;
+    display: flex;
+    font-size: 9px;
+    line-height: 12px;
+    text-align: justify;
+    margin-left: 15px;
+    max-width: 200px;
+  
+    &-icon {
+      fill: $pt-coal;
+      height: 18px;
+      margin-right: 5px;
+      min-width: 18px;
+      transform: translateY(-2px);
     }
   }
 
@@ -153,7 +191,7 @@ export default Vue.extend({
   &--small {
     background-color: $pt-coconut;
     border: none;
-    min-height: 35px;
+    min-height: 40px;
     padding: 0 5px;
 
     &.pt-input--disabled,
@@ -175,10 +213,18 @@ export default Vue.extend({
       }
     }
 
+    &.pt-input--input {
+      height: 40px;
+    }
+
     .pt-input-label {
       font-size: 11px;
       font-weight: 700;
       margin-bottom: 0;
+    }
+
+    input, textarea {
+      font-size: 13px;
     }
   }
 }

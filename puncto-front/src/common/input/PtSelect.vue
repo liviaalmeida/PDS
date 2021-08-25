@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-select">
+  <div class="pt-select w-100">
     <PtInput
     v-model="query"
     v-bind="$attrs"
