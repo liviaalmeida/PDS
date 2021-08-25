@@ -46,4 +46,10 @@ export class Invoice extends BaseEntity {
 
   @Column()
   signature: string;
+
+  @Column()
+  totalHours: number;
+
+  @Column()
+  createdAt: string;
 }

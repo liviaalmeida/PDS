@@ -33,19 +33,7 @@ export class InvoiceDto {
 
   signature: string;
 
-  // public constructor() {
-  //   this.invoiceNumber = '';
-  //   this.contractorTitle = '';
-  //   this.clientTitle = '';
-  //   this.clientId = '';
-  //   this.greeting = '';
-  //   this.motivation = '';
-  //   this.hourlyRate = '';
-  //   this.currency = '';
-  //   this.paymentTerms = '';
-  //   this.paymentInstructions = '';
-  //   this.bankInfo = '';
-  //   this.thankYouText = '';
-  //   this.signature = '';
-  // }
+  totalHours: number;
+
+  createdAt: string;
 }
