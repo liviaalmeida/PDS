@@ -31,9 +31,10 @@
 import Vue from 'vue'
 import moment from 'moment'
 import TimeRegistry from './TimeRegistry.vue'
-import { Punch } from '../../domain/Punch'
+import { Punch, Time } from '../../domain/Punch'
 import { Client } from '../../domain/Client'
 import { Feedback, PunchFeedback } from '../../domain/Feedback'
+import { Utils } from '../../domain/Utils'
 
 moment.locale('pt-br')
 
@@ -68,6 +69,7 @@ export default Vue.extend({
       duration: '',
       error: false,
       feedback: new Feedback(),
+      interval: -1,
     }
   },
   computed: {
@@ -92,6 +94,11 @@ export default Vue.extend({
     onDelete(id: string) {
       this.$emit('delete', id)
     },
+    onPending() {
+      if (!this.todaySelect) return
+      if (this.pending) this.interval = setInterval(() => this.updateDuration(), 5000)
+      else if (this.interval !== -1) window.clearInterval(this.interval)
+    },
     simulatePunches(punch: Punch): Punch[] {
       const updated = this.punches.map(
         pc => pc.id === punch.id ? { ...punch } : { ...pc}
@@ -107,9 +114,16 @@ export default Vue.extend({
       return moment(time)
     },
     updateDuration(): void {
-      if (!this.pending) this.duration = Punch.totalDuration(this.punches) || ''
-      else if (!this.todaySelected) this.duration = 'Ponto aberto'
-      else this.duration = '8:00'
+      const norm = Utils.normalizeTime
+      const format = ({ hours, minutes }: Time) => `${norm(hours)}:${norm(minutes)}`
+      
+      if (this.pending && !this.todaySelected) {
+        this.duration = 'Ponto aberto'
+        return
+      }
+
+      const duration = Punch.totalDuration(this.punches)
+      this.duration = duration ? format(duration) : ''
     },
     validateSave(punch: Punch) {
       if (this.pending && !punch.timestampDateSaida) {
@@ -174,12 +188,16 @@ export default Vue.extend({
     daySelected() {
       this.updateDuration()
     },
+    pending() {
+      this.onPending()
+    },
     punches() {
       this.updateDuration()
-    }
+    },
   },
   mounted() {
     this.updateDuration()
+    this.onPending()
   },
 })
 </script>
