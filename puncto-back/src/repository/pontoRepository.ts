@@ -43,11 +43,11 @@ export class PontoRepository {
         }) as PontoDto[]
 
         const pontos = allPontos.filter(it => {
-            const dataABuscar = new Date(timestamp * 1000);
+            const dataABuscar = new Date(timestamp);
             const diaABuscar = dataABuscar.getDate();
 
-            const pontoDataEntrada = new Date(it.timestampDateEntrada * 1000);
-            const pontoDataSaida = new Date(it.timestampDateSaida * 1000);
+            const pontoDataEntrada = new Date(it.timestampDateEntrada);
+            const pontoDataSaida = new Date(it.timestampDateSaida);
 
             const pontoDiaEntrada = pontoDataEntrada.getDate();
             const pontoDiaSaida = pontoDataSaida.getDate();
