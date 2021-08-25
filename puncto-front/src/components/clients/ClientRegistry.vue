@@ -4,7 +4,8 @@
   }]" @submit.prevent="confirmEditing">
     <div class="client-registry-header"
     v-if="editing" key="icons-editing">
-      <PtButtonIcon icon="check" type="submit" />
+      <PtButtonIcon icon="check" type="submit"
+      class="client-registry-save" />
       <PtButtonIcon icon="close" type="button"
       @click="cancelEditing" />
     </div>
@@ -13,26 +14,28 @@
       <PtButtonIcon icon="edit" type="button"
       @click="edit" />
       <PtButtonIcon icon="delete" type="button"
+      class="client-registry-delete"
       @click="deleteClient" />
     </div>
     <PtInput small icon="clients"
     label="Cliente" :disabled="!editing"
-    v-model="model.name" required />
+    v-model="model.name" required
+    name="name" />
     <PtInput small icon="profile"
     label="Identificador da empresa"
-    :disabled="!editing"
+    :disabled="!editing" name="id"
     v-model="model.cnpj" required />
     <div class="client-registry-address d-flex flex-column">
       <div class="client-registry-address-title">
         Endereço
       </div>
-      <PtInput small icon="marker"
+      <PtInput small icon="marker" name="address"
       label="Linha 1" :disabled="!editing"
       v-model="model.address" required />
-      <PtInput small icon="marker"
+      <PtInput small icon="marker" name="addressTwo"
       label="Linha 2" :disabled="!editing"
       v-model="model.addressTwo" required />
-      <PtInput small icon="marker"
+      <PtInput small icon="marker" name="addressThree"
       label="Linha 3" :disabled="!editing"
       v-model="model.addressThree" required />
     </div>

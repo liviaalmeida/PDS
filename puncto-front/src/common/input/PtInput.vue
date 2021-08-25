@@ -62,7 +62,7 @@ export default Vue.extend({
       required: false,
       type: String,
     },
-    name: {
+    placeholder: {
       required: false,
       type: String,
     },

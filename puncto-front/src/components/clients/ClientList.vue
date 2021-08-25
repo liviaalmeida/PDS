@@ -1,6 +1,7 @@
 <template>
   <div class="client-list d-flex flex-column w-100">
     <PtButton round
+    class="client-list-add"
     v-if="!query.length"
     @click="$emit('add')"
     :disabled="editing">
