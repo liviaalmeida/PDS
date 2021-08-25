@@ -8,8 +8,39 @@ import { directive } from 'v-visible'
 const localVue = createLocalVue()
 localVue.directive('visible', directive)
 
+const $api = {
+  fetch: async (endpoint) => {
+    return new Promise(resolve => resolve(endpoint.response))
+  },
+  punch: {
+    month: () => ({
+      response: [
+        {
+          dia: 1,
+          aberto: true,
+          possuiPonto: true,
+        },
+        {
+          dia: 2,
+          aberto: false,
+          possuiPonto: true,
+        },
+        {
+          dia: 3,
+          aberto: false,
+          possuiPonto: false,
+        },
+      ],
+    }),
+  },
+}
+
 describe('PtCalendar', () => {
-  const value = new Date(Date.now())
+  const value = {
+    start: new Date(Date.now()),
+    end: null,
+  }
+
   let ptCalendar
 
   beforeEach(() => {
@@ -22,6 +53,9 @@ describe('PtCalendar', () => {
         PtMonth,
         PtMonths,
         PtYears,
+      },
+      mocks: {
+        $api,
       },
     })
   })

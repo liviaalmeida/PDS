@@ -3,7 +3,10 @@ import PtMonth from '../../../src/common/calendar/PtMonth.vue'
 
 describe('PtMonth', () => {
   const date = new Date(Date.now())
-  const value = new Date(Date.now())
+  const value = {
+    start: new Date(Date.now()),
+    end: null,
+  }
   let ptMonth
 
   beforeEach(() => {
