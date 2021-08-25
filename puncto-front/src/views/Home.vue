@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="flex-column justify-content-center">
-      <div class="home-header">
+      <div class="home-header d-flex justify-content-center">
         <PtButton class="home-button" :disabled="editing"
         @click="onAdd(true)">
           Registrar Ponto
