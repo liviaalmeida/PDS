@@ -3,7 +3,7 @@
     <div class="flex-column justify-content-center">
       <TimeCurrent class="home-header" />
       <div class="home-calendar" v-if="ready">
-        <PtCalendar v-model="dateSelected" />
+        <PtCalendar v-model="dateSelected" :key="update" />
       </div>
     </div>
     <div class="flex-column justify-content-center">
@@ -58,6 +58,7 @@ export default Vue.extend({
       editing: false,
       punches: [] as Punch[],
       ready: false,
+      update: 0,
     }
   },
   computed: {
@@ -71,7 +72,7 @@ export default Vue.extend({
       handler: async function() {
         await this.getPunches()
       },
-    }
+    },
   },
   methods: {
     async getClients() {
@@ -81,6 +82,7 @@ export default Vue.extend({
     },
     async getData() {
       this.getPunches()
+      this.update += 1
     },
     async getPunches() {
       this.punches = []
