@@ -13,12 +13,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: borales/actions-yarn@v2.3.0
+        working-directory: ./puncto-front
         with:
-          cmd: cd puncto-front && install # will run `yarn install` command
+          cmd: install # will run `yarn install` command
       - uses: borales/actions-yarn@v2.3.0
+        working-directory: ./puncto-front
         with:
           cmd: NODE_ENV=production && build # will run `yarn build` command
       - uses: FirebaseExtended/action-hosting-deploy@v0
+        working-directory: ./puncto-front
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PUNCTO_D17E1 }}'
