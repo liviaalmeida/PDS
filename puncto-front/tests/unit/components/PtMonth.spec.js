@@ -50,10 +50,22 @@ describe('PtMonth', () => {
     expect(day.element.checked).toBe(true)
   })
 
+  it('selects initial day when end is null', () => {
+    const start = new Date()
+    start.setDate(1)
+    const value = { start, end: null }
+    ptMonth = mountMonth(value)
+
+    const day15 = ptMonth.find(`input[id="15-${date.getMonth()}"]`).element
+    day15.click()
+    expect(ptMonth.props('value').end).toBe(null)
+    expect(day15.checked).toBe(true)
+  })
+
   it('selects end day', () => {
     const start = new Date()
     start.setDate(1)
-    const value = { start }
+    const value = { start, end: undefined }
     ptMonth = mountMonth(value)
 
     const day15 = ptMonth.find(`input[id="15-${date.getMonth()}"]`).element
