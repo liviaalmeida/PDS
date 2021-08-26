@@ -50,7 +50,7 @@ describe('PtMonth', () => {
     expect(day.element.checked).toBe(true)
   })
 
-  it('selects initial day', () => {
+  it('selects end day', () => {
     const start = new Date()
     start.setDate(1)
     const value = { start }
