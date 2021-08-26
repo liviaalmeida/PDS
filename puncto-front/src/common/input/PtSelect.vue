@@ -1,21 +1,25 @@
 <template>
-  <div class="pt-select">
-    <PtInput
-    v-model="query"
-    v-bind="$attrs"
-    @blur="onBlur"
-    @focus="onFocus"
-    @input="onQuery"
-    />
-    <div v-if="open" tabindex="0"
-    class="pt-select-options">
-      <div v-for="option in filtered"
-      :key="option.payload"
-      @click="onSelect(option)"
-      class="pt-select-option">
-        {{ option.text }}
+  <div class="w-100 d-flex">
+    <div class="pt-select w-100">
+      <PtInput
+      v-model="query"
+      v-bind="$attrs"
+      @blur="onBlur"
+      @focus="onFocus"
+      @input="onQuery"
+      />
+      <div v-if="open" tabindex="0"
+      class="pt-select-options">
+        <div v-for="option in filtered"
+        :key="option.payload"
+        @click="onSelect(option)"
+        class="pt-select-option">
+          {{ option.text }}
+        </div>
       </div>
     </div>
+    <PtHelp v-if="help" :text="help"
+    class="pt-select-help" />
   </div>
 </template>
 
@@ -33,6 +37,10 @@ export default Vue.extend({
     event: 'select',
   },
   props: {
+    help: {
+      required: false,
+      type: String,
+    },
     options: {
       required: true,
       type: Array as () => Array<Option>,
@@ -112,6 +120,11 @@ $option: 30px;
     &:hover {
       background-color: $pt-fog;
     }
+  }
+
+  &-help {
+    margin-left: 15px;
+    max-width: 200px;
   }
 }
 </style>

@@ -59,6 +59,14 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/invoice/:id',
+    name: 'Invoice',
+    component: () => import('@/views/InvoicePrint.vue'),
+    meta: {
+      auth: true,
+    },
+  },
+  {
     path: '/logout',
     name: 'Logout',
     component: () => import('@/views/Logout.vue'),

@@ -39,6 +39,17 @@ import PtMonth from './PtMonth.vue'
 import PtMonths from './PtMonths.vue'
 import PtYears from './PtYears.vue'
 
+export type CalendarDate = {
+  start: Date
+  end?: Date | null
+}
+
+type Month = {
+  aberto: boolean
+  possuiPonto: boolean
+  dia: number
+}
+
 export default Vue.extend({
   components: {
     PtMonth,
@@ -49,23 +60,20 @@ export default Vue.extend({
     event: 'select',
   },
   props: {
-    fullfilled: {
-      required: false,
-      type: Array,
-    },
-    pending: {
-      required: false,
-      type: Array,
-    },
     value: {
       required: true,
-      type: Date,
+      type: Object as () => CalendarDate,
     },
   },
   data() {
     return {
       date: new Date(),
-      day: new Date(this.value),
+      day: {
+        start: this.value.start ? new Date(this.value.start) : undefined,
+        end: this.value.end ? new Date(this.value.end) : this.value.end
+      },
+      fullfilled: [] as number[],
+      pending: [] as number[],
       pickingMonth: false,
       pickingYear: false,
     }
@@ -89,7 +97,17 @@ export default Vue.extend({
       return this.date.getFullYear()
     },
   },
+  watch: {
+    date() {
+      this.onDate()
+    },
+  },
   methods: {
+    async onDate() {
+      const month: Month[] = await this.$api.fetch(this.$api.punch.month(this.date.getMonth()))
+      this.fullfilled = month.filter(m => m.possuiPonto && !m.aberto).map(m => m.dia)
+      this.pending = month.filter(m => m.aberto).map(m => m.dia)
+    },
     onMonth() {
       this.pickingYear = false
       this.pickingMonth = !this.pickingMonth
@@ -109,6 +127,9 @@ export default Vue.extend({
     rollMonth(offset: number) {
       this.date = dayjs(this.date).add(offset, 'month').toDate()
     },
+  },
+  mounted() {
+    this.onDate()
   },
 })
 </script>

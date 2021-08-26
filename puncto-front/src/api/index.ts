@@ -1,5 +1,6 @@
 import * as auth from './auth'
 import * as client from './client'
+import * as invoice from './invoice'
 import * as punch from './punch'
 import * as user from './user'
 
@@ -12,6 +13,7 @@ export class API {
   base = process.env.NODE_ENV === 'production' ? 'https://puncto-backend.ue.r.appspot.com' : 'http://localhost:3000';
   auth = auth
   client = client
+  invoice = invoice
   punch = punch
   user = user
 
